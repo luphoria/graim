@@ -1,21 +1,21 @@
 {
-  "name": "matrix-bot-sdk-bot-template",
-  "version": "0.1.0",
-  "author": "TravisR",
+  "name": "graim",
+  "version": "0.0.1",
+  "author": "luphoria",
   "license": "Apache-2.0",
-  "description": "A template repository for bots made with the matrix-bot-sdk",
+  "description": "matrix <=> discord moderation with the power of https://t2bot.io/",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/turt2live/matrix-bot-sdk-bot-template.git"
+    "url": "git+https://github.com/luphoria/graim.git"
   },
   "bugs": {
-    "url": "https://github.com/turt2live/matrix-bot-sdk-bot-template/issues"
+    "url": "https://github.com/luphoria/graim/issues"
   },
-  "homepage": "https://github.com/turt2live/matrix-bot-sdk-bot-template#readme",
+  "homepage": "https://gra.im",
   "keywords": [
     "matrix",
     "bot",
-    "template"
+    "discord"
   ],
   "main": "lib/index.js",
   "scripts": {
