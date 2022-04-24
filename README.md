@@ -4,6 +4,13 @@ matrix &lt;=> discord moderation with the power of t2bot's matrix-appservice
 ## THIS IS NOT EVEN CLOSE TO FINISHED LOL
 Don't use it
 
+## TODOs
+Note there is more to-do, this is just the current high priority / next on the list.
+
+ - Mute
+ - Database management commands (add/remove user, add/remove moderator)
+ - `whosent` command
+
 ## Features
 - Kick
 - Ban + unban
