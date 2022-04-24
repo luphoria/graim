@@ -1,19 +1,15 @@
-let TMP_TEST_DB = {
-  users: [
-    {
-      name: "test-account",
-      matrix: "graimtesting:matrix.org",
-      discord: "966488436041203712",
-    },
-  ],
-};
+const file = require("fs");
+const db = JSON.parse(file.readFileSync("./graimdb.json"));
 
 export const lookup_user = (name: String) => {
   let graim_name: string;
   let user_matrix: string;
   let user_discord: string;
+  let moderator: boolean;
 
-  TMP_TEST_DB.users.forEach((_user) => {
+  console.log(db);
+
+  db.users.forEach((_user) => {
     if (_user.name == name) {
       console.log("Graim user FOUND in db");
       graim_name = _user.name;
@@ -28,16 +24,19 @@ export const lookup_user = (name: String) => {
     }
   });
 
-  TMP_TEST_DB.users.forEach((_user) => {
+  db.users.forEach((_user) => {
     if (_user.name == graim_name) {
       user_matrix = "@" + _user.matrix;
       user_discord = _user.discord;
     }
   });
 
+  moderator = db.mods[graim_name] ? true : false
+
   return {
-      "graim_name": graim_name,
-      "user_matrix": user_matrix,
-      "user_discord": user_discord
+    graim_name: graim_name,
+    user_matrix: user_matrix,
+    user_discord: user_discord,
+    moderator: moderator,
   };
 };
