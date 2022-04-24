@@ -1,5 +1,5 @@
 const file = require("fs");
-const db = JSON.parse(file.readFileSync("./graimdb.json"));
+let db = JSON.parse(file.readFileSync("./graimdb.json"));
 
 export const lookup_user = (name: String) => {
   let graim_name: string;
