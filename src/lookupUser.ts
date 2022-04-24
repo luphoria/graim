@@ -1,3 +1,4 @@
+import config from "config";
 const file = require("fs");
 let db = JSON.parse(file.readFileSync("./graimdb.json"));
 
@@ -14,7 +15,7 @@ export const lookup_user = (name: String) => {
       console.log("Graim user FOUND in db");
       graim_name = _user.name;
     }
-    if (_user.discord == name.replace("t2bot.io", "").replace(/[^0-9]/g, "")) {
+    if ((_user.discord == name.substring(10,28)) && (name.split(":")[1] == config.appserviceHS)) {
       console.log("Discord user FOUND in db");
       graim_name = _user.name;
     }

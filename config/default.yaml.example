@@ -2,6 +2,9 @@
 # is where clients would be connecting to in order to send messages.
 homeserverUrl: "https://matrix.org"
 
+# The homeserver used for matrix-appservice-t2bot. Probably t2bot.io.
+appserviceHS: "t2bot.io"
+
 # An access token for the bot to use. Learn how to get an access token
 # at https://t2bot.io/docs/access_tokens
 accessToken: "MATRIX_ACCESS_TOKEN"
