@@ -23,6 +23,16 @@ export async function runKickCommand(
 ) {
   console.log(`=======\n${formatted_body}\n========`);
 
+  if (!lookup_user(event.sender).moderator) {
+    return client.sendMessage(roomId, {
+      body: "You aren't a moderator!",
+      msgtype: "m.notice",
+      format: "org.matrix.custom.html",
+      formatted_body:
+        "You aren't a moderator!",
+    });
+  }
+
   let user = args[1] || "";
   let reason = args.slice(2).join(" ") || "No reason specified";
   if (formatted_body) {
