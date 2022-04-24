@@ -1,6 +1,7 @@
 import * as config from "config";
 
 interface IConfig {
+    prefix: string;
     homeserverUrl: string;
     appserviceHS: string;
     accessToken: string;

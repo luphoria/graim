@@ -1,3 +1,6 @@
+# The prefix for every command
+prefix: ";"
+
 # Where the homeserver's Client-Server API is located. Typically this
 # is where clients would be connecting to in order to send messages.
 homeserverUrl: "https://matrix.org"

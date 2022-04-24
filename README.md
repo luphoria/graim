@@ -15,7 +15,8 @@ Note there is more to-do, this is just the current high priority / next on the l
 - Kick
 - Ban + unban
 - Mute
-- Discord moderators may use `;whosent` to discover what matrix user is behind a Discord message
+- Discord moderators may use `whosent` to discover what matrix user is behind a Discord message
+- Userinfo command
 
 ## How
 graim is built with the intention of being Matrix-first. There are a few reasons for this:

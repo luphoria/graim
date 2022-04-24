@@ -1,4 +1,4 @@
-import config from "config";
+import config from "./config";
 const file = require("fs");
 let db = JSON.parse(file.readFileSync("./graimdb.json"));
 

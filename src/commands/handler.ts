@@ -3,12 +3,13 @@ import { runHelloCommand } from "./hello";
 import { runKickCommand } from "./kick";
 import { runBanCommand } from "./ban";
 import { runUnbanCommand } from "./unban";
-
+import config from "../config"
 import * as htmlEscape from "escape-html";
+import { runUserinfoCommand } from "./userinfo";
 
 // The prefix required to trigger the bot. The bot will also respond
 // to being pinged directly.
-export const COMMAND_PREFIX = ";";
+export const COMMAND_PREFIX = config.prefix;
 
 // This is where all of our commands will be handled
 export default class CommandHandler {
@@ -73,18 +74,16 @@ export default class CommandHandler {
                 case "unban":
                     runUnbanCommand(roomId, event, args, this.client, formatted_body);
                     break;
+                case "userinfo":
+                    runUserinfoCommand(roomId, event, args, this.client);
+                    break;
                 case "help":
-                    const help = "" +
-                    "; hello [user:graim/matrix/discord]     - Say hello to a user.\n" +
-                    "; kick [user:graim/matrix/discord]     -  Kick a user.\n" +
-
-                    "; ban [user:graim/matrix/discord]     -  Ban a user.\n" +
-                    "; unban [user:graim/matrix/discord]     -  Unban a user.\n" +
-                    "; mute [user:graim/matrix/discord]     -  Mute a user.\n" +
-                    "; createuser [user:any] [@matrix:example.org] [discord:ID/@mention]     -  Creates a user in the graim database.\n" +
-                    "; whosent [message:discord url]     -  Reveals the graim user behind the message a user from Matrix sent.\n" +
-                    
-                    "; help             - This menu\n";
+                    const help = 
+                    `${COMMAND_PREFIX}hello - Says hello\n` +
+                    `${COMMAND_PREFIX}kick - Kicks a user\n` +
+                    `${COMMAND_PREFIX}ban - Bans a user\n` +
+                    `${COMMAND_PREFIX}unban - Unbans a user\n` +
+                    `${COMMAND_PREFIX}userinfo - Provides information about the user`;
 
                     const text = `Help menu:\n${help}`;
                     const html = `<b>Help menu:</b><br /><pre><code>${htmlEscape(help)}</code></pre>`;
