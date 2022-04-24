@@ -1,4 +1,12 @@
 {  
-    "mods": {},
-    "users": {}
+    "mods": {
+        "example": "Moderator"
+    },
+    "users": [
+        {
+            "name": "example",
+            "matrix": "example:example.org",
+            "discord": "966488436041203712"
+        }
+    ]
 }
