@@ -1,4 +1,5 @@
 config/*
+graimdb.json
 !config/default.yaml.example
 lib/
 storage/

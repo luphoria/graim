@@ -12,6 +12,7 @@ import {
 } from "matrix-bot-sdk";
 import * as htmlEscape from "escape-html";
 import { lookup_user } from "../lookupUser";
+import { guild } from "./discord_handler";
 
 export async function runKickCommand(
   roomId: string,
@@ -39,7 +40,7 @@ export async function runKickCommand(
   let user_matrix = lookup.user_matrix;
   let graim_name = lookup.graim_name;
 
-  if (!user_matrix) {
+  if (!graim_name) {
     return client.sendMessage(roomId, {
       body: "I couldn't seem to find that user in my database, sorry D:",
       msgtype: "m.notice",
@@ -56,6 +57,9 @@ export async function runKickCommand(
     roomId,
     event.sender + " told me to! :D => " + htmlEscape(reason)
   );
+
+  let user_discord = await guild.members.fetch(lookup.user_discord);
+  if(user_discord.kickable) user_discord.kick(event.sender + ": " + reason);
 
   return client.sendMessage(roomId, {
     body: "Kicked " + graim_name + " for reason '" + reason + "'!",

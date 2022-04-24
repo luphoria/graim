@@ -12,6 +12,7 @@ import {
 } from "matrix-bot-sdk";
 import * as htmlEscape from "escape-html";
 import { lookup_user } from "../lookupUser";
+import { guild } from "./discord_handler";
 
 export async function runUnbanCommand(
   roomId: string,
@@ -52,6 +53,7 @@ export async function runUnbanCommand(
   // Now send that message as a notice
 
   client.unbanUser(user_matrix, roomId);
+  guild.members.unban(lookup.user_discord)
 
   return client.sendMessage(roomId, {
     body: "Unbanned " + graim_name + " for reason '" + reason + "'!",

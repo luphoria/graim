@@ -12,6 +12,7 @@ import {
 } from "matrix-bot-sdk";
 import * as htmlEscape from "escape-html";
 import { lookup_user } from "../lookupUser";
+import { guild } from "./discord_handler";
 
 export async function runBanCommand(
   roomId: string,
@@ -56,6 +57,9 @@ export async function runBanCommand(
     roomId,
     event.sender + " told me to! :D => " + htmlEscape(reason)
   );
+
+  let user_discord = await guild.members.fetch(lookup.user_discord);
+  if(user_discord.bannable) user_discord.ban({reason: event.sender + ": " + reason});
 
   return client.sendMessage(roomId, {
     body: "Banned " + graim_name + " for reason '" + reason + "'!",

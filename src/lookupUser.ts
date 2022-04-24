@@ -3,15 +3,15 @@ let TMP_TEST_DB = {
     {
       name: "test-account",
       matrix: "graimtesting:matrix.org",
-      discord: "325116477185196033",
+      discord: "966488436041203712",
     },
   ],
 };
 
 export const lookup_user = (name: String) => {
-  let graim_name: String;
-  let user_matrix: String;
-  let user_discord: String;
+  let graim_name: string;
+  let user_matrix: string;
+  let user_discord: string;
 
   TMP_TEST_DB.users.forEach((_user) => {
     if (_user.name == name) {
