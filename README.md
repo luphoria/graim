@@ -7,9 +7,9 @@ Don't use it
 ## TODOs
 Note there is more to-do, this is just the current high priority / next on the list.
 
- - Mute
  - Database management commands (add/remove user, add/remove moderator)
  - `whosent` command
+ - sync moderation across rooms
 
 ## Features
 - Kick

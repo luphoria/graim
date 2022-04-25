@@ -31,3 +31,6 @@ discordClient: "DISCORD_CLIENT_ID"
 
 # This is the Discord guild/server that graim will be active in.
 discordGuild: "DISCORD_GUILD_ID"
+
+# This is the role given / taken from "muted" users on Discord.
+discordMutedRole: "DISCORD_ROLE_ID"

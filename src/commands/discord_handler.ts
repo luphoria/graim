@@ -293,6 +293,7 @@ let nightly_songs = [
 ];
 
 export let guild;
+export let mute_role;
 
 const rotate_status = () => {
   discord_client.user.setActivity(nightly_songs[Math.floor(Math.random()*nightly_songs.length)], {type: 'LISTENING'});
@@ -306,6 +307,7 @@ discord_client.on("ready", () => {
   rotate_status();
   console.log(discord_client.guilds.cache.size);
   guild = discord_client.guilds.resolve(config.discordGuild);
+  mute_role = guild.roles.cache.get(config.discordMutedRole);
 });
 
 

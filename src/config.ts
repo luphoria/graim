@@ -11,6 +11,7 @@ interface IConfig {
     discordToken: string;
     discordClient: string;
     discordGuild: string;
+    discordMutedRole: string;
 }
 
 export default <IConfig>config;

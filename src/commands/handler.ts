@@ -6,6 +6,8 @@ import { runUnbanCommand } from "./unban";
 import config from "../config"
 import * as htmlEscape from "escape-html";
 import { runUserinfoCommand } from "./userinfo";
+import { runMuteCommand } from "./mute";
+import { runUnmuteCommand } from "./unmute";
 
 // The prefix required to trigger the bot. The bot will also respond
 // to being pinged directly.
@@ -77,12 +79,20 @@ export default class CommandHandler {
                 case "userinfo":
                     runUserinfoCommand(roomId, event, args, this.client);
                     break;
+                case "mute":
+                    runMuteCommand(roomId, event, args, this.client);
+                    break;
+                case "unmute":
+                    runUnmuteCommand(roomId, event, args, this.client);
+                    break;
                 case "help":
                     const help = 
                     `${COMMAND_PREFIX}hello - Says hello\n` +
                     `${COMMAND_PREFIX}kick - Kicks a user\n` +
                     `${COMMAND_PREFIX}ban - Bans a user\n` +
                     `${COMMAND_PREFIX}unban - Unbans a user\n` +
+                    `${COMMAND_PREFIX}mute - Mutes a user\n` +
+                    `${COMMAND_PREFIX}unmute - Unmutes a user\n` +
                     `${COMMAND_PREFIX}userinfo - Provides information about the user`;
 
                     const text = `Help menu:\n${help}`;
