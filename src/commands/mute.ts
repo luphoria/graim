@@ -4,7 +4,7 @@ import {
     MessageEventContent,
   } from "matrix-bot-sdk";
   import * as htmlEscape from "escape-html";
-  import { lookup_user } from "../lookupUser";
+  import { user_discordId, lookup_user } from "../lookupUser";
   import { guild, mute_role } from "./discord_handler";
   import { COMMAND_PREFIX } from "./handler";
   const ms = require("ms");
@@ -29,7 +29,7 @@ import {
           body: "Usage: " + COMMAND_PREFIX + "mute <user> [time]",
           msgtype: "m.notice",
           format: "org.matrix.custom.html",
-          formatted_body: "I don't think that user is in the graim database!",
+          formatted_body: "Usage: " + COMMAND_PREFIX + "mute <user> [time]",
         });
     }
   
@@ -40,6 +40,37 @@ import {
       user_discord: string;
       moderator: boolean;
     };
+      
+    user = lookup_user(args[1];
+  let user_matrix = lookup.user_matrix;
+  let graim_name = lookup.graim_name;
+
+  if (!graim_name) {
+   if(!graimUser) {
+        let user_discord = await guild.members.fetch(user_discordId(user));
+        user_discord.roles.add(mute_role);
+        client.setUserPowerLevel(user.user_matrix,roomId,-1);
+        setTimeout(() => {
+            client.setUserPowerLevel(user.user_matrix,roomId,0);
+            user_discord.roles.remove(mute_role);
+        }, msToUnmute)
+      return client.sendMessage(roomId, {
+	      body: "muted! (todo make this std)",
+	      msgtype: "m.notice",
+	      format: "org.matrix.custom.html",
+	      formattedBody: "muted! (todo make this std)"
+      });
+    }
+    return client.sendMessage(roomId, {
+      body: "I couldn't seem to find that user in my database, sorry D:",
+      msgtype: "m.notice",
+      format: "org.matrix.custom.html",
+      formatted_body:
+        "I couldn't seem to find that user in my database, sorry D:",
+    });
+  }
+
+
   
     try {
       user = lookup_user(args[1]);
