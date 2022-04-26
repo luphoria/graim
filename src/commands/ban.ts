@@ -31,6 +31,7 @@ export async function runBanCommand(
   let reason = args.slice(2).join(" ") || "No reason specified";
   if (formatted_body) {
     if (formatted_body.includes("<a href=")) {
+      graimUser = false;
       user =
         formatted_body.substring(
           formatted_body.indexOf('<a href="https://matrix.to/#/') + 29, // 29 = char length of `<a href="https://matrix.to/#/`
@@ -46,14 +47,13 @@ export async function runBanCommand(
 
   if (!graim_name) {
    if(!graimUser) {
-      // TODO test if user is a Discord user
       if (user_discordId(user)) {
 	       let user_discord = await guild.members.fetch(user_discordId(user));
-	       if(user_discord.kickable) user_discord.kick(event.sender + ": " + reason);
+	       if(user_discord.bannable) 	user_discord.ban({reason: event.sender + ": " + reason});
       }
-      client.kickUser(
+      client.ban(
 	       user,
-       	roomId,
+       	       roomId,
 	       event.sender + " told me to! :D => " + htmlEscape(reason)
       );
       return client.sendMessage(roomId, {
