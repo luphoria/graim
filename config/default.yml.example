@@ -1,0 +1,38 @@
+# The prefix for every command
+prefix: ";"
+
+# Where the homeserver's Client-Server API is located. Typically this
+# is where clients would be connecting to in order to send messages.
+homeserverUrl: "https://matrix.org"
+
+# The homeserver used for matrix-appservice-t2bot. Probably t2bot.io.
+appserviceHS: "t2bot.io"
+
+# An access token for the bot to use. Learn how to get an access token
+# at https://t2bot.io/docs/access_tokens
+accessToken: "MATRIX_ACCESS_TOKEN"
+
+# Whether or not to autojoin rooms when invited.
+# Set this to true when you are initially setting up your bot, but
+# aside from that, you probably want it set to false.
+autoJoin: false
+
+# Location on disk for where to store various bot information.
+dataPath: "storage"
+
+# Set to false to disable encryption support. Encrypted data will be
+# stored under dataPath.
+encryption: false
+
+# This is the access token for your Discord bot.
+discordToken: "DISCORD_ACCESS_TOKEN"
+
+# This is the client ID for your Discord bot. You can get this from
+# the developer panel, or right-click the bot and get "Copy ID".
+discordClient: "DISCORD_CLIENT_ID"
+
+# This is the Discord guild/server that graim will be active in.
+discordGuild: "DISCORD_GUILD_ID"
+
+# This is the role given / taken from "muted" users on Discord.
+discordMutedRole: "DISCORD_ROLE_ID"
