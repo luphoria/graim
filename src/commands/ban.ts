@@ -1,17 +1,10 @@
-/*
-
- === TODO : DISCORD ===
- === TODO :   AUTH  ===
-
-*/
-
 import {
   MatrixClient,
   MessageEvent,
   MessageEventContent,
 } from "matrix-bot-sdk";
 import * as htmlEscape from "escape-html";
-import { lookup_user } from "../lookupUser";
+import { user_discordId, lookup_user } from "../lookupUser";
 import { guild } from "./discord_handler";
 
 export async function runBanCommand(
@@ -32,7 +25,8 @@ export async function runBanCommand(
         "You aren't a moderator!",
     });
   }
-
+ 
+  let graimUser = true;
   let user = args[1] || "";
   let reason = args.slice(2).join(" ") || "No reason specified";
   if (formatted_body) {
@@ -50,7 +44,25 @@ export async function runBanCommand(
   let user_matrix = lookup.user_matrix;
   let graim_name = lookup.graim_name;
 
-  if (!user_matrix) {
+  if (!graim_name) {
+   if(!graimUser) {
+      // TODO test if user is a Discord user
+      if (user_discordId(user)) {
+	       let user_discord = await guild.members.fetch(user_discordId(user));
+	       if(user_discord.kickable) user_discord.kick(event.sender + ": " + reason);
+      }
+      client.kickUser(
+	       user,
+       	roomId,
+	       event.sender + " told me to! :D => " + htmlEscape(reason)
+      );
+      return client.sendMessage(roomId, {
+	      body: "banned! (todo make this std)",
+	      msgtype: "m.notice",
+	      format: "org.matrix.custom.html",
+	      formattedBody: "banned! (todo make this std)"
+      });
+    }
     return client.sendMessage(roomId, {
       body: "I couldn't seem to find that user in my database, sorry D:",
       msgtype: "m.notice",
