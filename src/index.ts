@@ -27,25 +27,11 @@ LogService.info("index", "Bot starting...");
 
 // This is the startup closure where we give ourselves an async context
 (async function () {
-  // Prepare the storage system for the bot
-  const storage = new SimpleFsStorageProvider(
-    path.join(config.dataPath, "bot.json")
-  );
-
-  // Prepare a crypto store if we need that
-  let cryptoStore: ICryptoStorageProvider;
-  if (config.encryption) {
-    cryptoStore = new RustSdkCryptoStorageProvider(
-      path.join(config.dataPath, "encrypted")
-    );
-  }
 
   // Now create the client
   const client = new MatrixClient(
     config.homeserverUrl,
     config.accessToken,
-    storage,
-    cryptoStore
   );
 
   // Setup the autojoin mixin (if enabled)

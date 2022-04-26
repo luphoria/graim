@@ -17,13 +17,6 @@ accessToken: "MATRIX_ACCESS_TOKEN"
 # aside from that, you probably want it set to false.
 autoJoin: false
 
-# Location on disk for where to store various bot information.
-dataPath: "storage"
-
-# Set to false to disable encryption support. Encrypted data will be
-# stored under dataPath.
-encryption: false
-
 # This is the access token for your Discord bot.
 discordToken: "DISCORD_ACCESS_TOKEN"
 
