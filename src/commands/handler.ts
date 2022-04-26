@@ -11,7 +11,7 @@ import { runUnmuteCommand } from "./unmute";
 
 // The prefix required to trigger the bot. The bot will also respond
 // to being pinged directly.
-export const COMMAND_PREFIX = config.prefix;
+export const COMMAND_PREFIX = ";" // config.prefix;
 
 // This is where all of our commands will be handled
 export default class CommandHandler {

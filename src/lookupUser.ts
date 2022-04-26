@@ -2,6 +2,11 @@ import config from "./config";
 const file = require("fs");
 let db = JSON.parse(file.readFileSync("./graimdb.json"));
 
+export const user_discordId = (user: string) => {
+  if(parseInt(user.substring(10,28)) && (user.split(":")[1] == config.appserviceHS)) return user.substring(10,28);
+  return null;
+}
+
 export const lookup_user = (name: String) => {
   let graim_name: string;
   let user_matrix: string;

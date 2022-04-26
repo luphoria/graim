@@ -1,7 +1,6 @@
 /*
 
- === TODO : DISCORD ===
- === TODO :   AUTH  ===
+ === TODO : don't just quit when there is no graim user ===
 
 */
 
@@ -11,7 +10,7 @@ import {
   MessageEventContent,
 } from "matrix-bot-sdk";
 import * as htmlEscape from "escape-html";
-import { lookup_user } from "../lookupUser";
+import { user_discordId, lookup_user } from "../lookupUser";
 import { guild } from "./discord_handler";
 
 export async function runKickCommand(
@@ -33,10 +32,12 @@ export async function runKickCommand(
     });
   }
 
+  let graimUser = true;
   let user = args[1] || "";
   let reason = args.slice(2).join(" ") || "No reason specified";
   if (formatted_body) {
     if (formatted_body.includes("<a href=")) {
+      graimUser = false;
       user =
         formatted_body.substring(
           formatted_body.indexOf('<a href="https://matrix.to/#/') + 29, // 29 = char length of `<a href="https://matrix.to/#/`
@@ -50,7 +51,25 @@ export async function runKickCommand(
   let user_matrix = lookup.user_matrix;
   let graim_name = lookup.graim_name;
 
-  if (!graim_name) {
+  if (!graim_name) { // there is no registered graim user
+    if(!graimUser) {
+      // TODO test if user is a Discord user
+      if (user_discordId(user)) {
+	 let user_discord = await guild.members.fetch(user_discordId(user));
+	 if(user_discord.kickable) user_discord.kick(event.sender + ": " + reason);
+      }
+      client.kickUser(
+	user,
+	roomId,
+	event.sender + " told me to! :D => " + htmlEscape(reason)
+      );
+      return client.sendMessage(roomId, {
+	      body: "kicked! (todo make this std)",
+	      msgtype: "m.notice",
+	      format: "org.matrix.custom.html",
+	      formattedBody: "kicked! (todo make this std)"
+      });
+    }
     return client.sendMessage(roomId, {
       body: "I couldn't seem to find that user in my database, sorry D:",
       msgtype: "m.notice",
