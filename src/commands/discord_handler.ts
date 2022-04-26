@@ -25,7 +25,7 @@ let nightly_songs = [
   "King Shelter - Everything Hurts",
   "King Shelter - Everything Hurts",
   "King Shelter - Everything Hurts",
-  "Carver Commodore - Tell Me What You Want (I Want It) (Will \"FRANKLIN\" Chapman Remix)",
+  'Carver Commodore - Tell Me What You Want (I Want It) (Will "FRANKLIN" Chapman Remix)',
   "Conan Gray - Heather",
   "Felix Rabito - Bread",
   "Aesop Rock - None Shall Pass",
@@ -289,26 +289,26 @@ let nightly_songs = [
   "King Shelter - Searching for Alchemy",
   "Ryan Leahan - Steal My Bike",
   "Watsky - Strong As An Oak",
-  "People Under the Stairs - Let The Record Show"
+  "People Under the Stairs - Let The Record Show",
 ];
 
 export let guild;
 export let mute_role;
 
 const rotate_status = () => {
-  discord_client.user.setActivity(nightly_songs[Math.floor(Math.random()*nightly_songs.length)], {type: 'LISTENING'});
-  setTimeout(rotate_status,120000)
-}
+  discord_client.user.setActivity(
+    nightly_songs[Math.floor(Math.random() * nightly_songs.length)],
+    { type: "LISTENING" }
+  );
+  setTimeout(rotate_status, 120000);
+};
 
 discord_client.on("ready", () => {
-  console.info(
-    "Discord bot started! Logged in: " + discord_client.user.tag
-  );
+  console.info("Discord bot started! Logged in: " + discord_client.user.tag);
   rotate_status();
   console.log(discord_client.guilds.cache.size);
   guild = discord_client.guilds.resolve(config.discordGuild);
   mute_role = guild.roles.cache.get(config.discordMutedRole);
 });
-
 
 discord_client.login(config.discordToken);

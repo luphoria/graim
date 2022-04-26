@@ -23,13 +23,13 @@ export async function runUnmuteCommand(
     });
   }
 
-  if(!args[1]) {
+  if (!args[1]) {
     return client.sendMessage(roomId, {
-        body: "Usage: " + COMMAND_PREFIX + "unmute <user> [time]",
-        msgtype: "m.notice",
-        format: "org.matrix.custom.html",
-        formatted_body: "I don't think that user is in the graim database!",
-      });
+      body: "Usage: " + COMMAND_PREFIX + "unmute <user> [time]",
+      msgtype: "m.notice",
+      format: "org.matrix.custom.html",
+      formatted_body: "I don't think that user is in the graim database!",
+    });
   }
 
   // The first argument is always going to be us, so get the second argument instead.
@@ -52,7 +52,7 @@ export async function runUnmuteCommand(
   }
 
   let user_discord = await guild.members.fetch(user.user_discord);
-  client.setUserPowerLevel(user.user_matrix,roomId,0);
+  client.setUserPowerLevel(user.user_matrix, roomId, 0);
   user_discord.roles.remove(mute_role);
 
   return client.sendMessage(roomId, {

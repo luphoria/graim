@@ -21,17 +21,16 @@ export async function runBanCommand(
       body: "You aren't a moderator!",
       msgtype: "m.notice",
       format: "org.matrix.custom.html",
-      formatted_body:
-        "You aren't a moderator!",
+      formatted_body: "You aren't a moderator!",
     });
   }
- 
-  let graimUser = true;
+
+  let MentionPill = false;
   let user = args[1] || "";
   let reason = args.slice(2).join(" ") || "No reason specified";
   if (formatted_body) {
     if (formatted_body.includes("<a href=")) {
-      graimUser = false;
+      MentionPill = true;
       user =
         formatted_body.substring(
           formatted_body.indexOf('<a href="https://matrix.to/#/') + 29, // 29 = char length of `<a href="https://matrix.to/#/`
@@ -46,29 +45,28 @@ export async function runBanCommand(
   let graim_name = lookup.graim_name;
 
   if (!graim_name) {
-   if(!graimUser) {
+    if (MentionPill) {
       if (user_discordId(user)) {
-	       let user_discord = await guild.members.fetch(user_discordId(user));
-	       if(user_discord.bannable) 	user_discord.ban({reason: event.sender + ": " + reason});
+        let user_discord = await guild.members.fetch(user_discordId(user));
+        if (user_discord.bannable)
+          user_discord.ban({ reason: event.sender + ": " + reason });
       }
-      client.ban(
-	       user,
-       	       roomId,
-	       event.sender + " told me to! :D => " + htmlEscape(reason)
-      );
-      return client.sendMessage(roomId, {
-	      body: "banned! (todo make this std)",
-	      msgtype: "m.notice",
-	      format: "org.matrix.custom.html",
-	      formattedBody: "banned! (todo make this std)"
-      });
     }
+    client.banUser(
+      user,
+      roomId,
+      event.sender + " told me to! :D => " + htmlEscape(reason)
+    );
     return client.sendMessage(roomId, {
-      body: "I couldn't seem to find that user in my database, sorry D:",
+      body: "Banned " + user + " for reason '" + reason + "'!",
       msgtype: "m.notice",
       format: "org.matrix.custom.html",
       formatted_body:
-        "I couldn't seem to find that user in my database, sorry D:",
+        "Banned " +
+        htmlEscape(user) +
+        " for reason '<code>" +
+        htmlEscape(reason) +
+        "</code>'!",
     });
   }
 
@@ -81,7 +79,8 @@ export async function runBanCommand(
   );
 
   let user_discord = await guild.members.fetch(lookup.user_discord);
-  if(user_discord.bannable) user_discord.ban({reason: event.sender + ": " + reason});
+  if (user_discord.bannable)
+    user_discord.ban({ reason: event.sender + ": " + reason });
 
   return client.sendMessage(roomId, {
     body: "Banned " + graim_name + " for reason '" + reason + "'!",

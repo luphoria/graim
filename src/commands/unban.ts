@@ -53,7 +53,7 @@ export async function runUnbanCommand(
   // Now send that message as a notice
 
   client.unbanUser(user_matrix, roomId);
-  guild.members.unban(lookup.user_discord)
+  guild.members.unban(lookup.user_discord);
 
   return client.sendMessage(roomId, {
     body: "Unbanned " + graim_name + " for reason '" + reason + "'!",

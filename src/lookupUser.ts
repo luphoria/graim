@@ -3,9 +3,13 @@ const file = require("fs");
 let db = JSON.parse(file.readFileSync("./graimdb.json"));
 
 export const user_discordId = (user: string) => {
-  if(parseInt(user.substring(10,28)) && (user.split(":")[1] == config.appserviceHS)) return user.substring(10,28);
+  if (
+    parseInt(user.substring(10, 28)) &&
+    user.split(":")[1] == config.appserviceHS
+  )
+    return user.substring(10, 28);
   return null;
-}
+};
 
 export const lookup_user = (name: String) => {
   let graim_name: string;
@@ -20,7 +24,10 @@ export const lookup_user = (name: String) => {
       console.log("Graim user FOUND in db");
       graim_name = _user.name;
     }
-    if ((_user.discord == name.substring(10,28)) && (name.split(":")[1] == config.appserviceHS)) {
+    if (
+      _user.discord == name.substring(10, 28) &&
+      name.split(":")[1] == config.appserviceHS
+    ) {
       console.log("Discord user FOUND in db");
       graim_name = _user.name;
     }
@@ -37,7 +44,7 @@ export const lookup_user = (name: String) => {
     }
   });
 
-  moderator = db.mods[graim_name] ? true : false
+  moderator = db.mods[graim_name] ? true : false;
 
   return {
     graim_name: graim_name,

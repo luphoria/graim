@@ -27,17 +27,16 @@ export async function runKickCommand(
       body: "You aren't a moderator!",
       msgtype: "m.notice",
       format: "org.matrix.custom.html",
-      formatted_body:
-        "You aren't a moderator!",
+      formatted_body: "You aren't a moderator!",
     });
   }
 
-  let graimUser = true;
+  let MentionPill = false;
   let user = args[1] || "";
   let reason = args.slice(2).join(" ") || "No reason specified";
   if (formatted_body) {
     if (formatted_body.includes("<a href=")) {
-      graimUser = false;
+      MentionPill = true;
       user =
         formatted_body.substring(
           formatted_body.indexOf('<a href="https://matrix.to/#/') + 29, // 29 = char length of `<a href="https://matrix.to/#/`
@@ -51,35 +50,32 @@ export async function runKickCommand(
   let user_matrix = lookup.user_matrix;
   let graim_name = lookup.graim_name;
 
-  if (!graim_name) { // there is no registered graim user
-    if(!graimUser) {
-      // TODO test if user is a Discord user
+  if (!graim_name) {
+    // there is no registered graim user
+    if (MentionPill) {
       if (user_discordId(user)) {
-	 let user_discord = await guild.members.fetch(user_discordId(user));
-	 if(user_discord.kickable) user_discord.kick(event.sender + ": " + reason);
+        let user_discord = await guild.members.fetch(user_discordId(user));
+        if (user_discord.kickable)
+          user_discord.kick(event.sender + ": " + reason);
       }
-      client.kickUser(
-	user,
-	roomId,
-	event.sender + " told me to! :D => " + htmlEscape(reason)
-      );
-      return client.sendMessage(roomId, {
-	      body: "kicked! (todo make this std)",
-	      msgtype: "m.notice",
-	      format: "org.matrix.custom.html",
-	      formattedBody: "kicked! (todo make this std)"
-      });
     }
+    client.kickUser(
+      user,
+      roomId,
+      event.sender + " told me to! :D => " + htmlEscape(reason)
+    );
     return client.sendMessage(roomId, {
-      body: "I couldn't seem to find that user in my database, sorry D:",
+      body: "Kicked " + user + " for reason '" + reason + "'!",
       msgtype: "m.notice",
       format: "org.matrix.custom.html",
       formatted_body:
-        "I couldn't seem to find that user in my database, sorry D:",
+        "Kicked " +
+        user +
+        " for reason '<code>" +
+        htmlEscape(reason) +
+        "</code>'!",
     });
   }
-
-  // Now send that message as a notice
 
   client.kickUser(
     user_matrix,
@@ -88,7 +84,7 @@ export async function runKickCommand(
   );
 
   let user_discord = await guild.members.fetch(lookup.user_discord);
-  if(user_discord.kickable) user_discord.kick(event.sender + ": " + reason);
+  if (user_discord.kickable) user_discord.kick(event.sender + ": " + reason);
 
   return client.sendMessage(roomId, {
     body: "Kicked " + graim_name + " for reason '" + reason + "'!",
