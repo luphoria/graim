@@ -15,6 +15,7 @@ import { runUserinfoCommand } from "./userinfo";
 import { runMuteCommand } from "./mute";
 import { runUnmuteCommand } from "./unmute";
 import { runAddUserCommand } from "./adduser";
+import { runDeleteUserCommand } from "./deleteuser";
 
 // The prefix required to trigger the bot. The bot will also respond
 // to being pinged directly.
@@ -101,6 +102,9 @@ export default class CommandHandler {
           break;
         case "adduser":
           runAddUserCommand(roomId, event, args, this.client, formatted_body);
+          break;
+        case "deleteuser":
+          runDeleteUserCommand(roomId, event, args, this.client, formatted_body);
           break;
         case "help":
           const help =
