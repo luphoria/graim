@@ -14,6 +14,7 @@ Note there is more to-do, this is just the current high priority / next on the l
  - Database management commands (add/remove user, add/remove moderator)
  - `whosent` command
  - sync moderation across rooms
+ - LOTS OF BUG FIXING!
 
 ## Features
 - Kick
