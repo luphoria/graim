@@ -82,7 +82,7 @@ Now, you have to actually add graim to the communities it is moderating.
 
 ### Adding the Discord bot
   - Copy your Discord bot's "application ID" or "client ID" (same variable as `discordClient`).
-  - Paste that ID in the following link: `https://discordapp.com/api/oauth2/authorize?client_id=&lt;YOUR CLIENT ID HERE&gt;&scope=bot&permissions=8`
+  - Paste that ID in the following link: `https://discordapp.com/api/oauth2/authorize?client_id=`&lt;YOUR CLIENT ID HERE&gt;`&scope=bot&permissions=8`
   - Complete the steps as Discord autofills them.
 
 ### Adding the Matrix bot
