@@ -108,13 +108,15 @@ export default class CommandHandler {
           break;
         case "help":
           const help =
-            `${COMMAND_PREFIX}hello - Says hello\n` +
-            `${COMMAND_PREFIX}kick - Kicks a user\n` +
-            `${COMMAND_PREFIX}ban - Bans a user\n` +
-            `${COMMAND_PREFIX}unban - Unbans a user\n` +
-            `${COMMAND_PREFIX}mute - Mutes a user\n` +
-            `${COMMAND_PREFIX}unmute - Unmutes a user\n` +
-            `${COMMAND_PREFIX}userinfo - Provides information about the user`;
+            `${COMMAND_PREFIX}hello [any] - Says hello\n` +
+            `${COMMAND_PREFIX}kick <user> [reason] - Kicks a user\n` +
+            `${COMMAND_PREFIX}ban <user> [reason] - Bans a user\n` +
+            `${COMMAND_PREFIX}unban <user> - Unbans a user\n` +
+            `${COMMAND_PREFIX}mute <user> [time:s,m,h,d] [reason] - Mutes a user\n` +
+            `${COMMAND_PREFIX}unmute <user> - Unmutes a user\n` +
+            `${COMMAND_PREFIX}adduser <graim_name> <matrix_mention> <discord_mention> [moderator] - Adds user to graim database (for syncing moderation)\n` +
+            `${COMMAND_PREFIX}deleteuser <user> - Removes a user from graim database\n` +
+            `${COMMAND_PREFIX}userinfo [user] - Provides information about the user`;
 
           const text = `Help menu:\n${help}`;
           const html = `<b>Help menu:</b><br /><pre><code>${htmlEscape(
