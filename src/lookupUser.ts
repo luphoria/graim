@@ -1,6 +1,10 @@
 import config from "./config";
 const file = require("fs");
-let db = JSON.parse(file.readFileSync("./graimdb.json"));
+export let db = JSON.parse(file.readFileSync("./graimdb.json"));
+
+export const saveDB = (json) => {
+  file.writeFileSync("./graimdb.json",JSON.stringify(json))
+}
 
 export const user_discordId = (user: string) => {
   if (
