@@ -36,3 +36,19 @@ graim is built with the intention of being Matrix-first. There are a few reasons
 
 Every Discord user, via matrix-appservice-discord, is given its own user (i.e. `@_discord_<discord_id>:matrix.org`. So, graim listens for commands only from Matrix users - because Discord users are Matrix users by proxy.
 Simply tie a server to a group of rooms, then tie each Matrix user to a Discord account packaged in one "graim user" :D
+
+## Credits
+The bot itself - [luphoria](https://luphoria.com)
+
+Built with **major help** from [turt2live/matrix-bot-sdk-bot-template](https://github.com/turt2live/matrix-bot-sdk-bot-template) by Travis Ralston
+
+Uses the dependencies:
+ - [matrix-bot-sdk](https://github.com/turt2live/matrix-bot-sdk)
+ - [discord.js](https://discord.js.org/)
+ - [escape-html](https://github.com/component/escape-html)
+ - [config](https://github.com/lorenwest/node-config)
+ - [js-yaml](https://github.com/nodeca/js-yaml)
+
+Special thanks:
+ - **[matrix-appservice-discord](https://github.com/Half-Shot/matrix-appservice-discord)** for the Discord <-> Matrix bridge itself
+ - **[Travis Ralston](https://github.com/turt2live)** for the tons of free resources which I used a LOT of
