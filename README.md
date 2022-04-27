@@ -50,5 +50,5 @@ Uses the dependencies:
  - [js-yaml](https://github.com/nodeca/js-yaml)
 
 Special thanks:
- - **[matrix-appservice-discord](https://github.com/Half-Shot/matrix-appservice-discord)** for the Discord <-> Matrix bridge itself
+ - **HalfShot** for **[matrix-appservice-discord](https://github.com/Half-Shot/matrix-appservice-discord)** for the Discord <-> Matrix bridge itself
  - **[Travis Ralston](https://github.com/turt2live)** for the tons of free resources which I used a LOT of
