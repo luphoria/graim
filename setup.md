@@ -30,6 +30,7 @@ Follow the tutorial [here](https://t2bot.io/discord/). You may also run your own
 - Un-check "public bot".
 
 ![image](https://user-images.githubusercontent.com/60309933/165204734-966e8fb2-db6e-486a-b01d-aedbbd74ef65.png)
+- Make sure you have checked "Server Members Intent"!
 
 ### Create the Matrix bot user
 This tutorial is created with [Element](https://app.element.io) in mind.

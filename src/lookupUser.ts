@@ -4,10 +4,13 @@ let db = JSON.parse(file.readFileSync("./graimdb.json"));
 
 export const user_discordId = (user: string) => {
   if (
-    parseInt(user.substring(10, 28)) &&
+    !isNaN(+user.substring(10, 28)) &&
     user.split(":")[1] == config.appserviceHS
-  )
+  ) {
+    console.log(user.substring(10, 28));
     return user.substring(10, 28);
+  }
+  console.log(user.substring(10, 28));
   return null;
 };
 

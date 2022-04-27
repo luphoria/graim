@@ -93,10 +93,10 @@ export default class CommandHandler {
           runUserinfoCommand(roomId, event, args, this.client);
           break;
         case "mute":
-          runMuteCommand(roomId, event, args, this.client);
+          runMuteCommand(roomId, event, args, this.client, formatted_body);
           break;
         case "unmute":
-          runUnmuteCommand(roomId, event, args, this.client);
+          runUnmuteCommand(roomId, event, args, this.client, formatted_body);
           break;
         case "help":
           const help =

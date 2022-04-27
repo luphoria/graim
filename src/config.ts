@@ -6,8 +6,6 @@ interface IConfig {
   appserviceHS: string;
   accessToken: string;
   autoJoin: boolean;
-//   dataPath: string;
-//   encryption: boolean;
   discordToken: string;
   discordClient: string;
   discordGuild: string;

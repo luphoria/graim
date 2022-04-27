@@ -1,17 +1,13 @@
-/*
-
- === TODO : DISCORD ===
- === TODO :   AUTH  ===
-
-*/
+// TODO: log [reason]
 
 import {
   MatrixClient,
   MessageEvent,
+  MentionPill,
   MessageEventContent,
 } from "matrix-bot-sdk";
 import * as htmlEscape from "escape-html";
-import { lookup_user } from "../lookupUser";
+import { lookup_user, user_discordId } from "../lookupUser";
 import { guild } from "./discord_handler";
 
 export async function runUnbanCommand(
@@ -23,10 +19,12 @@ export async function runUnbanCommand(
 ) {
   console.log(`=======\n${formatted_body}\n========`);
 
-  let user = args[1] || "";
+  let mentioned = false;
+  let user = args[1] || null;
   let reason = args.slice(2).join(" ") || "No reason specified";
   if (formatted_body) {
     if (formatted_body.includes("<a href=")) {
+      mentioned = true;
       user =
         formatted_body.substring(
           formatted_body.indexOf('<a href="https://matrix.to/#/') + 29, // 29 = char length of `<a href="https://matrix.to/#/`
@@ -41,12 +39,27 @@ export async function runUnbanCommand(
   let graim_name = lookup.graim_name;
 
   if (!user_matrix) {
+    if (mentioned) {
+      if (user_discordId(user)) {
+        let user_discord = await guild.members.fetch(user_discordId(user));
+        if (user_discord.Banned)
+          user_discord.unban({ reason: event.sender + ": " + reason });
+      }
+    }
+    client.unbanUser(user, roomId);
+
+    let mention = await MentionPill.forUser(user);
+
     return client.sendMessage(roomId, {
-      body: "I couldn't seem to find that user in my database, sorry D:",
+      body: "Unbanned " + mention.text + " for reason '" + reason + "'!",
       msgtype: "m.notice",
       format: "org.matrix.custom.html",
       formatted_body:
-        "I couldn't seem to find that user in my database, sorry D:",
+        "Unbanned " +
+        mention.html +
+        " for reason '<code>" +
+        htmlEscape(reason) +
+        "</code>'!",
     });
   }
 

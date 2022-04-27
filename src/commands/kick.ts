@@ -7,6 +7,7 @@
 import {
   MatrixClient,
   MessageEvent,
+  MentionPill,
   MessageEventContent,
 } from "matrix-bot-sdk";
 import * as htmlEscape from "escape-html";
@@ -31,12 +32,12 @@ export async function runKickCommand(
     });
   }
 
-  let MentionPill = false;
+  let mentioned = false;
   let user = args[1] || "";
   let reason = args.slice(2).join(" ") || "No reason specified";
   if (formatted_body) {
     if (formatted_body.includes("<a href=")) {
-      MentionPill = true;
+      mentioned = true;
       user =
         formatted_body.substring(
           formatted_body.indexOf('<a href="https://matrix.to/#/') + 29, // 29 = char length of `<a href="https://matrix.to/#/`
@@ -52,7 +53,7 @@ export async function runKickCommand(
 
   if (!graim_name) {
     // there is no registered graim user
-    if (MentionPill) {
+    if (mentioned) {
       if (user_discordId(user)) {
         let user_discord = await guild.members.fetch(user_discordId(user));
         if (user_discord.kickable)
@@ -64,13 +65,16 @@ export async function runKickCommand(
       roomId,
       event.sender + " told me to! :D => " + htmlEscape(reason)
     );
+
+    let mention = await MentionPill.forUser(user);
+
     return client.sendMessage(roomId, {
-      body: "Kicked " + user + " for reason '" + reason + "'!",
+      body: "Kicked " + mention.text + " for reason '" + reason + "'!",
       msgtype: "m.notice",
       format: "org.matrix.custom.html",
       formatted_body:
         "Kicked " +
-        user +
+        mention.html +
         " for reason '<code>" +
         htmlEscape(reason) +
         "</code>'!",
