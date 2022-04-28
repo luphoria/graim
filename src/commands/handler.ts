@@ -107,7 +107,7 @@ export default class CommandHandler {
           runDeleteUserCommand(roomId, event, args, this.client, formatted_body);
           break;
         case "whosent":
-          runWhoSentCommand(roomId,event,args,this.client,formatted_body);
+          runWhoSentCommand(roomId,args,this.client);
           break;
         case "help":
           const help =
@@ -118,6 +118,7 @@ export default class CommandHandler {
             `${COMMAND_PREFIX}unmute <user> - Unmutes a user\n` +
             `${COMMAND_PREFIX}adduser <graim_name> <matrix_mention> <discord_mention> [moderator] - Adds user to graim database (for syncing moderation)\n` +
             `${COMMAND_PREFIX}deleteuser <user> - Removes a user from graim database\n` +
+            `${COMMAND_PREFIX}whosent <link to Discord message> - tells you what Matrix user sent a message\n` +
             `${COMMAND_PREFIX}userinfo [user] - Provides information about the user`;
 
           const text = `Help menu:\n${help}`;
