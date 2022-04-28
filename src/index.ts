@@ -1,15 +1,10 @@
 import {
   AutojoinRoomsMixin,
-  ICryptoStorageProvider,
   LogLevel,
   LogService,
   MatrixClient,
-  PantalaimonClient,
   RichConsoleLogger,
-  RustSdkCryptoStorageProvider,
-  SimpleFsStorageProvider,
 } from "matrix-bot-sdk";
-import * as path from "path";
 import config from "./config";
 import CommandHandler from "./commands/handler";
 

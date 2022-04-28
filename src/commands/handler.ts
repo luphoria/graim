@@ -79,7 +79,7 @@ export default class CommandHandler {
       event.content?.["format"] === "org.matrix.custom.html"
         ? event.content?.["formatted_body"]
         : null;
-    // Try and figure out what command the user ran, defaulting to help
+    // Try and figure out what command the user ran
     try {
       switch (args[0]) {
         case "kick":
@@ -122,9 +122,7 @@ export default class CommandHandler {
             `${COMMAND_PREFIX}userinfo [user] - Provides information about the user`;
 
           const text = `Help menu:\n${help}`;
-          const html = `<b>Help menu:</b><br /><pre><code>${htmlEscape(
-            help
-          )}</code></pre>`;
+          const html = `<b>Help menu:</b><br /><pre><code>${htmlEscape(help)}</code></pre>`;
           const reply = RichReply.createFor(roomId, ev, text, html); // Note that we're using the raw event, not the parsed one!
           reply["msgtype"] = "m.notice"; // Bots should always use notices
           return this.client.sendMessage(roomId, reply);

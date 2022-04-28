@@ -1,9 +1,4 @@
-/*
-
- === TODO : don't just quit when there is no graim user ===
-
-*/
-
+// -=- SYNTAX : ;kick <user> [reason]
 import {
   MatrixClient,
   MessageEvent,
@@ -33,11 +28,11 @@ export async function runKickCommand(
     });
   }
 
-  let mentioned = false;
+  let mentioned = false; // did the user provide a MentionPill or a plain-text@messa.ge?
   let user = args[1] || "";
   let reason = args.slice(2).join(" ") || "No reason specified";
-  if (formatted_body) {
-    if (formatted_body.includes("<a href=")) {
+  if (formatted_body) { // sanity check - MentionPill cannot exist without a formatted body
+    if (formatted_body.includes("<a href=\"https://matrix.to/#/")) { 
       mentioned = true;
       user =
         formatted_body.substring(
@@ -52,11 +47,10 @@ export async function runKickCommand(
   let user_matrix = lookup.user_matrix;
   let graim_name = lookup.graim_name;
 
-  if (!graim_name) {
-    // there is no registered graim user
+  if (!graim_name) { // there is no registered graim user
     if (mentioned) {
-      if (user_discordId(user)) {
-        let user_discord = await guild.members.fetch(user_discordId(user));
+      if (user_discordId(user)) { // if mention was a valid Discord user ID
+        let user_discord = await guild.members.fetch(user_discordId(user)); // fetch discord user
         if (user_discord.kickable)
           user_discord.kick(event.sender + ": " + reason);
       }
@@ -69,7 +63,7 @@ export async function runKickCommand(
       );
     });
 
-    let mention = await MentionPill.forUser(user);
+    let mention = await MentionPill.forUser(user); // create mention pill for aesthetics
 
     return client.sendMessage(roomId, {
       body: "Kicked " + mention.text + " for reason '" + reason + "'!",
@@ -92,7 +86,7 @@ export async function runKickCommand(
     );
   });
 
-  let user_discord = await guild.members.fetch(lookup.user_discord);
+  let user_discord = await guild.members.fetch(lookup.user_discord); // fetch discord user
   if (user_discord.kickable) user_discord.kick(event.sender + ": " + reason);
 
   return client.sendMessage(roomId, {

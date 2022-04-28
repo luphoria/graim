@@ -1,5 +1,5 @@
 // TODO: add [reason]
-
+// -=- SYNTAX : ;unmute <user>
 import {
   MatrixClient,
   MentionPill,
@@ -27,7 +27,7 @@ export async function runUnmuteCommand(
     });
   }
 
-  if (!args[1]) {
+  if (!args[1]) { // user didn't provide the required number of args
     return client.sendMessage(roomId, {
       body: "Usage: " + COMMAND_PREFIX + "unmute <user>",
       msgtype: "m.notice",
@@ -39,7 +39,7 @@ export async function runUnmuteCommand(
   let user = "@" + args[1] || "";
 
   if (formatted_body) {
-    if (formatted_body.includes("<a href=")) {
+    if (formatted_body.includes("<a href=\"https://matrix.to/#/")) { // MentionPill was used
       user =
         formatted_body.substring(
           formatted_body.indexOf('<a href="https://matrix.to/#/') + 29, // 29 = char length of `<a href="https://matrix.to/#/`
@@ -48,7 +48,6 @@ export async function runUnmuteCommand(
     }
   }
 
-  // The first argument is always going to be us, so get the second argument instead.
   let lookup: {
     graim_name: string;
     user_matrix: string;

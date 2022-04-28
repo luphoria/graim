@@ -1,7 +1,6 @@
 // -=- SYNTAX : ;deleteuser <graim_name>
 import {
   MatrixClient,
-  MentionPill,
   MessageEvent,
   MessageEventContent,
 } from "matrix-bot-sdk";

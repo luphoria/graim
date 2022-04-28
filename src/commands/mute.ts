@@ -1,5 +1,5 @@
 // TODO: add [reason]
-
+// -=- SYNTAX : ;mute <user> [time (smhd)]
 import {
   MatrixClient,
   MessageEvent,
@@ -28,19 +28,19 @@ export async function runMuteCommand(
     });
   }
 
-  if (!args[1]) {
+  if (!args[1]) { // user provided no arguments
     return client.sendMessage(roomId, {
-      body: "Usage: " + COMMAND_PREFIX + "mute <user> [time]",
+      body: "Usage: " + COMMAND_PREFIX + "mute <user> [time (1 day if not specified)]",
       msgtype: "m.notice",
       format: "org.matrix.custom.html",
-      formatted_body: "Usage: " + COMMAND_PREFIX + "mute &lt;user&gt; [time]",
+      formatted_body: "Usage: " + COMMAND_PREFIX + "mute &lt;user&gt; [time (1 day if not specified)]",
     });
   }
 
-  let user = "@" + args[1] || "";
+  let user = "@" + args[1] || ""; // we default to an empty string because it causes non-fatal errors.
 
-  if (formatted_body) {
-    if (formatted_body.includes("<a href=")) {
+  if (formatted_body) { // sanity check - MentionPill cannot exist without a formatted body
+    if (formatted_body.includes("<a href=\"https://matrix.to/#/")) { // MentionPill was used
       user =
         formatted_body.substring(
           formatted_body.indexOf('<a href="https://matrix.to/#/') + 29, // 29 = char length of `<a href="https://matrix.to/#/`
@@ -49,27 +49,26 @@ export async function runMuteCommand(
     }
   }
 
-  // The first argument is always going to be us, so get the second argument instead.
   let lookup: {
     graim_name: string;
     user_matrix: string;
     user_discord: string;
     moderator: boolean;
   };
+
   let msToUnmute: number;
 
   try {
-    msToUnmute = ms(formatted_body.split("> ")[1]);
+    msToUnmute = ms(formatted_body.split("> ")[1]); // looks weird, but this is just catching the equivalent of args[2]
   } catch {
     msToUnmute = ms("1d");
   }
-  console.log(args[1]);
+
   lookup = lookup_user(args[1]);
-  console.log(lookup);
 
   if (!lookup.graim_name) {
     if (user_discordId(user)) {
-      let user_discord = await guild.members.fetch(user_discordId(user));
+      let user_discord = await guild.members.fetch(user_discordId(user)); // fetch the discord user
       if (user_discord) user_discord.roles.add(mute_role);
       setTimeout(() => {
         user_discord.roles.remove(mute_role);
@@ -80,7 +79,7 @@ export async function runMuteCommand(
       client.setUserPowerLevel(user, roomId, -1);
     });
 
-    setTimeout(() => {
+    setTimeout(() => { // once this time has passed, undo the mute!
       rooms.forEach((roomId) => {
         client.setUserPowerLevel(user, roomId, 0);
       });
@@ -110,9 +109,11 @@ export async function runMuteCommand(
   rooms.forEach((roomId) => {
     client.setUserPowerLevel(lookup.user_matrix, roomId, -1);
   });
+
   let user_discord = await guild.members.fetch(lookup.user_discord);
   user_discord.roles.add(mute_role);
-  setTimeout(() => {
+
+  setTimeout(() => { // once this time has passed, undo the mute!
     rooms.forEach((roomId) => {
       client.setUserPowerLevel(lookup.user_matrix, roomId, 0);
     });

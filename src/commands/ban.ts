@@ -1,3 +1,4 @@
+// -=- SYNTAX : ;ban <user> [reason]
 import {
   MatrixClient,
   MessageEvent,
@@ -27,11 +28,11 @@ export async function runBanCommand(
     });
   }
 
-  let mentioned = false;
+  let mentioned = false; // did the user provide a MentionPill or a plain-text@messa.ge?
   let user = args[1] || "";
-  let reason = args.slice(2).join(" ") || "No reason specified";
+  let reason = args.slice(2).join(" ") || "No reason specified"; // everything after the username
   if (formatted_body) {
-    if (formatted_body.includes("<a href=")) {
+    if (formatted_body.includes("<a href=\"https://matrix.to/#/")) { // MentionPill was provided
       mentioned = true;
       user =
         formatted_body.substring(
@@ -46,10 +47,10 @@ export async function runBanCommand(
   let user_matrix = lookup.user_matrix;
   let graim_name = lookup.graim_name;
 
-  if (!graim_name) {
-    if (mentioned) {
-      if (user_discordId(user)) {
-        let user_discord = await guild.members.fetch(user_discordId(user));
+  if (!graim_name) { // the lookup returned no results
+    if (mentioned) { // sanity check before we try to lookup the Discord ID
+      if (user_discordId(user)) { // if the user is a Discord-bridged one
+        let user_discord = await guild.members.fetch(user_discordId(user)); // get the discord user
         if (user_discord.bannable)
           user_discord.ban({ reason: event.sender + ": " + reason });
       }
@@ -62,7 +63,7 @@ export async function runBanCommand(
       );
     });
 
-    let mention = await MentionPill.forUser(user);
+    let mention = await MentionPill.forUser(user); // creates a MentionPill for aesthetics
 
     return client.sendMessage(roomId, {
       body: "Banned " + mention.text + " for reason '" + reason + "'!",
@@ -77,15 +78,13 @@ export async function runBanCommand(
     });
   }
 
-  // Now send that message as a notice
-
   client.banUser(
     user_matrix,
     roomId,
     event.sender + " told me to! :D => " + htmlEscape(reason)
   );
 
-  let user_discord = await guild.members.fetch(lookup.user_discord);
+  let user_discord = await guild.members.fetch(lookup.user_discord); // get the discord user
   if (user_discord.bannable)
     user_discord.ban({ reason: event.sender + ": " + reason });
 

@@ -12,11 +12,6 @@ appserviceHS: "t2bot.io"
 # at https://t2bot.io/docs/access_tokens
 accessToken: "MATRIX_ACCESS_TOKEN"
 
-# Whether or not to autojoin rooms when invited.
-# Set this to true when you are initially setting up your bot, but
-# aside from that, you probably want it set to false.
-autoJoin: false
-
 # This is the access token for your Discord bot.
 discordToken: "DISCORD_ACCESS_TOKEN"
 
@@ -29,3 +24,8 @@ discordGuild: "DISCORD_GUILD_ID"
 
 # This is the role on Discord, presumably that doesn't let users speak
 discordMutedRole: "DISCORD_ROLE_ID"
+
+# Whether or not to autojoin rooms when invited.
+# Set this to true when you are initially setting up your bot, but
+# aside from that, you probably want it set to false.
+autoJoin: false

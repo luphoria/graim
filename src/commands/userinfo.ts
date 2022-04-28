@@ -1,6 +1,6 @@
+// -=- SYNTAX : ;userinfo <user>
 import {
   MatrixClient,
-  MentionPill,
   MessageEvent,
   MessageEventContent,
 } from "matrix-bot-sdk";
@@ -12,14 +12,13 @@ export async function runUserinfoCommand(
   args: string[],
   client: MatrixClient
 ) {
-  // The first argument is always going to be us, so get the second argument instead.
   let user;
   try {
     user = lookup_user(args[1]);
-  } catch {
+  } catch { // user provided no arguments - let's use their user as the arg instead
     user = lookup_user(event.sender);
   }
-  if (!user.graim_name) {
+  if (!user.graim_name) { // not in graim db
     return client.sendMessage(roomId, {
       body: "I don't think that user is in the graim database!",
       msgtype: "m.notice",

@@ -1,5 +1,5 @@
 // TODO: log [reason]
-
+// -=- SYNTAX : ;unban <user>
 import {
   MatrixClient,
   MessageEvent,
@@ -20,11 +20,11 @@ export async function runUnbanCommand(
 ) {
   console.log(`=======\n${formatted_body}\n========`);
 
-  let mentioned = false;
+  let mentioned = false; // did the user provide a MentionPill or a plain-text@messa.ge?
   let user = args[1] || null;
   let reason = args.slice(2).join(" ") || "No reason specified";
-  if (formatted_body) {
-    if (formatted_body.includes("<a href=")) {
+  if (formatted_body) { // sanity check
+    if (formatted_body.includes("<a href=\"https://matrix.to/#/")) {
       mentioned = true;
       user =
         formatted_body.substring(
@@ -39,10 +39,10 @@ export async function runUnbanCommand(
   let user_matrix = lookup.user_matrix;
   let graim_name = lookup.graim_name;
 
-  if (!user_matrix) {
+  if (!user_matrix) { // not in graim's db
     if (mentioned) {
-      if (user_discordId(user)) {
-        let user_discord = await guild.members.fetch(user_discordId(user));
+      if (user_discordId(user)) { // if user was bridged from Discord
+        let user_discord = await guild.members.fetch(user_discordId(user)); // fetch the Discord user by ID
         if (user_discord.Banned)
           user_discord.unban({ reason: event.sender + ": " + reason });
       }
@@ -51,7 +51,7 @@ export async function runUnbanCommand(
       client.unbanUser(user, roomId);
     });
 
-    let mention = await MentionPill.forUser(user);
+    let mention = await MentionPill.forUser(user); // MentionPill for aesthetics
 
     return client.sendMessage(roomId, {
       body: "Unbanned " + mention.text + " for reason '" + reason + "'!",

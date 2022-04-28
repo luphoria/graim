@@ -1,7 +1,6 @@
-// -=- SYNTAX : ;adduser <graim_name>[1] <@matrix_name> <@discord_name> [moderator][4]
+// -=- SYNTAX : ;adduser <graim_name> <@matrix_name> <@discord_name> [moderator]
 import {
   MatrixClient,
-  MentionPill,
   MessageEvent,
   MessageEventContent,
 } from "matrix-bot-sdk";
@@ -26,7 +25,7 @@ export async function runAddUserCommand(
     });
   }
 
-  if (!args[3]) {
+  if (!args[3]) { // they did not reply with at least the full number of required args
     return client.sendMessage(roomId, {
       body:
         "Usage: " +
@@ -41,8 +40,7 @@ export async function runAddUserCommand(
     });
   }
 
-  if (user_discordId(event.sender)) {
-    // please run this command from a Matrix account!
+  if (user_discordId(event.sender)) { // this command is intentionally designed to only work with MentionPills, and discord users can't MentionPill a matrix user
     return client.sendMessage(roomId, {
       body: "Please run this command as a Matrix user!",
       msgtype: "m.notice",
@@ -53,12 +51,12 @@ export async function runAddUserCommand(
 
   let command;
 
-  if (formatted_body) {
-    if (formatted_body.includes('<a href="https://matrix.to/#/')) {
+  if (formatted_body) { // simple sanity check - MentionPill requires formatted body. This isn't really necessary
+    if (formatted_body.includes('<a href="https://matrix.to/#/')) { // sort-of hacky, but this is just HTML for mentionpill
       command = formatted_body
-        .replace(/<a href="https:\/\/matrix.to\/#\/|">(.*?)<\/a>/g, "")
+        .replace(/<a href="https:\/\/matrix\.to\/#\/|">(.*?)<\/a>/g, "") // REGEX: removes all content from MentionPill HTML except the MXID
         .split(" ");
-    } else {
+    } else { // there was no MentionPill
       return client.sendMessage(roomId, {
         body: 'Please mention the users with a "mention pill"!',
         msgtype: "m.notice",
@@ -66,7 +64,7 @@ export async function runAddUserCommand(
         formatted_body: 'Please mention the users with a "mention pill"!',
       });
     }
-  } else {
+  } else { // there was no formatted body - so no mentionpill
     return client.sendMessage(roomId, {
       body: 'Please mention the users with a "mention pill"!',
       msgtype: "m.notice",
@@ -77,10 +75,10 @@ export async function runAddUserCommand(
 
   let user = {
     name: command[1],
-    matrix: command[2].substring(1),
+    matrix: command[2].slice(1), // don't store the `@` of Matrix users in the db
     discord: user_discordId(command[3]),
   };
-  let moderator = command[4] == "moderator" ? true : false;
+  let moderator = command[4] == "moderator" ? true : false; // TODO: make a real ranking for admins vs. moderators
 
   if (lookup_user(user.name).graim_name) {
     return client.sendMessage(roomId, {
@@ -91,8 +89,8 @@ export async function runAddUserCommand(
     });
   }
 
-  db.users.push(user);
-  if (moderator) db.mods[user.name] = "Moderator";
+  db.users.push(user); // add user object to the existing db list
+  if (moderator) db.mods[user.name] = "Moderator"; // add username to moderator list
   saveDB(db);
 
   return client.sendMessage(roomId, {
