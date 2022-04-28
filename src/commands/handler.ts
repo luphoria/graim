@@ -16,6 +16,7 @@ import { runUnmuteCommand } from "./unmute";
 import { runAddUserCommand } from "./adduser";
 import { runDeleteUserCommand } from "./deleteuser";
 import { startedWhen  } from "../index";
+import { runWhoSentCommand } from "./whosent";
 
 // The prefix required to trigger the bot. The bot will also respond
 // to being pinged directly.
@@ -103,13 +104,10 @@ export default class CommandHandler {
           runAddUserCommand(roomId, event, args, this.client, formatted_body);
           break;
         case "deleteuser":
-          runDeleteUserCommand(
-            roomId,
-            event,
-            args,
-            this.client,
-            formatted_body
-          );
+          runDeleteUserCommand(roomId, event, args, this.client, formatted_body);
+          break;
+        case "whosent":
+          runWhoSentCommand(roomId,event,args,this.client,formatted_body);
           break;
         case "help":
           const help =
