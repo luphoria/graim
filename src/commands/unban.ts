@@ -79,7 +79,8 @@ export async function runUnbanCommand(
   rooms.forEach((roomId) => {
     client.unbanUser(user_matrix, roomId);
   });
-  guild.members.unban(lookup.user_discord);
+  let user_discord = await guild.members.fetch(user_discordId(user));
+  if (user_discord.Banned) guild.members.unban(lookup.user_discord);
 
   return client.sendMessage(roomId, {
     body: "Unbanned " + graim_name + " for reason '" + reason + "'!",
