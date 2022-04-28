@@ -5,7 +5,6 @@ import {
   RichReply,
   UserID,
 } from "matrix-bot-sdk";
-import { runHelloCommand } from "./hello";
 import { runKickCommand } from "./kick";
 import { runBanCommand } from "./ban";
 import { runUnbanCommand } from "./unban";
@@ -80,9 +79,6 @@ export default class CommandHandler {
     // Try and figure out what command the user ran, defaulting to help
     try {
       switch (args[0]) {
-        case "hello":
-          runHelloCommand(roomId, event, args, this.client);
-          break;
         case "kick":
           runKickCommand(roomId, event, args, this.client, formatted_body);
           break;
@@ -115,7 +111,6 @@ export default class CommandHandler {
           break;
         case "help":
           const help =
-            `${COMMAND_PREFIX}hello [any] - Says hello\n` +
             `${COMMAND_PREFIX}kick <user> [reason] - Kicks a user\n` +
             `${COMMAND_PREFIX}ban <user> [reason] - Bans a user\n` +
             `${COMMAND_PREFIX}unban <user> - Unbans a user\n` +
