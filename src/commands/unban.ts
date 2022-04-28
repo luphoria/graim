@@ -18,14 +18,6 @@ export async function runUnbanCommand(
   client: MatrixClient,
   formatted_body: string
 ) {
-  if (!lookup_user(event.sender).moderator) {
-    return client.sendMessage(roomId, {
-      body: "You aren't a moderator!",
-      msgtype: "m.notice",
-      format: "org.matrix.custom.html",
-      formatted_body: "You aren't a moderator!",
-    });
-  }
   console.log(`=======\n${formatted_body}\n========`);
 
   let mentioned = false; // did the user provide a MentionPill or a plain-text@messa.ge?
