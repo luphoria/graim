@@ -3,7 +3,7 @@
   "version": "0.0.2",
   "author": "luphoria",
   "license": "Apache-2.0",
-  "description": "matrix <=> discord moderation with the power of https://t2bot.io/",
+  "description": "matrix <=> discord moderation with the power of matrix-appservice-discord",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/luphoria/graim.git"
