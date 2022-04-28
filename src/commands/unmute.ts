@@ -2,6 +2,7 @@
 
 import {
   MatrixClient,
+  MentionPill,
   MessageEvent,
   MessageEventContent,
 } from "matrix-bot-sdk";
@@ -35,7 +36,7 @@ export async function runUnmuteCommand(
     });
   }
 
-  let user = args[1] || "";
+  let user = "@" + args[1] || "";
 
   if (formatted_body) {
     if (formatted_body.includes("<a href=")) {
@@ -58,18 +59,22 @@ export async function runUnmuteCommand(
   lookup = lookup_user(args[1]);
 
   if (!lookup.graim_name) {
-    let user_discord =
-      (await guild.members.fetch(user_discordId(user))) || false;
-    if (user_discord) user_discord.roles.remove(mute_role);
+    if (user_discordId(user)) {
+      let user_discord = await guild.members.fetch(user_discordId(user));
+      if (user_discord) user_discord.roles.remove(mute_role);
+    }
 
     rooms.forEach((roomId) => {
       client.setUserPowerLevel(user, roomId, 0);
     });
+
+    let mention = await MentionPill.forUser(user);
+
     return client.sendMessage(roomId, {
-      body: "Unmuted " + user + ".",
+      body: "Unmuted " + mention.text + ".",
       msgtype: "m.notice",
       format: "org.matrix.custom.html",
-      formatted_body: "Unmuted " + htmlEscape(user) + ".",
+      formatted_body: "Unmuted " + mention.html + ".",
     });
   }
 

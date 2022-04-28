@@ -25,6 +25,8 @@ LogService.muteModule("Metrics");
 // Print something so we know the bot is working
 LogService.info("index", "Bot starting...");
 
+export const startedWhen = Date.now();
+
 // This is the startup closure where we give ourselves an async context
 (async function () {
 

@@ -10,7 +10,6 @@ import * as htmlEscape from "escape-html";
 import { user_discordId, lookup_user } from "../lookupUser";
 import { guild, mute_role } from "./discord_handler";
 import { COMMAND_PREFIX, rooms } from "./handler";
-import { MessageActionRow } from "discord.js";
 const ms = require("ms");
 
 export async function runMuteCommand(
@@ -38,7 +37,7 @@ export async function runMuteCommand(
     });
   }
 
-  let user = args[1] || "";
+  let user = "@" + args[1] || "";
 
   if (formatted_body) {
     if (formatted_body.includes("<a href=")) {
@@ -69,9 +68,14 @@ export async function runMuteCommand(
   console.log(lookup);
 
   if (!lookup.graim_name) {
-    let user_discord = await guild.members.fetch(user_discordId(user));
-    console.log(user_discord);
-    if (user_discord) user_discord.roles.add(mute_role);
+    if (user_discordId(user)) {
+      let user_discord = await guild.members.fetch(user_discordId(user));
+      if (user_discord) user_discord.roles.add(mute_role);
+      setTimeout(() => {
+        user_discord.roles.remove(mute_role);
+      }, msToUnmute);
+    }
+
     rooms.forEach((roomId) => {
       client.setUserPowerLevel(user, roomId, -1);
     });
@@ -80,7 +84,6 @@ export async function runMuteCommand(
       rooms.forEach((roomId) => {
         client.setUserPowerLevel(user, roomId, 0);
       });
-      user_discord.roles.remove(mute_role);
     }, msToUnmute);
 
     let mention = await MentionPill.forUser(user);

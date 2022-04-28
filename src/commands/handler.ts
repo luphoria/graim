@@ -15,6 +15,7 @@ import { runMuteCommand } from "./mute";
 import { runUnmuteCommand } from "./unmute";
 import { runAddUserCommand } from "./adduser";
 import { runDeleteUserCommand } from "./deleteuser";
+import { startedWhen  } from "../index";
 
 // The prefix required to trigger the bot. The bot will also respond
 // to being pinged directly.
@@ -58,6 +59,7 @@ export default class CommandHandler {
     if (event.isRedacted) return; // Ignore redacted events that come through
     if (event.sender === this.userId) return; // Ignore ourselves
     if (event.messageType !== "m.text") return; // Ignore non-text messages
+    if (startedWhen > event.timestamp) return;
 
     // Ensure that the event is a command before going on. We allow people to ping
     // the bot as well as using our COMMAND_PREFIX.
