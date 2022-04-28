@@ -20,7 +20,7 @@ import { runDeleteUserCommand } from "./deleteuser";
 // The prefix required to trigger the bot. The bot will also respond
 // to being pinged directly.
 export const COMMAND_PREFIX = config.prefix;
-
+export let rooms;
 // This is where all of our commands will be handled
 export default class CommandHandler {
   // Just some variables so we can cache the bot's display name and ID
@@ -45,6 +45,7 @@ export default class CommandHandler {
 
     try {
       const profile = await this.client.getUserProfile(this.userId);
+      rooms = await this.client.getJoinedRooms();
       if (profile && profile["displayname"])
         this.displayName = profile["displayname"];
     } catch (e) {
@@ -104,7 +105,13 @@ export default class CommandHandler {
           runAddUserCommand(roomId, event, args, this.client, formatted_body);
           break;
         case "deleteuser":
-          runDeleteUserCommand(roomId, event, args, this.client, formatted_body);
+          runDeleteUserCommand(
+            roomId,
+            event,
+            args,
+            this.client,
+            formatted_body
+          );
           break;
         case "help":
           const help =

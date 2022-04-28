@@ -9,6 +9,7 @@ import {
 import * as htmlEscape from "escape-html";
 import { lookup_user, user_discordId } from "../lookupUser";
 import { guild } from "./discord_handler";
+import { rooms } from "./handler";
 
 export async function runUnbanCommand(
   roomId: string,
@@ -46,7 +47,9 @@ export async function runUnbanCommand(
           user_discord.unban({ reason: event.sender + ": " + reason });
       }
     }
-    client.unbanUser(user, roomId);
+    rooms.forEach((roomId) => {
+      client.unbanUser(user, roomId);
+    });
 
     let mention = await MentionPill.forUser(user);
 
@@ -65,7 +68,9 @@ export async function runUnbanCommand(
 
   // Now send that message as a notice
 
-  client.unbanUser(user_matrix, roomId);
+  rooms.forEach((roomId) => {
+    client.unbanUser(user_matrix, roomId);
+  });
   guild.members.unban(lookup.user_discord);
 
   return client.sendMessage(roomId, {

@@ -16,9 +16,7 @@ Check out the [configuration guide](./setup.md).
 ## TODOs
 Note there is more to-do, this is just the current high priority / next on the list.
 
- - Database management commands (add/remove user, add/remove moderator)
  - `whosent` command
- - sync moderation across rooms
  - LOTS OF BUG FIXING!
 
 ## Features
@@ -27,6 +25,9 @@ Note there is more to-do, this is just the current high priority / next on the l
 - Mute
 - Discord moderators may use `whosent` to discover what matrix user is behind a Discord message
 - Userinfo command
+- moderation syncs across rooms
+- Database management commands (add/remove user, add/remove moderator)
+
 
 ## How
 graim is built with the intention of being Matrix-first. There are a few reasons for this:

@@ -13,6 +13,7 @@ import {
 import * as htmlEscape from "escape-html";
 import { user_discordId, lookup_user } from "../lookupUser";
 import { guild } from "./discord_handler";
+import { rooms } from "./handler";
 
 export async function runKickCommand(
   roomId: string,
@@ -60,11 +61,13 @@ export async function runKickCommand(
           user_discord.kick(event.sender + ": " + reason);
       }
     }
-    client.kickUser(
-      user,
-      roomId,
-      event.sender + " told me to! :D => " + htmlEscape(reason)
-    );
+    rooms.forEach((roomId) => {
+      client.kickUser(
+        user,
+        roomId,
+        event.sender + " told me to! :D => " + htmlEscape(reason)
+      );
+    });
 
     let mention = await MentionPill.forUser(user);
 
@@ -81,11 +84,13 @@ export async function runKickCommand(
     });
   }
 
-  client.kickUser(
-    user_matrix,
-    roomId,
-    event.sender + " told me to! :D => " + htmlEscape(reason)
-  );
+  rooms.forEach((roomId) => {
+    client.kickUser(
+      user_matrix,
+      roomId,
+      event.sender + " told me to! :D => " + htmlEscape(reason)
+    );
+  });
 
   let user_discord = await guild.members.fetch(lookup.user_discord);
   if (user_discord.kickable) user_discord.kick(event.sender + ": " + reason);

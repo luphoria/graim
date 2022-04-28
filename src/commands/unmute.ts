@@ -8,7 +8,7 @@ import {
 import * as htmlEscape from "escape-html";
 import { user_discordId, lookup_user } from "../lookupUser";
 import { guild, mute_role } from "./discord_handler";
-import { COMMAND_PREFIX } from "./handler";
+import { COMMAND_PREFIX, rooms } from "./handler";
 
 export async function runUnmuteCommand(
   roomId: string,
@@ -47,7 +47,6 @@ export async function runUnmuteCommand(
     }
   }
 
-
   // The first argument is always going to be us, so get the second argument instead.
   let lookup: {
     graim_name: string;
@@ -59,16 +58,19 @@ export async function runUnmuteCommand(
   lookup = lookup_user(args[1]);
 
   if (!lookup.graim_name) {
-      let user_discord = await guild.members.fetch(user_discordId(user)) || false;
-      if(user_discord) user_discord.roles.remove(mute_role);
+    let user_discord =
+      (await guild.members.fetch(user_discordId(user))) || false;
+    if (user_discord) user_discord.roles.remove(mute_role);
 
+    rooms.forEach((roomId) => {
       client.setUserPowerLevel(user, roomId, 0);
-      return client.sendMessage(roomId, {
-        body: "Unmuted " + user + ".",
-        msgtype: "m.notice",
-        format: "org.matrix.custom.html",
-        formatted_body: "Unmuted " + htmlEscape(user) + ".",
-      });
+    });
+    return client.sendMessage(roomId, {
+      body: "Unmuted " + user + ".",
+      msgtype: "m.notice",
+      format: "org.matrix.custom.html",
+      formatted_body: "Unmuted " + htmlEscape(user) + ".",
+    });
   }
 
   try {
@@ -83,8 +85,10 @@ export async function runUnmuteCommand(
   }
 
   let user_discord = await guild.members.fetch(lookup.user_discord);
+  rooms.forEach((roomId) => {
     client.setUserPowerLevel(lookup.user_matrix, roomId, 0);
-    user_discord.roles.remove(mute_role);
+  });
+  user_discord.roles.remove(mute_role);
 
   return client.sendMessage(roomId, {
     body: "Unmuted " + lookup.graim_name + ".",

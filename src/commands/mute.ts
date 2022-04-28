@@ -9,7 +9,7 @@ import {
 import * as htmlEscape from "escape-html";
 import { user_discordId, lookup_user } from "../lookupUser";
 import { guild, mute_role } from "./discord_handler";
-import { COMMAND_PREFIX } from "./handler";
+import { COMMAND_PREFIX, rooms } from "./handler";
 import { MessageActionRow } from "discord.js";
 const ms = require("ms");
 
@@ -64,18 +64,22 @@ export async function runMuteCommand(
   } catch {
     msToUnmute = ms("1d");
   }
-  console.log(args[1])
+  console.log(args[1]);
   lookup = lookup_user(args[1]);
   console.log(lookup);
 
   if (!lookup.graim_name) {
     let user_discord = await guild.members.fetch(user_discordId(user));
     console.log(user_discord);
-    if(user_discord) user_discord.roles.add(mute_role);
-    client.setUserPowerLevel(user, roomId, -1);
-    
+    if (user_discord) user_discord.roles.add(mute_role);
+    rooms.forEach((roomId) => {
+      client.setUserPowerLevel(user, roomId, -1);
+    });
+
     setTimeout(() => {
-      client.setUserPowerLevel(user, roomId, 0);
+      rooms.forEach((roomId) => {
+        client.setUserPowerLevel(user, roomId, 0);
+      });
       user_discord.roles.remove(mute_role);
     }, msToUnmute);
 
@@ -87,7 +91,7 @@ export async function runMuteCommand(
       format: "org.matrix.custom.html",
       formatted_body: "Muted " + mention.html + ".",
     });
-}
+  }
 
   try {
     lookup_user(args[1]);
@@ -100,11 +104,15 @@ export async function runMuteCommand(
     });
   }
 
-  client.setUserPowerLevel(lookup.user_matrix, roomId, -1);
+  rooms.forEach((roomId) => {
+    client.setUserPowerLevel(lookup.user_matrix, roomId, -1);
+  });
   let user_discord = await guild.members.fetch(lookup.user_discord);
   user_discord.roles.add(mute_role);
   setTimeout(() => {
-    client.setUserPowerLevel(lookup.user_matrix, roomId, 0);
+    rooms.forEach((roomId) => {
+      client.setUserPowerLevel(lookup.user_matrix, roomId, 0);
+    });
     user_discord.roles.remove(mute_role);
   }, msToUnmute);
 

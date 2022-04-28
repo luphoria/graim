@@ -7,6 +7,7 @@ import {
 import * as htmlEscape from "escape-html";
 import { user_discordId, lookup_user } from "../lookupUser";
 import { guild } from "./discord_handler";
+import { rooms } from "./handler";
 
 export async function runBanCommand(
   roomId: string,
@@ -53,11 +54,13 @@ export async function runBanCommand(
           user_discord.ban({ reason: event.sender + ": " + reason });
       }
     }
-    client.banUser(
-      user,
-      roomId,
-      event.sender + " told me to! :D => " + htmlEscape(reason)
-    );
+    rooms.forEach((roomId) => {
+      client.banUser(
+        user,
+        roomId,
+        event.sender + " told me to! :D => " + htmlEscape(reason)
+      );
+    });
 
     let mention = await MentionPill.forUser(user);
 
