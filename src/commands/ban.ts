@@ -6,7 +6,7 @@ import {
   MessageEventContent,
 } from "matrix-bot-sdk";
 import * as htmlEscape from "escape-html";
-import { user_discordId, lookup_user } from "../lookupUser";
+import { user_discordId, lookup_user, db, saveDB } from "../lookupUser";
 import { guild } from "./discord_handler";
 import { rooms } from "./handler";
 
@@ -97,8 +97,25 @@ export async function runBanCommand(
       user_discord.ban({ reason: event.sender + ": " + reason });
   } catch {}
 
+  db.users
+    .filter((dbuser) => {
+      return dbuser.name == lookup.graim_name;
+    })[0]
+    .strikes.push({
+      time: Date.now(),
+      action: "ban",
+      reason: reason,
+    });
+
+  saveDB(db);
+
+  let strikes = db.users.filter((dbuser) => {
+    return dbuser.name == lookup.graim_name;
+  })[0].strikes;
+
+
   return client.sendMessage(roomId, {
-    body: "Banned " + graim_name + " for reason '" + reason + "'!",
+    body: "Banned " + graim_name + " for reason '" + reason + "'!\nCurrent strikes: " + strikes.length,
     msgtype: "m.notice",
     format: "org.matrix.custom.html",
     formatted_body:
@@ -106,6 +123,6 @@ export async function runBanCommand(
       graim_name +
       " for reason '<code>" +
       htmlEscape(reason) +
-      "</code>'!",
+      "</code>'!\nCurrent strikes: " + strikes.length,
   });
 }

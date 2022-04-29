@@ -7,7 +7,7 @@ import {
   MessageEventContent,
 } from "matrix-bot-sdk";
 import * as htmlEscape from "escape-html";
-import { user_discordId, lookup_user } from "../lookupUser";
+import { user_discordId, lookup_user, db, saveDB } from "../lookupUser";
 import { guild, mute_role } from "./discord_handler";
 import { COMMAND_PREFIX, rooms } from "./handler";
 const ms = require("ms");
@@ -128,10 +128,26 @@ export async function runMuteCommand(
     }, msToUnmute);
   } catch {}
 
+  db.users
+    .filter((dbuser) => {
+      return dbuser.name == lookup.graim_name;
+    })[0]
+    .strikes.push({
+      time: Date.now(),
+      action: "mute",
+      reason: reason,
+    });
+
+  saveDB(db);
+
+  let strikes = db.users.filter((dbuser) => {
+    return dbuser.name == lookup.graim_name;
+  })[0].strikes;
+
   return client.sendMessage(roomId, {
-    body: "Muted " + lookup.graim_name + " for reason " + reason + "!",
+    body: "Muted " + lookup.graim_name + " for reason " + reason + "!\nCurrent strikes: " + strikes.length,
     msgtype: "m.notice",
     format: "org.matrix.custom.html",
-    formatted_body: "Muted " + lookup.graim_name + " for reason <code>" + htmlEscape(reason) + "</code>!",
+    formatted_body: "Muted " + lookup.graim_name + " for reason <code>" + htmlEscape(reason) + "</code>!\nCurrent strikes: " + strikes.length,
   });
 }

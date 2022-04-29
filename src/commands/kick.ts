@@ -6,7 +6,7 @@ import {
   MessageEventContent,
 } from "matrix-bot-sdk";
 import * as htmlEscape from "escape-html";
-import { user_discordId, lookup_user } from "../lookupUser";
+import { user_discordId, lookup_user, db, saveDB } from "../lookupUser";
 import { guild } from "./discord_handler";
 import { rooms } from "./handler";
 
@@ -96,8 +96,24 @@ export async function runKickCommand(
     if (user_discord.kickable) user_discord.kick(event.sender + ": " + reason);
   } catch {}
 
+  db.users
+    .filter((dbuser) => {
+      return dbuser.name == lookup.graim_name;
+    })[0]
+    .strikes.push({
+      time: Date.now(),
+      action: "kick",
+      reason: reason,
+    });
+
+  saveDB(db);
+
+  let strikes = db.users.filter((dbuser) => {
+    return dbuser.name == lookup.graim_name;
+  })[0].strikes;
+
   return client.sendMessage(roomId, {
-    body: "Kicked " + graim_name + " for reason '" + reason + "'!",
+    body: "Kicked " + graim_name + " for reason '" + reason + "'!\nCurrent strike count: " + strikes.length,
     msgtype: "m.notice",
     format: "org.matrix.custom.html",
     formatted_body:
@@ -105,6 +121,6 @@ export async function runKickCommand(
       graim_name +
       " for reason '<code>" +
       htmlEscape(reason) +
-      "</code>'!",
+      "</code>'!\nCurrent strike count: " + strikes.length
   });
 }
