@@ -63,7 +63,7 @@ Now, you have to actually add graim to the communities it is moderating.
 
 ### Adding the Matrix bot
 - Invite the bot to every room needed, as you would any other user
-- For each room, make the bot an `Admin` (power level 100). Alternatively, if you don't want to do that, you can make it a `Moderator` (power level 50), and adjust `Change permissions` in the room to `Moderator` - this will allow it to change other users' power levels to -1, effectively muting them.
+- For each room, make the bot a `Moderator` (power level 50), and adjust `Change permissions` in the room to `Moderator` - this will allow it to change other users' power levels to -1, effectively muting them. Additionally, it is highly recommended you change `Notify everyone` to `Admin` - otherwise a user could potentially elevate their permissions via the bot to ping @room.
 
 ### Adding yourself to the moderator list
 In order to use any graim commands, you first need to be considered a moderator by graim itself.
