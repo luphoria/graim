@@ -17,6 +17,7 @@ import { runAddUserCommand } from "./adduser";
 import { runDeleteUserCommand } from "./deleteuser";
 import { startedWhen } from "../index";
 import { runWhoSentCommand } from "./whosent";
+import { runStrikeUserCommand } from "./strike";
 
 // The prefix required to trigger the bot. The bot will also respond
 // to being pinged directly.
@@ -104,13 +105,10 @@ export default class CommandHandler {
           runAddUserCommand(roomId, event, args, this.client, formatted_body);
           break;
         case "deleteuser":
-          runDeleteUserCommand(
-            roomId,
-            event,
-            args,
-            this.client,
-            formatted_body
-          );
+          runDeleteUserCommand(roomId,event,args,this.client,formatted_body);
+          break;
+        case "strike":
+          runStrikeUserCommand(roomId, args, this.client);
           break;
         case "whosent":
           runWhoSentCommand(roomId, args, this.client);
@@ -119,9 +117,11 @@ export default class CommandHandler {
           const help =
             `${COMMAND_PREFIX}kick <user> [reason] - Kicks a user\n` +
             `${COMMAND_PREFIX}ban <user> [reason] - Bans a user\n` +
-            `${COMMAND_PREFIX}unban <user> - Unbans a user\n` +
+            `${COMMAND_PREFIX}unban <user> [reason] - Unbans a user\n` +
             `${COMMAND_PREFIX}mute <user> [time:s,m,h,d] [reason] - Mutes a user\n` +
-            `${COMMAND_PREFIX}unmute <user> - Unmutes a user\n` +
+            `${COMMAND_PREFIX}unmute <user> [reason] - Unmutes a user\n` +
+            `${COMMAND_PREFIX}strike <user> [reason] - Strikes a user\n` +
+            `\n` +
             `${COMMAND_PREFIX}adduser <graim_name> <matrix_mention> <discord_mention> [moderator] - Adds user to graim database (for syncing moderation)\n` +
             `${COMMAND_PREFIX}deleteuser <user> - Removes a user from graim database\n` +
             `${COMMAND_PREFIX}whosent <link to Discord message> - tells you what Matrix user sent a message\n` +

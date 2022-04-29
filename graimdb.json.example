@@ -6,7 +6,14 @@
         {
             "name": "example",
             "matrix": "example:example.org",
-            "discord": "966488436041203712"
+            "discord": "966488436041203712",
+            "strikes": [
+                {
+                    "time": "1651195881454",
+                    "action": "kick",
+                    "reason": "No reason specified."
+                }
+            ]
         }
     ]
 }

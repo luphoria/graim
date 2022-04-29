@@ -83,6 +83,7 @@ export async function runAddUserCommand(
       name: command[1],
       matrix: command[2].slice(1), // don't store the `@` of Matrix users in the db
       discord: user_discordId(command[3]),
+      strikes: []
     };
     let moderator = command[4] == "moderator" ? true : false; // TODO: make a real ranking for admins vs. moderators
 
