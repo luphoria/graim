@@ -25,6 +25,7 @@ export const lookup_user = (name: String) => { // Reverses a user from graim's d
   let user_matrix: string;
   let user_discord: string;
   let moderator: boolean;
+  let strikes: [];
 
   db.users.forEach((_user) => { // iterate through all db users
     if (_user.name == name) { // the name must have been a Graim identifier
@@ -48,6 +49,7 @@ export const lookup_user = (name: String) => { // Reverses a user from graim's d
     if (_user.name == graim_name) { // match!
       user_matrix = "@" + _user.matrix;
       user_discord = _user.discord;
+      strikes = _user.strikes;
     }
   });
 
@@ -58,5 +60,6 @@ export const lookup_user = (name: String) => { // Reverses a user from graim's d
     user_matrix: user_matrix,
     user_discord: user_discord,
     moderator: moderator,
+    strikes: strikes
   };
 };

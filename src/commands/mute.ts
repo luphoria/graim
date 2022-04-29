@@ -54,13 +54,7 @@ export async function runMuteCommand(
   let reason = command.slice(3).join(" ") || "No reason specified."
   let user = command[1] || ""; // we default to an empty string because it causes non-fatal errors.
 
-  let lookup: {
-    graim_name: string;
-    user_matrix: string;
-    user_discord: string;
-    moderator: boolean;
-  };
-
+  let lookup;
   let msToUnmute = ms(command[2]);
   if(!msToUnmute) {
     msToUnmute = ms("1d");
