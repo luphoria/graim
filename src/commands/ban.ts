@@ -54,11 +54,13 @@ export async function runBanCommand(
       // sanity check before we try to lookup the Discord ID
       if (user_discordId(user)) {
         // if the user is a Discord-bridged one
-        try {
-          let user_discord = await guild.members.fetch(user_discordId(user)); // get the discord user
-          if (user_discord.bannable)
-            user_discord.ban({ reason: event.sender + ": " + reason });
-        } catch {}
+        let user_discord = await guild.members
+          .fetch(user_discordId(user))
+          .catch((err) => console.error(err)); // get the discord user
+        if (user_discord.bannable)
+          user_discord
+            .ban({ reason: event.sender + ": " + reason })
+            .catch((err) => console.error(err));
       }
     }
     rooms.forEach((roomId) => {
@@ -91,11 +93,13 @@ export async function runBanCommand(
     );
   });
 
-  try {
-    let user_discord = await guild.members.fetch(lookup.user_discord); // get the discord user
-    if (user_discord.bannable)
-      user_discord.ban({ reason: event.sender + ": " + reason });
-  } catch {}
+  let user_discord = await guild.members
+    .fetch(lookup.user_discord)
+    .catch((err) => console.error(err)); // get the discord user
+  if (user_discord.bannable)
+    user_discord
+      .ban({ reason: event.sender + ": " + reason })
+      .catch((err) => console.error(err));
 
   db.users
     .filter((dbuser) => {
@@ -113,9 +117,14 @@ export async function runBanCommand(
     return dbuser.name == lookup.graim_name;
   })[0].strikes;
 
-
   return client.sendMessage(roomId, {
-    body: "Banned " + graim_name + " for reason '" + reason + "'!\nCurrent strikes: " + strikes.length,
+    body:
+      "Banned " +
+      graim_name +
+      " for reason '" +
+      reason +
+      "'!\nCurrent strikes: " +
+      strikes.length,
     msgtype: "m.notice",
     format: "org.matrix.custom.html",
     formatted_body:
@@ -123,6 +132,7 @@ export async function runBanCommand(
       graim_name +
       " for reason '<code>" +
       htmlEscape(reason) +
-      "</code>'!\nCurrent strikes: " + strikes.length,
+      "</code>'!\nCurrent strikes: " +
+      strikes.length,
   });
 }

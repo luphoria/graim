@@ -27,7 +27,8 @@ export async function runUnmuteCommand(
     });
   }
 
-  if (!args[1]) { // user didn't provide the required number of args
+  if (!args[1]) {
+    // user didn't provide the required number of args
     return client.sendMessage(roomId, {
       body: "Usage: " + COMMAND_PREFIX + "unmute <user>",
       msgtype: "m.notice",
@@ -37,12 +38,15 @@ export async function runUnmuteCommand(
   }
   let commandString = args.join(" ");
   if (formatted_body) {
-    commandString = formatted_body.replace(/<a href="https:\/\/matrix\.to\/#\/@|">(.*?)<\/a>/g, "");
+    commandString = formatted_body.replace(
+      /<a href="https:\/\/matrix\.to\/#\/@|">(.*?)<\/a>/g,
+      ""
+    );
   }
 
   let command = commandString.split(" ");
 
-  let reason = command.slice(2).join(" ") || "No reason specified."
+  let reason = command.slice(2).join(" ") || "No reason specified.";
   let user = command[1] || ""; // we default to an empty string because it causes non-fatal errors.
 
   let lookup: {
@@ -56,10 +60,11 @@ export async function runUnmuteCommand(
 
   if (!lookup.graim_name) {
     if (user_discordId(user)) {
-      try {
-        let user_discord = await guild.members.fetch(user_discordId(user));
-        if (user_discord) user_discord.roles.remove(mute_role);
-      } catch {}
+      let user_discord = await guild.members
+        .fetch(user_discordId(user))
+        .catch((err) => console.log(err));
+      if (user_discord)
+        user_discord.roles.remove(mute_role).catch((err) => console.log(err));
     }
 
     rooms.forEach((roomId) => {
@@ -69,10 +74,15 @@ export async function runUnmuteCommand(
     let mention = await MentionPill.forUser(user);
 
     return client.sendMessage(roomId, {
-      body: "Unmuted " + lookup.graim_name + " for reason " + reason + "!",
+      body: "Unmuted " + mention.text + " for reason " + reason + "!",
       msgtype: "m.notice",
       format: "org.matrix.custom.html",
-      formatted_body: "Unmuted " + lookup.graim_name + " for reason <code>" + htmlEscape(reason) + "</code>!",
+      formatted_body:
+        "Unmuted " +
+        mention.html +
+        " for reason <code>" +
+        htmlEscape(reason) +
+        "</code>!",
     });
   }
 
@@ -90,15 +100,20 @@ export async function runUnmuteCommand(
     client.setUserPowerLevel(lookup.user_matrix, roomId, 0);
   });
 
-  try {
-    let user_discord = await guild.members.fetch(lookup.user_discord);
-    user_discord.roles.remove(mute_role);
-  } catch {}
+  let user_discord = await guild.members
+    .fetch(lookup.user_discord)
+    .catch((err) => console.log(err));
+  user_discord.roles.remove(mute_role).catch((err) => console.log(err));
 
   return client.sendMessage(roomId, {
     body: "Unmuted " + lookup.graim_name + " for reason " + reason + "!",
     msgtype: "m.notice",
     format: "org.matrix.custom.html",
-    formatted_body: "Unmuted " + lookup.graim_name + " for reason <code>" + htmlEscape(reason) + "</code>!",
+    formatted_body:
+      "Unmuted " +
+      lookup.graim_name +
+      " for reason <code>" +
+      htmlEscape(reason) +
+      "</code>!",
   });
 }

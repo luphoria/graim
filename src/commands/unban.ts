@@ -53,11 +53,9 @@ export async function runUnbanCommand(
     if (mentioned) {
       if (user_discordId(user)) {
         // if user was bridged from Discord
-        try {
-          let user_discord = await guild.members.fetch(user_discordId(user)); // fetch the Discord user by ID
+          let user_discord = await guild.members.fetch(user_discordId(user)).catch((err)=>console.log(err)); // fetch the Discord user by ID
           if (user_discord.Banned)
-            user_discord.unban({ reason: event.sender + ": " + reason });
-        } catch {}
+            user_discord.unban({ reason: event.sender + ": " + reason }).catch((err)=>console.log(err));
       }
     }
 
@@ -83,10 +81,8 @@ export async function runUnbanCommand(
   rooms.forEach((roomId) => {
       client.unbanUser(user_matrix, roomId);
   });
-  try {
-    let user_discord = await guild.members.fetch(user_discordId(user));
-    if (user_discord.Banned) guild.members.unban(lookup.user_discord);
-  } catch {}
+    let user_discord = await guild.members.fetch(user_discordId(user)).catch((err)=>console.log(err));
+    if (user_discord.Banned) guild.members.unban(lookup.user_discord).catch((err)=>console.log(err));
 
   return client.sendMessage(roomId, {
     body: "Unbanned " + graim_name + " for reason '" + reason + "'!",

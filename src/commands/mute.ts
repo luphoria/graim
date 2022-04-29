@@ -46,12 +46,15 @@ export async function runMuteCommand(
   let commandString = args.join(" ");
 
   if (formatted_body) {
-    commandString = formatted_body.replace(/<a href="https:\/\/matrix\.to\/#\/@|">(.*?)<\/a>/g, "");
+    commandString = formatted_body.replace(
+      /<a href="https:\/\/matrix\.to\/#\/@|">(.*?)<\/a>/g,
+      ""
+    );
   }
 
   let command = commandString.split(" ");
 
-  let reason = command.slice(3).join(" ") || "No reason specified."
+  let reason = command.slice(3).join(" ") || "No reason specified.";
   let user = command[1] || ""; // we default to an empty string because it causes non-fatal errors.
 
   let lookup;
@@ -60,20 +63,19 @@ export async function runMuteCommand(
     msToUnmute = ms(command[2]);
   } catch {
     msToUnmute = ms("1d");
-    reason = command.slice(2).join(" ") || "No reason specified."
+    reason = command.slice(2).join(" ") || "No reason specified.";
   }
 
   lookup = lookup_user(user);
 
   if (!lookup.graim_name) {
     if (user_discordId(user)) {
-      try {
-        let user_discord = await guild.members.fetch(user_discordId("@" + user)); // fetch the discord user
-        if (user_discord) user_discord.roles.add(mute_role);
-        setTimeout(() => {
-          user_discord.roles.remove(mute_role);
-        }, msToUnmute);
-      } catch {}
+      let user_discord = await guild.members.fetch(user_discordId("@" + user)); // fetch the discord user
+      if (user_discord)
+        user_discord.roles.add(mute_role).catch((err) => console.error(err));
+      setTimeout(() => {
+        user_discord.roles.remove(mute_role).catch((err) => console.error(err));
+      }, msToUnmute);
     }
 
     rooms.forEach((roomId) => {
@@ -93,7 +95,12 @@ export async function runMuteCommand(
       body: "Muted " + mention.text + " for reason " + reason + "!",
       msgtype: "m.notice",
       format: "org.matrix.custom.html",
-      formatted_body: "Muted " + mention.html + " for reason <code>" + htmlEscape(reason) + "</code>!",
+      formatted_body:
+        "Muted " +
+        mention.html +
+        " for reason <code>" +
+        htmlEscape(reason) +
+        "</code>!",
     });
   }
 
@@ -111,18 +118,16 @@ export async function runMuteCommand(
   rooms.forEach((roomId) => {
     client.setUserPowerLevel(lookup.user_matrix, roomId, -1);
   });
-  try {
-    let user_discord = await guild.members.fetch(lookup.user_discord);
-    user_discord.roles.add(mute_role);
+  let user_discord = await guild.members.fetch(lookup.user_discord);
+  user_discord.roles.add(mute_role).catch((err) => console.error(err));
 
-    setTimeout(() => {
-      // once this time has passed, undo the mute!
-      rooms.forEach((roomId) => {
-        client.setUserPowerLevel(lookup.user_matrix, roomId, 0);
-      });
-      user_discord.roles.remove(mute_role);
-    }, msToUnmute);
-  } catch {}
+  setTimeout(() => {
+    // once this time has passed, undo the mute!
+    rooms.forEach((roomId) => {
+      client.setUserPowerLevel(lookup.user_matrix, roomId, 0);
+    });
+    user_discord.roles.remove(mute_role).catch((err) => console.error(err));
+  }, msToUnmute);
 
   db.users
     .filter((dbuser) => {
@@ -141,9 +146,21 @@ export async function runMuteCommand(
   })[0].strikes;
 
   return client.sendMessage(roomId, {
-    body: "Muted " + lookup.graim_name + " for reason " + reason + "!\nCurrent strikes: " + strikes.length,
+    body:
+      "Muted " +
+      lookup.graim_name +
+      " for reason " +
+      reason +
+      "!\nCurrent strikes: " +
+      strikes.length,
     msgtype: "m.notice",
     format: "org.matrix.custom.html",
-    formatted_body: "Muted " + lookup.graim_name + " for reason <code>" + htmlEscape(reason) + "</code>!\nCurrent strikes: " + strikes.length,
+    formatted_body:
+      "Muted " +
+      lookup.graim_name +
+      " for reason <code>" +
+      htmlEscape(reason) +
+      "</code>!\nCurrent strikes: " +
+      strikes.length,
   });
 }

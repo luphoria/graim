@@ -313,12 +313,6 @@ const rotate_status = () => {
 discord_client.on("ready", () => {
   console.info("Discord bot started! Logged in: " + discord_client.user.tag);
   rotate_status();
-  if (discord_client.guilds.cache.size > 1) {
-    console.error(
-      "You seem to have joined too many Discord servers...\ngraim only supports 1 discord server per instance, sorry ;("
-    );
-    process.exit(1);
-  }
   guild = discord_client.guilds.resolve(config.discordGuild); // get the graim guild
   mute_role = guild.roles.cache.get(config.discordMutedRole); // get the muted role
 });

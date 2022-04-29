@@ -53,11 +53,13 @@ export async function runKickCommand(
     if (mentioned) {
       if (user_discordId(user)) {
         // if mention was a valid Discord user ID
-        try {
-          let user_discord = await guild.members.fetch(user_discordId(user)); // fetch discord user
-          if (user_discord.kickable)
-            user_discord.kick(event.sender + ": " + reason);
-        } catch {}
+        let user_discord = await guild.members
+          .fetch(user_discordId(user))
+          .catch((err) => console.log(err)); // fetch discord user
+        if (user_discord.kickable)
+          user_discord
+            .kick(event.sender + ": " + reason)
+            .catch((err) => console.log(err));
       }
     }
     rooms.forEach((roomId) => {
@@ -91,10 +93,13 @@ export async function runKickCommand(
     );
   });
 
-  try {
-    let user_discord = await guild.members.fetch(lookup.user_discord); // fetch discord user
-    if (user_discord.kickable) user_discord.kick(event.sender + ": " + reason);
-  } catch {}
+  let user_discord = await guild.members
+    .fetch(lookup.user_discord)
+    .catch((err) => console.log(err)); // fetch discord user
+  if (user_discord.kickable)
+    user_discord
+      .kick(event.sender + ": " + reason)
+      .catch((err) => console.log(err));
 
   db.users
     .filter((dbuser) => {
@@ -113,7 +118,13 @@ export async function runKickCommand(
   })[0].strikes;
 
   return client.sendMessage(roomId, {
-    body: "Kicked " + graim_name + " for reason '" + reason + "'!\nCurrent strike count: " + strikes.length,
+    body:
+      "Kicked " +
+      graim_name +
+      " for reason '" +
+      reason +
+      "'!\nCurrent strike count: " +
+      strikes.length,
     msgtype: "m.notice",
     format: "org.matrix.custom.html",
     formatted_body:
@@ -121,6 +132,7 @@ export async function runKickCommand(
       graim_name +
       " for reason '<code>" +
       htmlEscape(reason) +
-      "</code>'!\nCurrent strike count: " + strikes.length
+      "</code>'!\nCurrent strike count: " +
+      strikes.length,
   });
 }
