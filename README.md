@@ -5,11 +5,6 @@ matrix &lt;=&gt; discord moderation with the power of matrix-appservice-discord
 graim's website is viewable at https://gra.im.
 You can join the graim [Matrix space](https://matrix.to/#/#graim:matrix.org) as well as the [Discord server](https://discord.gg/MV7fDb4AKy). *the main matrix room is @ [#graim-general:matrix.org](https://matrix.to/#/#graim-general:matrix.org)
 
-## ⚠️ WARNING ⚠️
-graim is VERY early in beta at the moment. it is unstable.
-
-DO NOT use graim unless you intend to help with development. If you need a solution like graim, I advise you join our Discord or Matrix for updates to when graim IS ready for real-world usage!
-
 ## Configure/Install
 Check out the [configuration guide](./setup.md).
 
