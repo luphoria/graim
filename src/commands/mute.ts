@@ -55,8 +55,10 @@ export async function runMuteCommand(
   let user = command[1] || ""; // we default to an empty string because it causes non-fatal errors.
 
   let lookup;
-  let msToUnmute = ms(command[2]);
-  if(!msToUnmute) {
+  let msToUnmute;
+  try {
+    msToUnmute = ms(command[2]);
+  } catch {
     msToUnmute = ms("1d");
     reason = command.slice(2).join(" ") || "No reason specified."
   }
