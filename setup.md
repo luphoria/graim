@@ -70,6 +70,6 @@ In order to use any graim commands, you first need to be considered a moderator 
 
 - Run `;adduser <alias> @user:matrixexample.org @discorduser moderator` from an Admin (power level 100) account on Matrix.
 
-*In the future, any new moderators you add will also be able to run `adduser` - whether they have power level 100 or not.*
+NOTE: Any new moderators you add will also be able to run `adduser` - whether they have power level 100 or not.
 
 **Congratulations, you have set up graim!**
