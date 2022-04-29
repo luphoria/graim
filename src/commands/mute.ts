@@ -94,10 +94,10 @@ export async function runMuteCommand(
     let mention = await MentionPill.forUser(user);
 
     return client.sendMessage(roomId, {
-      body: "Muted " + mention.text + " for " + new Date(msToUnmute).getHours + ":" + new Date(msToUnmute).getMinutes + " for reason " + reason + "!",
+      body: "Muted " + mention.text + " for reason " + reason + "!",
       msgtype: "m.notice",
       format: "org.matrix.custom.html",
-      formatted_body: "Muted " + mention.html + " for " + new Date(msToUnmute).getHours + ":" + new Date(msToUnmute).getMinutes +  " for reason <code>" + htmlEscape(reason) + "</code>!",
+      formatted_body: "Muted " + mention.html + " for reason <code>" + htmlEscape(reason) + "</code>!",
     });
   }
 
@@ -129,9 +129,9 @@ export async function runMuteCommand(
   } catch {}
 
   return client.sendMessage(roomId, {
-    body: "Muted " + lookup.graim_name + " for " + new Date(msToUnmute).getHours + ":" + new Date(msToUnmute).getMinutes + " for reason " + reason + "!",
+    body: "Muted " + lookup.graim_name + " for reason " + reason + "!",
     msgtype: "m.notice",
     format: "org.matrix.custom.html",
-    formatted_body: "Muted " + lookup.graim_name + " for " + new Date(msToUnmute).getHours + ":" + new Date(msToUnmute).getMinutes +  " for reason <code>" + htmlEscape(reason) + "</code>!",
+    formatted_body: "Muted " + lookup.graim_name + " for reason <code>" + htmlEscape(reason) + "</code>!",
   });
 }
