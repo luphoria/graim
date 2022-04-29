@@ -2,19 +2,22 @@
 matrix &lt;=&gt; discord moderation with the power of matrix-appservice-discord
 
 ## Social
-graim's website is viewable at https://gra.im.
+graim's website is viewable at [gra.im](https://gra.im).
 You can join the graim [Matrix space](https://matrix.to/#/#graim:matrix.org) as well as the [Discord server](https://discord.gg/MV7fDb4AKy). *the main matrix room is @ [#graim-general:matrix.org](https://matrix.to/#/#graim-general:matrix.org)
 
 ## Configure/Install
 Check out the [configuration guide](./setup.md).
 
 ## TODOs
- - LOTS OF BUG FIXING!
+- Bug fixing
+- Better guides
 
 ## Features
 - Kick
 - Ban + unban
 - Mute
+- Strike system
+- Automatically log moderation history
 - Discord moderators may use `whosent` to discover what matrix user is behind a Discord message
 - Userinfo command
 - moderation syncs across rooms

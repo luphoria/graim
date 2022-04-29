@@ -16,7 +16,7 @@ export async function runAddUserCommand(
 ) {
   console.log(formatted_body);
   try {
-    if (!lookup_user(event.sender).moderator) {
+    if (!lookup_user(event.sender).moderator) { // TODO : accept if user is an administrator (power level 100)
       return client.sendMessage(roomId, {
         body: "You aren't a moderator!",
         msgtype: "m.notice",

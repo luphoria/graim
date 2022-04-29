@@ -38,8 +38,6 @@ This tutorial is created with [Element](https://app.element.io) in mind.
 - Press the top-left user profile icon, and then press "All settings".
 - Press "Help & About".
 - Scroll to the bottom, and click on "Access Token".
-
-![image](https://user-images.githubusercontent.com/60309933/165205245-39485faa-0f0f-4f3a-8fd8-b448ba8c5f05.png)
 - Copy the access token. **Do not share your access token.** Treat it like your password.
 
 ## Download graim
