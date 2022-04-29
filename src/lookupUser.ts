@@ -1,3 +1,5 @@
+// TODO - make up your damn mind! do you want the @ or not? (i don't)
+
 import config from "./config";
 const file = require("fs");
 export let db = JSON.parse(file.readFileSync("./graimdb.json"));
@@ -30,7 +32,7 @@ export const lookup_user = (name: String) => { // Reverses a user from graim's d
       graim_name = _user.name;
     }
     if (
-      _user.discord == name.substring(10, 28) &&
+      _user.discord == name.replace("@","").substring(9, 27) &&
       name.split(":")[1] == config.appserviceHS
     ) { // the name must have been a Discord ID
       console.log("Discord user FOUND in db");

@@ -1,5 +1,5 @@
-// TODO: add [reason]
-// -=- SYNTAX : ;mute <user> [time (smhd)]
+// TODO: log [reason]
+// -=- SYNTAX : ;mute <user> [time (smhd)] [reason]
 import {
   MatrixClient,
   MessageEvent,
@@ -43,20 +43,16 @@ export async function runMuteCommand(
         "mute &lt;user&gt; [time (1 day if not specified)]",
     });
   }
-
-  let user = "@" + args[1] || ""; // we default to an empty string because it causes non-fatal errors.
+  let commandString = args.join(" ");
 
   if (formatted_body) {
-    // sanity check - MentionPill cannot exist without a formatted body
-    if (formatted_body.includes('<a href="https://matrix.to/#/')) {
-      // MentionPill was used
-      user =
-        formatted_body.substring(
-          formatted_body.indexOf('<a href="https://matrix.to/#/') + 29, // 29 = char length of `<a href="https://matrix.to/#/`
-          formatted_body.indexOf('">')
-        ) || user;
-    }
+    commandString = formatted_body.replace(/<a href="https:\/\/matrix\.to\/#\/@|">(.*?)<\/a>/g, "");
   }
+
+  let command = commandString.split(" ");
+
+  let reason = command.slice(3).join(" ") || "No reason specified."
+  let user = command[1] || ""; // we default to an empty string because it causes non-fatal errors.
 
   let lookup: {
     graim_name: string;
@@ -65,20 +61,18 @@ export async function runMuteCommand(
     moderator: boolean;
   };
 
-  let msToUnmute: number;
-
-  try {
-    msToUnmute = ms(formatted_body.split("> ")[1]); // looks weird, but this is just catching the equivalent of args[2]
-  } catch {
+  let msToUnmute = ms(command[2]);
+  if(!msToUnmute) {
     msToUnmute = ms("1d");
+    reason = command.slice(2).join(" ") || "No reason specified."
   }
 
-  lookup = lookup_user(args[1]);
+  lookup = lookup_user(user);
 
   if (!lookup.graim_name) {
     if (user_discordId(user)) {
       try {
-        let user_discord = await guild.members.fetch(user_discordId(user)); // fetch the discord user
+        let user_discord = await guild.members.fetch(user_discordId("@" + user)); // fetch the discord user
         if (user_discord) user_discord.roles.add(mute_role);
         setTimeout(() => {
           user_discord.roles.remove(mute_role);
@@ -100,10 +94,10 @@ export async function runMuteCommand(
     let mention = await MentionPill.forUser(user);
 
     return client.sendMessage(roomId, {
-      body: "Muted " + mention.text + ".",
+      body: "Muted " + mention.text + " for reason " + reason + "!",
       msgtype: "m.notice",
       format: "org.matrix.custom.html",
-      formatted_body: "Muted " + mention.html + ".",
+      formatted_body: "Muted " + mention.html + " for reason <code>" + htmlEscape(reason) + "</code>!",
     });
   }
 
@@ -135,9 +129,9 @@ export async function runMuteCommand(
   } catch {}
 
   return client.sendMessage(roomId, {
-    body: "Muted " + lookup.graim_name + ".",
+    body: "Muted " + lookup.graim_name + " for reason " + reason + "!",
     msgtype: "m.notice",
     format: "org.matrix.custom.html",
-    formatted_body: "Muted " + htmlEscape(lookup.graim_name) + ".",
+    formatted_body: "Muted " + lookup.graim_name + " for reason <code>" + htmlEscape(reason) + "</code>!",
   });
 }

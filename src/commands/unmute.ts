@@ -35,18 +35,15 @@ export async function runUnmuteCommand(
       formatted_body: "Usage: " + COMMAND_PREFIX + "unmute &lt;user&gt;",
     });
   }
-
-  let user = "@" + args[1] || "";
-
+  let commandString = args.join(" ");
   if (formatted_body) {
-    if (formatted_body.includes("<a href=\"https://matrix.to/#/")) { // MentionPill was used
-      user =
-        formatted_body.substring(
-          formatted_body.indexOf('<a href="https://matrix.to/#/') + 29, // 29 = char length of `<a href="https://matrix.to/#/`
-          formatted_body.indexOf('">')
-        ) || user;
-    }
+    commandString = formatted_body.replace(/<a href="https:\/\/matrix\.to\/#\/@|">(.*?)<\/a>/g, "");
   }
+
+  let command = commandString.split(" ");
+
+  let reason = command.slice(2).join(" ") || "No reason specified."
+  let user = command[1] || ""; // we default to an empty string because it causes non-fatal errors.
 
   let lookup: {
     graim_name: string;
@@ -55,7 +52,7 @@ export async function runUnmuteCommand(
     moderator: boolean;
   };
 
-  lookup = lookup_user(args[1]);
+  lookup = lookup_user(user);
 
   if (!lookup.graim_name) {
     if (user_discordId(user)) {
@@ -72,10 +69,10 @@ export async function runUnmuteCommand(
     let mention = await MentionPill.forUser(user);
 
     return client.sendMessage(roomId, {
-      body: "Unmuted " + mention.text + ".",
+      body: "Unmuted " + lookup.graim_name + " for reason " + reason + "!",
       msgtype: "m.notice",
       format: "org.matrix.custom.html",
-      formatted_body: "Unmuted " + mention.html + ".",
+      formatted_body: "Unmuted " + lookup.graim_name + " for reason <code>" + htmlEscape(reason) + "</code>!",
     });
   }
 
@@ -99,9 +96,9 @@ export async function runUnmuteCommand(
   } catch {}
 
   return client.sendMessage(roomId, {
-    body: "Unmuted " + lookup.graim_name + ".",
+    body: "Unmuted " + lookup.graim_name + " for reason " + reason + "!",
     msgtype: "m.notice",
     format: "org.matrix.custom.html",
-    formatted_body: "Unmuted " + htmlEscape(lookup.graim_name) + ".",
+    formatted_body: "Unmuted " + lookup.graim_name + " for reason <code>" + htmlEscape(reason) + "</code>!",
   });
 }

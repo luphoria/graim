@@ -1,5 +1,5 @@
 // TODO: log [reason]
-// -=- SYNTAX : ;unban <user>
+// -=- SYNTAX : ;unban <user> [reason]
 import {
   MatrixClient,
   MessageEvent,
