@@ -17,12 +17,20 @@ export async function runDeleteUserCommand(
   console.log(formatted_body);
 
   if (!lookup_user(event.sender).moderator) {
-    return client.sendMessage(roomId, {
-      body: "You aren't a moderator!",
-      msgtype: "m.notice",
-      format: "org.matrix.custom.html",
-      formatted_body: "You aren't a moderator!",
-    });
+    let power_levels = await client.getRoomStateEvent(
+      roomId,
+      "m.room.power_levels",
+      ""
+    );
+    console.log(power_levels);
+    if (power_levels["users"]?.[event.sender] < 100) { // checks if user is an Admin
+      return client.sendMessage(roomId, {
+        body: "You aren't a moderator!",
+        msgtype: "m.notice",
+        format: "org.matrix.custom.html",
+        formatted_body: "You aren't a moderator!",
+      });
+    }
   }
 
   if (!args[1]) {

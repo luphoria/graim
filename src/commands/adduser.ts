@@ -16,13 +16,21 @@ export async function runAddUserCommand(
 ) {
   console.log(formatted_body);
   try {
-    if (!lookup_user(event.sender).moderator) { // TODO : accept if user is an administrator (power level 100)
-      return client.sendMessage(roomId, {
-        body: "You aren't a moderator!",
-        msgtype: "m.notice",
-        format: "org.matrix.custom.html",
-        formatted_body: "You aren't a moderator!",
-      });
+    if (!lookup_user(event.sender).moderator) {
+      let power_levels = await client.getRoomStateEvent(
+        roomId,
+        "m.room.power_levels",
+        ""
+      );
+      console.log(power_levels);
+      if (power_levels["users"]?.[event.sender] < 100) { // checks if user is an Admin
+        return client.sendMessage(roomId, {
+          body: "You aren't a moderator!",
+          msgtype: "m.notice",
+          format: "org.matrix.custom.html",
+          formatted_body: "You aren't a moderator!",
+        });
+      }
     }
 
     if (!args[3]) {
@@ -83,7 +91,7 @@ export async function runAddUserCommand(
       name: command[1],
       matrix: command[2].slice(1), // don't store the `@` of Matrix users in the db
       discord: user_discordId(command[3]),
-      strikes: []
+      strikes: [],
     };
     let moderator = command[4] == "moderator" ? true : false; // TODO: make a real ranking for admins vs. moderators
 
