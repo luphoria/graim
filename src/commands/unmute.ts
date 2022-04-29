@@ -59,8 +59,10 @@ export async function runUnmuteCommand(
 
   if (!lookup.graim_name) {
     if (user_discordId(user)) {
-      let user_discord = await guild.members.fetch(user_discordId(user));
-      if (user_discord) user_discord.roles.remove(mute_role);
+      try {
+        let user_discord = await guild.members.fetch(user_discordId(user));
+        if (user_discord) user_discord.roles.remove(mute_role);
+      } catch {}
     }
 
     rooms.forEach((roomId) => {
@@ -87,12 +89,14 @@ export async function runUnmuteCommand(
       formatted_body: "I don't think that user is in the graim database!",
     });
   }
-
-  let user_discord = await guild.members.fetch(lookup.user_discord);
   rooms.forEach((roomId) => {
     client.setUserPowerLevel(lookup.user_matrix, roomId, 0);
   });
-  user_discord.roles.remove(mute_role);
+
+  try {
+    let user_discord = await guild.members.fetch(lookup.user_discord);
+    user_discord.roles.remove(mute_role);
+  } catch {}
 
   return client.sendMessage(roomId, {
     body: "Unmuted " + lookup.graim_name + ".",

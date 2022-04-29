@@ -1,14 +1,16 @@
 import Discord = require("discord.js");
 export const discord_client = new Discord.Client({
-  intents: [ // Discord API requires you explicitly request for each part of the API you want to access
+  intents: [
+    // Discord API requires you explicitly request for each part of the API you want to access
     Discord.Intents.FLAGS.GUILDS,
     Discord.Intents.FLAGS.GUILD_MESSAGES,
     Discord.Intents.FLAGS.GUILD_MEMBERS,
-],
+  ],
 });
 import config from "../config";
 
-let nightly_songs = [ // :)
+let nightly_songs = [
+  // :)
   "Deca - Waiting",
   "Bread - Dismal Day",
   "Bread Club - Late Night Fever",
@@ -299,7 +301,8 @@ let nightly_songs = [ // :)
 export let guild;
 export let mute_role;
 
-const rotate_status = () => { // :)
+const rotate_status = () => {
+  // :)
   discord_client.user.setActivity(
     nightly_songs[Math.floor(Math.random() * nightly_songs.length)],
     { type: "LISTENING" }
@@ -310,9 +313,11 @@ const rotate_status = () => { // :)
 discord_client.on("ready", () => {
   console.info("Discord bot started! Logged in: " + discord_client.user.tag);
   rotate_status();
-  if(discord_client.guilds.cache.size > 1) {
-    console.error("You seem to have joined too many Discord servers...\ngraim only supports 1 discord server per instance, sorry ;(")
-    process.exit(1)
+  if (discord_client.guilds.cache.size > 1) {
+    console.error(
+      "You seem to have joined too many Discord servers...\ngraim only supports 1 discord server per instance, sorry ;("
+    );
+    process.exit(1);
   }
   guild = discord_client.guilds.resolve(config.discordGuild); // get the graim guild
   mute_role = guild.roles.cache.get(config.discordMutedRole); // get the muted role

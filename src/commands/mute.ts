@@ -28,19 +28,28 @@ export async function runMuteCommand(
     });
   }
 
-  if (!args[1]) { // user provided no arguments
+  if (!args[1]) {
+    // user provided no arguments
     return client.sendMessage(roomId, {
-      body: "Usage: " + COMMAND_PREFIX + "mute <user> [time (1 day if not specified)]",
+      body:
+        "Usage: " +
+        COMMAND_PREFIX +
+        "mute <user> [time (1 day if not specified)]",
       msgtype: "m.notice",
       format: "org.matrix.custom.html",
-      formatted_body: "Usage: " + COMMAND_PREFIX + "mute &lt;user&gt; [time (1 day if not specified)]",
+      formatted_body:
+        "Usage: " +
+        COMMAND_PREFIX +
+        "mute &lt;user&gt; [time (1 day if not specified)]",
     });
   }
 
   let user = "@" + args[1] || ""; // we default to an empty string because it causes non-fatal errors.
 
-  if (formatted_body) { // sanity check - MentionPill cannot exist without a formatted body
-    if (formatted_body.includes("<a href=\"https://matrix.to/#/")) { // MentionPill was used
+  if (formatted_body) {
+    // sanity check - MentionPill cannot exist without a formatted body
+    if (formatted_body.includes('<a href="https://matrix.to/#/')) {
+      // MentionPill was used
       user =
         formatted_body.substring(
           formatted_body.indexOf('<a href="https://matrix.to/#/') + 29, // 29 = char length of `<a href="https://matrix.to/#/`
@@ -68,18 +77,21 @@ export async function runMuteCommand(
 
   if (!lookup.graim_name) {
     if (user_discordId(user)) {
-      let user_discord = await guild.members.fetch(user_discordId(user)); // fetch the discord user
-      if (user_discord) user_discord.roles.add(mute_role);
-      setTimeout(() => {
-        user_discord.roles.remove(mute_role);
-      }, msToUnmute);
+      try {
+        let user_discord = await guild.members.fetch(user_discordId(user)); // fetch the discord user
+        if (user_discord) user_discord.roles.add(mute_role);
+        setTimeout(() => {
+          user_discord.roles.remove(mute_role);
+        }, msToUnmute);
+      } catch {}
     }
 
     rooms.forEach((roomId) => {
       client.setUserPowerLevel(user, roomId, -1);
     });
 
-    setTimeout(() => { // once this time has passed, undo the mute!
+    setTimeout(() => {
+      // once this time has passed, undo the mute!
       rooms.forEach((roomId) => {
         client.setUserPowerLevel(user, roomId, 0);
       });
@@ -109,16 +121,18 @@ export async function runMuteCommand(
   rooms.forEach((roomId) => {
     client.setUserPowerLevel(lookup.user_matrix, roomId, -1);
   });
+  try {
+    let user_discord = await guild.members.fetch(lookup.user_discord);
+    user_discord.roles.add(mute_role);
 
-  let user_discord = await guild.members.fetch(lookup.user_discord);
-  user_discord.roles.add(mute_role);
-
-  setTimeout(() => { // once this time has passed, undo the mute!
-    rooms.forEach((roomId) => {
-      client.setUserPowerLevel(lookup.user_matrix, roomId, 0);
-    });
-    user_discord.roles.remove(mute_role);
-  }, msToUnmute);
+    setTimeout(() => {
+      // once this time has passed, undo the mute!
+      rooms.forEach((roomId) => {
+        client.setUserPowerLevel(lookup.user_matrix, roomId, 0);
+      });
+      user_discord.roles.remove(mute_role);
+    }, msToUnmute);
+  } catch {}
 
   return client.sendMessage(roomId, {
     body: "Muted " + lookup.graim_name + ".",

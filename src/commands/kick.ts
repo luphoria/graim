@@ -31,8 +31,9 @@ export async function runKickCommand(
   let mentioned = false; // did the user provide a MentionPill or a plain-text@messa.ge?
   let user = args[1] || "";
   let reason = args.slice(2).join(" ") || "No reason specified";
-  if (formatted_body) { // sanity check - MentionPill cannot exist without a formatted body
-    if (formatted_body.includes("<a href=\"https://matrix.to/#/")) { 
+  if (formatted_body) {
+    // sanity check - MentionPill cannot exist without a formatted body
+    if (formatted_body.includes('<a href="https://matrix.to/#/')) {
       mentioned = true;
       user =
         formatted_body.substring(
@@ -47,12 +48,16 @@ export async function runKickCommand(
   let user_matrix = lookup.user_matrix;
   let graim_name = lookup.graim_name;
 
-  if (!graim_name) { // there is no registered graim user
+  if (!graim_name) {
+    // there is no registered graim user
     if (mentioned) {
-      if (user_discordId(user)) { // if mention was a valid Discord user ID
-        let user_discord = await guild.members.fetch(user_discordId(user)); // fetch discord user
-        if (user_discord.kickable)
-          user_discord.kick(event.sender + ": " + reason);
+      if (user_discordId(user)) {
+        // if mention was a valid Discord user ID
+        try {
+          let user_discord = await guild.members.fetch(user_discordId(user)); // fetch discord user
+          if (user_discord.kickable)
+            user_discord.kick(event.sender + ": " + reason);
+        } catch {}
       }
     }
     rooms.forEach((roomId) => {
@@ -86,8 +91,10 @@ export async function runKickCommand(
     );
   });
 
-  let user_discord = await guild.members.fetch(lookup.user_discord); // fetch discord user
-  if (user_discord.kickable) user_discord.kick(event.sender + ": " + reason);
+  try {
+    let user_discord = await guild.members.fetch(lookup.user_discord); // fetch discord user
+    if (user_discord.kickable) user_discord.kick(event.sender + ": " + reason);
+  } catch {}
 
   return client.sendMessage(roomId, {
     body: "Kicked " + graim_name + " for reason '" + reason + "'!",

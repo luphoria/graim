@@ -56,11 +56,11 @@ export async function runDeleteUserCommand(
   saveDB(db);
 
   return client.sendMessage(roomId, {
-    body:
-      `Successfully removed ${lookup.graim_name} from the graim db!`,
+    body: `Successfully removed ${lookup.graim_name} from the graim db!`,
     msgtype: "m.notice",
     format: "org.matrix.custom.html",
-    formatted_body:
-      `Successfully removed ${htmlEscape(lookup.graim_name)} from the graim db!`,
+    formatted_body: `Successfully removed ${htmlEscape(
+      lookup.graim_name
+    )} from the graim db!`,
   });
 }

@@ -15,7 +15,7 @@ import { runMuteCommand } from "./mute";
 import { runUnmuteCommand } from "./unmute";
 import { runAddUserCommand } from "./adduser";
 import { runDeleteUserCommand } from "./deleteuser";
-import { startedWhen  } from "../index";
+import { startedWhen } from "../index";
 import { runWhoSentCommand } from "./whosent";
 
 // The prefix required to trigger the bot. The bot will also respond
@@ -104,10 +104,16 @@ export default class CommandHandler {
           runAddUserCommand(roomId, event, args, this.client, formatted_body);
           break;
         case "deleteuser":
-          runDeleteUserCommand(roomId, event, args, this.client, formatted_body);
+          runDeleteUserCommand(
+            roomId,
+            event,
+            args,
+            this.client,
+            formatted_body
+          );
           break;
         case "whosent":
-          runWhoSentCommand(roomId,args,this.client);
+          runWhoSentCommand(roomId, args, this.client);
           break;
         case "help":
           const help =
@@ -122,7 +128,9 @@ export default class CommandHandler {
             `${COMMAND_PREFIX}userinfo [user] - Provides information about the user`;
 
           const text = `Help menu:\n${help}`;
-          const html = `<b>Help menu:</b><br /><pre><code>${htmlEscape(help)}</code></pre>`;
+          const html = `<b>Help menu:</b><br /><pre><code>${htmlEscape(
+            help
+          )}</code></pre>`;
           const reply = RichReply.createFor(roomId, ev, text, html); // Note that we're using the raw event, not the parsed one!
           reply["msgtype"] = "m.notice"; // Bots should always use notices
           return this.client.sendMessage(roomId, reply);
