@@ -59,9 +59,9 @@ export async function runMuteCommand(
 
   let lookup;
   let msToUnmute;
-  try {
-    msToUnmute = ms(command[2]);
-  } catch {
+
+  msToUnmute = ms(command[2]);
+  if(!msToUnmute) {
     msToUnmute = ms("1d");
     reason = command.slice(2).join(" ") || "No reason specified.";
   }
