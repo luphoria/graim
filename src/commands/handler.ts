@@ -93,7 +93,7 @@ export default class CommandHandler {
           runUnbanCommand(roomId, event, args, this.client, formatted_body);
           break;
         case "userinfo":
-          runUserinfoCommand(roomId, event, args, this.client);
+          runUserinfoCommand(roomId, event, args, this.client, formatted_body);
           break;
         case "mute":
           runMuteCommand(roomId, event, args, this.client, formatted_body);

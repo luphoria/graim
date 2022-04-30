@@ -10,16 +10,30 @@ export async function runUserinfoCommand(
   roomId: string,
   event: MessageEvent<MessageEventContent>,
   args: string[],
-  client: MatrixClient
+  client: MatrixClient,
+  formatted_body: string
 ) {
-  let user;
-  try {
-    user = lookup_user(args[1]);
-  } catch {
-    // user provided no arguments - let's use their user as the arg instead
-    user = lookup_user(event.sender);
+  let user = args[1];
+
+  if(!args[1]) {
+    user = event.sender;
   }
-  if (!user.graim_name) {
+
+  if (formatted_body) {
+    if (formatted_body.includes('<a href="https://matrix.to/#/')) {
+      // MentionPill was provided
+      user =
+        formatted_body.substring(
+          formatted_body.indexOf('<a href="https://matrix.to/#/') + 29, // 29 = char length of `<a href="https://matrix.to/#/`
+          formatted_body.indexOf('">')
+        ) || user;
+    }
+  }
+
+  let lookup = lookup_user(user);
+
+
+  if (!lookup.graim_name) {
     // not in graim db
     return client.sendMessage(roomId, {
       body: "I don't think that user is in the graim database!",
@@ -29,19 +43,19 @@ export async function runUserinfoCommand(
     });
   }
 
-  console.log(user);
+  console.log(lookup);
 
   let modOnlyLookup = "";
   if (lookup_user(event.sender).moderator) {
-    if (user.strikes.length > 0) {
+    if (lookup.strikes.length > 0) {
       modOnlyLookup = "\n\nStrikes:\n";
-      for (let i = 0; i < user.strikes.length; i++) {
+      for (let i = 0; i < lookup.strikes.length; i++) {
         modOnlyLookup +=
-          new Date(user.strikes[i].time).toLocaleDateString() +
+          new Date(lookup.strikes[i]["time"]).toLocaleDateString() +
           ": " +
-          user.strikes[i].reason +
+          lookup.strikes[i]["reason"] +
           " [" +
-          user.strikes[i].action +
+          lookup.strikes[i]["action"] +
           "]\n";
       }
     }
@@ -49,18 +63,18 @@ export async function runUserinfoCommand(
 
   return client.sendMessage(roomId, {
     body:
-      `User: ${user.graim_name}\n` +
-      `   Matrix: ${user.user_matrix}\n` +
-      `   Discord: ${user.user_discord}\n` +
-      `Moderator? ${user.moderator ? "Yes" : "No"}` +
+      `User: ${lookup.graim_name}\n` +
+      `   Matrix: ${lookup.user_matrix}\n` +
+      `   Discord: ${lookup.user_discord}\n` +
+      `Moderator? ${lookup.moderator ? "Yes" : "No"}` +
       modOnlyLookup,
     msgtype: "m.notice",
     format: "org.matrix.custom.html",
     formatted_body:
-      `User: ${htmlEscape(user.graim_name)}\n` +
-      `   Matrix: ${htmlEscape(user.user_matrix)}\n` +
-      `   Discord: ${htmlEscape(user.user_discord)}\n` +
-      `Moderator? ${user.moderator ? "Yes" : "No"}` +
+      `User: ${htmlEscape(lookup.graim_name)}\n` +
+      `   Matrix: ${htmlEscape(lookup.user_matrix)}\n` +
+      `   Discord: ${htmlEscape(lookup.user_discord)}\n` +
+      `Moderator? ${lookup.moderator ? "Yes" : "No"}` +
       modOnlyLookup,
   });
 }
