@@ -18,6 +18,7 @@ import { runDeleteUserCommand } from "./deleteuser";
 import { startedWhen } from "../index";
 import { runWhoSentCommand } from "./whosent";
 import { runStrikeUserCommand } from "./strike";
+import { runClearStrikesCommand } from "./clearstrikes";
 
 // The prefix required to trigger the bot. The bot will also respond
 // to being pinged directly.
@@ -110,6 +111,9 @@ export default class CommandHandler {
         case "strike":
           runStrikeUserCommand(roomId, args, this.client, formatted_body);
           break;
+        case "clearstrikes":
+          runClearStrikesCommand(roomId, args, this.client, formatted_body);
+          break;
         case "whosent":
           runWhoSentCommand(roomId, args, this.client);
           break;
@@ -121,6 +125,7 @@ export default class CommandHandler {
             `${COMMAND_PREFIX}mute <user> [time:s,m,h,d] [reason] - Mutes a user\n` +
             `${COMMAND_PREFIX}unmute <user> [reason] - Unmutes a user\n` +
             `${COMMAND_PREFIX}strike <user> [reason] - Strikes a user\n` +
+            `${COMMAND_PREFIX}clearstrikes <user> [reason] - Clears all strikes from a user\n` +
             `\n` +
             `${COMMAND_PREFIX}adduser <graim_name> <matrix_mention> <discord_mention> [moderator] - Adds user to graim database (for syncing moderation)\n` +
             `${COMMAND_PREFIX}deleteuser <user> - Removes a user from graim database\n` +
