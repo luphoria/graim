@@ -7,10 +7,25 @@ const util = require("util");
 export async function runStrikeUserCommand(
   roomId: string,
   args: string[],
-  client: MatrixClient
+  client: MatrixClient,
+  formatted_body: string
 ) {
-  let user = lookup_user(args[1]);
-  if (!user.graim_name) {
+
+  let user = args[1] || "";
+  if (formatted_body) {
+    // sanity check - MentionPill cannot exist without a formatted body
+    if (formatted_body.includes('<a href="https://matrix.to/#/')) {
+      user =
+        formatted_body.substring(
+          formatted_body.indexOf('<a href="https://matrix.to/#/') + 29, // 29 = char length of `<a href="https://matrix.to/#/`
+          formatted_body.indexOf('">')
+        ) || user;
+    }
+  }
+
+  let lookup = lookup_user(user);
+
+  if (!lookup.graim_name) {
     // not in graim db
     return client.sendMessage(roomId, {
       body: "I don't think that user is in the graim database!",
@@ -25,7 +40,7 @@ export async function runStrikeUserCommand(
   console.log(
     util.inspect(
       db.users.filter((dbuser) => {
-        return dbuser.name == user.graim_name;
+        return dbuser.name == lookup.graim_name;
       }),
       true,
       null,
@@ -35,7 +50,7 @@ export async function runStrikeUserCommand(
 
   db.users
     .filter((dbuser) => {
-      return dbuser.name == user.graim_name;
+      return dbuser.name == lookup.graim_name;
     })[0]
     .strikes.push({
       time: Date.now(),
@@ -46,13 +61,13 @@ export async function runStrikeUserCommand(
   saveDB(db);
 
   let strikes = db.users.filter((dbuser) => {
-    return dbuser.name == user.graim_name;
+    return dbuser.name == lookup.graim_name;
   })[0].strikes;
 
   return client.sendMessage(roomId, {
-    body: `Striked ${user.graim_name}: ${reason}.\nCurrent strike count: ${strikes.length}`,
+    body: `Striked ${lookup.graim_name}: ${reason}.\nCurrent strike count: ${strikes.length}`,
     msgtype: "m.notice",
     format: "org.matrix.custom.html",
-    formatted_body: `Striked ${user.graim_name}: ${htmlEscape(reason)}.\nCurrent strike count: ${strikes.length}`,
+    formatted_body: `Striked ${lookup.graim_name}: ${htmlEscape(reason)}.\nCurrent strike count: ${strikes.length}`,
   });
 }

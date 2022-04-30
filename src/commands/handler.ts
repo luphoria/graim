@@ -108,7 +108,7 @@ export default class CommandHandler {
           runDeleteUserCommand(roomId,event,args,this.client,formatted_body);
           break;
         case "strike":
-          runStrikeUserCommand(roomId, args, this.client);
+          runStrikeUserCommand(roomId, args, this.client, formatted_body);
           break;
         case "whosent":
           runWhoSentCommand(roomId, args, this.client);
