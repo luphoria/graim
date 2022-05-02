@@ -22,8 +22,8 @@ export async function runAddUserCommand(
         "m.room.power_levels",
         ""
       );
-      console.log(power_levels);
-      if (power_levels["users"]?.[event.sender] < 100) { // checks if user is an Admin
+      console.log(power_levels["users"]);
+      if (power_levels["users"]?.[event.sender] < 100 || !power_levels["users"][event.sender]) { // checks if user is an Admin
         return client.sendMessage(roomId, {
           body: "You aren't a moderator!",
           msgtype: "m.notice",
