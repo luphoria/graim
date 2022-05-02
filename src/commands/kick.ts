@@ -132,7 +132,7 @@ export async function runKickCommand(
       graim_name +
       " for reason '<code>" +
       htmlEscape(reason) +
-      "</code>'!\nCurrent strike count: " +
+      "</code>'!<br/>Current strike count: " +
       strikes.length,
   });
 }

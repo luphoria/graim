@@ -117,9 +117,9 @@ export async function runAddUserCommand(
       msgtype: "m.notice",
       format: "org.matrix.custom.html",
       formatted_body:
-        `User: ${htmlEscape(user.name)}\n` +
-        `   Matrix: ${htmlEscape(user.matrix)}\n` +
-        `   Discord: ${htmlEscape(user.discord)}\n` +
+        `User: ${htmlEscape(user.name)}<br/>` +
+        `   Matrix: ${htmlEscape(user.matrix)}<br/>` +
+        `   Discord: ${htmlEscape(user.discord)}<br/>` +
         `Moderator? ${moderator ? "Yes" : "No"}`,
     });
   } catch {

@@ -79,6 +79,6 @@ export async function runStrikeUserCommand(
     body: `Striked ${lookup.graim_name}: ${reason}.\nCurrent strike count: ${strikes.length}`,
     msgtype: "m.notice",
     format: "org.matrix.custom.html",
-    formatted_body: `Striked ${lookup.graim_name}: ${htmlEscape(reason)}.\nCurrent strike count: ${strikes.length}`,
+    formatted_body: `Striked ${lookup.graim_name}: ${htmlEscape(reason)}.<br/>Current strike count: ${strikes.length}`,
   });
 }

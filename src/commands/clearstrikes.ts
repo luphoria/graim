@@ -73,6 +73,6 @@ export async function runClearStrikesCommand(
     body: `Cleared all strikes for ${lookup.graim_name}.\nCurrent strike count: ${strikes.length}`,
     msgtype: "m.notice",
     format: "org.matrix.custom.html",
-    formatted_body: `Cleared all strikes for ${lookup.graim_name}.\nCurrent strike count: ${strikes.length}`,
+    formatted_body: `Cleared all strikes for ${lookup.graim_name}.<br/>Current strike count: ${strikes.length}`,
   });
 }

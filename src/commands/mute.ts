@@ -164,7 +164,7 @@ export async function runMuteCommand(
       lookup.graim_name +
       " for reason <code>" +
       htmlEscape(reason) +
-      "</code>!\nCurrent strikes: " +
+      "</code>!<br/>Current strikes: " +
       strikes.length,
   });
 }

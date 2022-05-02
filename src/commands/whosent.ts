@@ -77,7 +77,7 @@ export async function runWhoSentCommand(
         body: `Sorry, but the query returned no results :(\nYou'll probably have to log on Matrix for this one.`,
         msgtype: "m.notice",
         format: "org.matrix.custom.html",
-        formatted_body: `Sorry, but the query returned no results :(\nYou'll probably have to log on Matrix for this one.`,
+        formatted_body: `Sorry, but the query returned no results :(<br/>You'll probably have to log on Matrix for this one.`,
       });
     }
 
@@ -101,7 +101,7 @@ export async function runWhoSentCommand(
         body: `Sorry, but the query returned no results :(\nYou'll probably have to log on Matrix for this one.`,
         msgtype: "m.notice",
         format: "org.matrix.custom.html",
-        formatted_body: `Sorry, but the query returned no results :(\nYou'll probably have to log on Matrix for this one.`,
+        formatted_body: `Sorry, but the query returned no results :(<br/>You'll probably have to log on Matrix for this one.`,
       });
     }
   } catch {

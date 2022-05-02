@@ -71,10 +71,10 @@ export async function runUserinfoCommand(
     msgtype: "m.notice",
     format: "org.matrix.custom.html",
     formatted_body:
-      `User: ${htmlEscape(lookup.graim_name)}\n` +
-      `   Matrix: ${htmlEscape(lookup.user_matrix)}\n` +
-      `   Discord: ${htmlEscape(lookup.user_discord)}\n` +
+      `User: ${htmlEscape(lookup.graim_name)}<br/>` +
+      `   Matrix: ${htmlEscape(lookup.user_matrix)}<br/>` +
+      `   Discord: ${htmlEscape(lookup.user_discord)}<br/>` +
       `Moderator? ${lookup.moderator ? "Yes" : "No"}` +
-      modOnlyLookup,
+      modOnlyLookup.replace(/\\n/g,"<br/>"),
   });
 }

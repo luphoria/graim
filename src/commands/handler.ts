@@ -135,7 +135,7 @@ export default class CommandHandler {
           const text = `Help menu:\n${help}`;
           const html = `<b>Help menu:</b><br /><pre><code>${htmlEscape(
             help
-          )}</code></pre>`;
+          )}</code></pre>`.replace(/\\n/g,"<br/>");
           const reply = RichReply.createFor(roomId, ev, text, html); // Note that we're using the raw event, not the parsed one!
           reply["msgtype"] = "m.notice"; // Bots should always use notices
           return this.client.sendMessage(roomId, reply);
