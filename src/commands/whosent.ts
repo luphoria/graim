@@ -31,6 +31,8 @@ export async function runWhoSentCommand(
 
     console.log(msg.author.username + ": " + msg.content);
 
+    // TODO: look up display name first!
+
     client.sendMessage(roomId, {
       // give some reception while the user waits - search api takes time
       body: `Searching . . .`,
