@@ -47,20 +47,17 @@ export async function runUnbanCommand(
 
   let user_matrix = lookup.user_matrix;
   let graim_name = lookup.graim_name;
+  let user_discord = lookup.user_discord;
 
   if (!user_matrix) {
     // not in graim's db
-    if (mentioned) {
-      if (user_discordId(user)) {
-        // if user was bridged from Discord
-          let user_discord = await guild.members.fetch(user_discordId(user)).catch((err)=>console.log(err)); // fetch the Discord user by ID
-          if (user_discord.Banned)
-            user_discord.unban({ reason: event.sender + ": " + reason }).catch((err)=>console.log(err));
-      }
+    if (user_discordId(user)) {
+      // if user was bridged from Discord
+      guild.members.unban(user_discordId(user)).catch((err) => console.log(err));
     }
 
     rooms.forEach((roomId) => {
-        client.unbanUser(user, roomId);
+      client.unbanUser(user, roomId);
     });
 
     let mention = await MentionPill.forUser(user); // MentionPill for aesthetics
@@ -79,10 +76,9 @@ export async function runUnbanCommand(
   }
 
   rooms.forEach((roomId) => {
-      client.unbanUser(user_matrix, roomId);
+    client.unbanUser(user_matrix, roomId);
   });
-    let user_discord = await guild.members.fetch(user_discordId(user)).catch((err)=>console.log(err));
-    if (user_discord.Banned) guild.members.unban(lookup.user_discord).catch((err)=>console.log(err));
+  guild.members.unban(user_discord).catch((err) => console.log(err));
 
   return client.sendMessage(roomId, {
     body: "Unbanned " + graim_name + " for reason '" + reason + "'!",

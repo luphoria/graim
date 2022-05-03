@@ -57,10 +57,12 @@ export async function runBanCommand(
         let user_discord = await guild.members
           .fetch(user_discordId(user))
           .catch((err) => console.error(err)); // get the discord user
-        if (user_discord.bannable)
-          user_discord
-            .ban({ reason: event.sender + ": " + reason })
-            .catch((err) => console.error(err));
+        if (user_discord) {
+          if (user_discord.bannable)
+            user_discord
+              .ban({ reason: event.sender + ": " + reason })
+              .catch((err) => console.error(err));
+        }
       }
     }
     rooms.forEach((roomId) => {
@@ -96,10 +98,12 @@ export async function runBanCommand(
   let user_discord = await guild.members
     .fetch(lookup.user_discord)
     .catch((err) => console.error(err)); // get the discord user
-  if (user_discord.bannable)
-    user_discord
-      .ban({ reason: event.sender + ": " + reason })
-      .catch((err) => console.error(err));
+  if (user_discord) {
+    if (user_discord.bannable)
+      user_discord
+        .ban({ reason: event.sender + ": " + reason })
+        .catch((err) => console.error(err));
+  }
 
   db.users
     .filter((dbuser) => {
