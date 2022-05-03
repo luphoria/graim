@@ -50,7 +50,7 @@ export async function runDeleteUserCommand(
   db.users.pop(
     db.users.filter((user) => {
       return user.name == lookup.graim_name;
-    })
+    })[0]
   );
   if (lookup.moderator) delete db.mods[lookup.graim_name];
   saveDB(db);
