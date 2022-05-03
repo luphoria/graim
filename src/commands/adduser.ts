@@ -31,6 +31,14 @@ export async function runAddUserCommand(
           formatted_body: "You aren't a moderator!",
         });
       }
+      if (Object.keys(db.mods).length > 0) { // make sure a malicious user cannot hax with autojoin on
+        return client.sendMessage(roomId, {
+          body: "It seems that there is already a moderator in the database.\nIf this is a mistake, please manually clear graimdb.json",
+          msgtype: "m.notice",
+          format: "org.matrix.custom.html",
+          formatted_body: "It seems that there is already a moderator in the database.<br/>If this is a mistake, please manually clear graimdb.json",
+        });
+      }
     }
 
     if (!args[3]) {
@@ -122,7 +130,8 @@ export async function runAddUserCommand(
         `   Discord: ${htmlEscape(user.discord)}<br/>` +
         `Moderator? ${moderator ? "Yes" : "No"}`,
     });
-  } catch {
+  } catch(err) {
+    console.log(err);
     return client.sendMessage(roomId, {
       body: "Something went wrong running this command",
       msgtype: "m.notice",
