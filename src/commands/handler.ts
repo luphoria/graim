@@ -21,6 +21,8 @@ import { runStrikeUserCommand } from "./strike";
 import { runClearStrikesCommand } from "./clearstrikes";
 import { runLockCommand } from "./lock";
 import { runUnlockCommand } from "./unlock";
+import { runBridgeCommand } from "./bridgeroom";
+import { runUnbridgeCommand } from "./unbridgeroom";
 
 // The prefix required to trigger the bot. The bot will also respond
 // to being pinged directly.
@@ -116,6 +118,12 @@ export default class CommandHandler {
         case "deleteuser":
           runDeleteUserCommand(roomId,event,args,this.client,formatted_body);
           break;
+        case "bridgeroom":
+          runBridgeCommand(roomId,event,args,this.client,formatted_body);
+          break;
+        case "unbridgeroom":
+          runUnbridgeCommand(roomId,event,this.client,formatted_body);
+          break;
         case "strike":
           runStrikeUserCommand(roomId, event, args, this.client, formatted_body);
           break;
@@ -139,6 +147,8 @@ export default class CommandHandler {
             `\n` +
             `${COMMAND_PREFIX}adduser <graim_name> <matrix_mention> <discord_mention> [moderator] - Adds user to graim database (for syncing moderation)\n` +
             `${COMMAND_PREFIX}deleteuser <user> - Removes a user from graim database\n` +
+            `${COMMAND_PREFIX}bridgeroom <Discord channel id> - Bridges a Discord channel to a Matrix room (for lock, unlock)\n` +
+            `${COMMAND_PREFIX}unbridgeroom - Removes a room's bridge from the graim db\n` +
             `${COMMAND_PREFIX}whosent <link to Discord message> - tells you what Matrix user sent a message\n` +
             `${COMMAND_PREFIX}userinfo [user] - Provides information about the user`;
 

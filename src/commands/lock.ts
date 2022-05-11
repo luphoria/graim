@@ -1,4 +1,3 @@
-// TODO: log [reason]
 // -=- SYNTAX : ;lock [room]
 import {
   MatrixClient,
@@ -7,6 +6,7 @@ import {
 } from "matrix-bot-sdk";
 import { lookup_user, db } from "../lookupUser";
 import { guild } from "./discord_handler";
+import { COMMAND_PREFIX } from "./handler";
 
 export async function runLockCommand(
   roomId: string,
@@ -47,18 +47,22 @@ export async function runLockCommand(
   power_levels["events_default"] = 2; // higher than default
   client.sendStateEvent(room, "m.room.power_levels", "", power_levels);
 
+  let warn = "";
+
   if (channel) {
     channel = guild.channels.cache.get(channel);
     channel.permissionOverwrites.edit(channel.guild.id, {
       SEND_MESSAGES: false,
       ATTACH_FILES: false,
     });
+  } else {
+    warn = "\nNOTE: This room is not bridged in graim! For the lock to propagate to Discord, it must be attached to a Discord channel. See " + COMMAND_PREFIX + "bridgeroom."
   }
 
   return client.sendMessage(room, {
-    body: "Channel is locked. :(",
+    body: "Channel is locked. :(" + warn,
     msgtype: "m.notice",
     format: "org.matrix.custom.html",
-    formatted_body: "Channel is <b>locked</b>. :(",
+    formatted_body: "Channel is <b>locked</b>. :(" + warn,
   });
 }
