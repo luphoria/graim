@@ -23,7 +23,11 @@ export async function runAddUserCommand(
         ""
       );
       console.log(power_levels["users"]);
-      if (power_levels["users"]?.[event.sender] < 100 || !power_levels["users"][event.sender]) { // checks if user is an Admin
+      if (
+        power_levels["users"]?.[event.sender] < 100 ||
+        !power_levels["users"][event.sender]
+      ) {
+        // checks if user is an Admin
         return client.sendMessage(roomId, {
           body: "You aren't a moderator!",
           msgtype: "m.notice",
@@ -31,12 +35,14 @@ export async function runAddUserCommand(
           formatted_body: "You aren't a moderator!",
         });
       }
-      if (Object.keys(db.mods).length > 0) { // make sure a malicious user cannot hax with autojoin on
+      if (Object.keys(db.mods).length > 0) {
+        // make sure a malicious user cannot hax with autojoin on
         return client.sendMessage(roomId, {
           body: "It seems that there is already a moderator in the database.\nIf this is a mistake, please manually clear graimdb.json",
           msgtype: "m.notice",
           format: "org.matrix.custom.html",
-          formatted_body: "It seems that there is already a moderator in the database.<br/>If this is a mistake, please manually clear graimdb.json",
+          formatted_body:
+            "It seems that there is already a moderator in the database.<br/>If this is a mistake, please manually clear graimdb.json",
         });
       }
     }
@@ -67,7 +73,7 @@ export async function runAddUserCommand(
       });
     }
 
-    let command;
+    let command = event.content.body.split(" ");
 
     if (formatted_body) {
       // simple sanity check - MentionPill requires formatted body. This isn't really necessary
@@ -76,28 +82,12 @@ export async function runAddUserCommand(
         command = formatted_body
           .replace(/<a href="https:\/\/matrix\.to\/#\/|">(.*?)<\/a>/g, "") // REGEX: removes all content from MentionPill HTML except the MXID
           .split(" ");
-      } else {
-        // there was no MentionPill
-        return client.sendMessage(roomId, {
-          body: 'Please mention the users with a "mention pill"!',
-          msgtype: "m.notice",
-          format: "org.matrix.custom.html",
-          formatted_body: 'Please mention the users with a "mention pill"!',
-        });
       }
-    } else {
-      // there was no formatted body - so no mentionpill
-      return client.sendMessage(roomId, {
-        body: 'Please mention the users with a "mention pill"!',
-        msgtype: "m.notice",
-        format: "org.matrix.custom.html",
-        formatted_body: 'Please mention the users with a "mention pill"!',
-      });
     }
 
     let user = {
       name: command[1],
-      matrix: command[2].slice(1), // don't store the `@` of Matrix users in the db
+      matrix: command[2].replace("@",""), // don't store the `@` of Matrix users in the db
       discord: user_discordId(command[3]),
       strikes: [],
     };
@@ -126,11 +116,11 @@ export async function runAddUserCommand(
       format: "org.matrix.custom.html",
       formatted_body:
         `User: ${htmlEscape(user.name)}<br/>` +
-        `   Matrix: ${htmlEscape(user.matrix)}<br/>` +
+        `   Matrix: @${htmlEscape(user.matrix)}<br/>` +
         `   Discord: ${htmlEscape(user.discord)}<br/>` +
         `Moderator? ${moderator ? "Yes" : "No"}`,
     });
-  } catch(err) {
+  } catch (err) {
     console.log(err);
     return client.sendMessage(roomId, {
       body: "Something went wrong running this command",
