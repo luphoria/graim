@@ -3,6 +3,9 @@
 import config from "./config";
 const file = require("fs");
 export let db = JSON.parse(file.readFileSync("./graimdb.json"));
+if(!db.rooms) db.rooms = {};
+if(!db.mods) db.mods = {};
+if(!db.users) db.users = [];
 
 export const saveDB = (json) => {
   // Overwrite graimdb.json
