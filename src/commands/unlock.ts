@@ -47,7 +47,7 @@ export async function runUnlockCommand(
   client.sendStateEvent(room, "m.room.power_levels", "", power_levels).catch((err) => console.log(err));
 
   if (channel) {
-    channel = guild.channels.cache.get(channel).catch((err) => console.log(err));
+    channel = guild.channels.cache.get(channel);
     channel.permissionOverwrites.edit(channel.guild.id, {
       SEND_MESSAGES: true,
       ATTACH_FILES: true,

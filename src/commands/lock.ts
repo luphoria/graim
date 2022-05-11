@@ -50,7 +50,7 @@ export async function runLockCommand(
   let warn = "";
 
   if (channel) {
-    channel = guild.channels.cache.get(channel).catch((err) => console.log(err));
+    channel = guild.channels.cache.get(channel);
     channel.permissionOverwrites.edit(channel.guild.id, {
       SEND_MESSAGES: false,
       ATTACH_FILES: false,
