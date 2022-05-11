@@ -22,3 +22,5 @@ If applicable, add logs to help explain your problem.
 
 **Additional context**
 Add any other context about the problem here.
+
+<!-- If this crash was caused by sending a message to graim (and it was properly configured), then congratulations - I will give you $1 in XMR or BTC if you please. To opt into this, simply attach your wallet to the issue -->
