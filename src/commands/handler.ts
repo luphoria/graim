@@ -19,6 +19,7 @@ import { startedWhen } from "../index";
 import { runWhoSentCommand } from "./whosent";
 import { runStrikeUserCommand } from "./strike";
 import { runClearStrikesCommand } from "./clearstrikes";
+import { runLockCommand } from "./lock";
 
 // The prefix required to trigger the bot. The bot will also respond
 // to being pinged directly.
@@ -84,6 +85,9 @@ export default class CommandHandler {
     // Try and figure out what command the user ran
     try {
       switch (args[0]) {
+        case "lock":
+          runLockCommand(roomId, event, args, this.client, formatted_body);
+          break;
         case "kick":
           runKickCommand(roomId, event, args, this.client, formatted_body);
           break;
@@ -119,6 +123,7 @@ export default class CommandHandler {
           break;
         case "help":
           const help =
+            `${COMMAND_PREFIX}lock [room (REQUIRED if discord user)] - Locks room/channel\n` +
             `${COMMAND_PREFIX}kick <user> [reason] - Kicks a user\n` +
             `${COMMAND_PREFIX}ban <user> [reason] - Bans a user\n` +
             `${COMMAND_PREFIX}unban <user> [reason] - Unbans a user\n` +
