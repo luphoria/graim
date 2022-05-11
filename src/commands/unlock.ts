@@ -42,16 +42,16 @@ export async function runUnlockCommand(
     room,
     "m.room.power_levels",
     ""
-  );
+  ).catch((err) => console.log(err));
   power_levels["events_default"] = 0; // default
-  client.sendStateEvent(room, "m.room.power_levels", "", power_levels);
+  client.sendStateEvent(room, "m.room.power_levels", "", power_levels).catch((err) => console.log(err));
 
   if (channel) {
-    channel = guild.channels.cache.get(channel);
+    channel = guild.channels.cache.get(channel).catch((err) => console.log(err));
     channel.permissionOverwrites.edit(channel.guild.id, {
       SEND_MESSAGES: true,
       ATTACH_FILES: true,
-    });
+    }).catch((err) => console.log(err));
   }
 
   return client.sendMessage(room, {
