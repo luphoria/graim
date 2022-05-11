@@ -1,5 +1,4 @@
-// TODO: log [reason]
-// -=- SYNTAX : ;lock [room]
+// -=- SYNTAX : ;unlock [room]
 import {
   MatrixClient,
   MessageEvent,
@@ -8,7 +7,7 @@ import {
 import { lookup_user, db } from "../lookupUser";
 import { guild } from "./discord_handler";
 
-export async function runLockCommand(
+export async function runUnlockCommand(
   roomId: string,
   event: MessageEvent<MessageEventContent>,
   args: string[],
@@ -44,21 +43,21 @@ export async function runLockCommand(
     "m.room.power_levels",
     ""
   );
-  power_levels["events_default"] = 2; // higher than default
+  power_levels["events_default"] = 0; // default
   client.sendStateEvent(room, "m.room.power_levels", "", power_levels);
 
   if (channel) {
     channel = guild.channels.cache.get(channel);
     channel.permissionOverwrites.edit(channel.guild.id, {
-      SEND_MESSAGES: false,
-      ATTACH_FILES: false,
+      SEND_MESSAGES: true,
+      ATTACH_FILES: true,
     });
   }
 
   return client.sendMessage(room, {
-    body: "Channel is locked. :(",
+    body: "Channel is unlocked. :)",
     msgtype: "m.notice",
     format: "org.matrix.custom.html",
-    formatted_body: "Channel is <b>locked</b>. :(",
+    formatted_body: "Channel is <b>unlocked</b>. :)",
   });
 }

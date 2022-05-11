@@ -20,6 +20,7 @@ import { runWhoSentCommand } from "./whosent";
 import { runStrikeUserCommand } from "./strike";
 import { runClearStrikesCommand } from "./clearstrikes";
 import { runLockCommand } from "./lock";
+import { runUnlockCommand } from "./unlock";
 
 // The prefix required to trigger the bot. The bot will also respond
 // to being pinged directly.
@@ -88,6 +89,9 @@ export default class CommandHandler {
         case "lock":
           runLockCommand(roomId, event, args, this.client, formatted_body);
           break;
+        case "unlock":
+          runUnlockCommand(roomId, event, args, this.client, formatted_body);
+          break;
         case "kick":
           runKickCommand(roomId, event, args, this.client, formatted_body);
           break;
@@ -123,7 +127,8 @@ export default class CommandHandler {
           break;
         case "help":
           const help =
-            `${COMMAND_PREFIX}lock [room (REQUIRED if discord user)] - Locks room/channel\n` +
+            `${COMMAND_PREFIX}lock [room] - Locks room/channel\n` +
+            `${COMMAND_PREFIX}unlock [room] - Unlocks room/channel\n` +
             `${COMMAND_PREFIX}kick <user> [reason] - Kicks a user\n` +
             `${COMMAND_PREFIX}ban <user> [reason] - Bans a user\n` +
             `${COMMAND_PREFIX}unban <user> [reason] - Unbans a user\n` +
