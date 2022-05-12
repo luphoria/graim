@@ -34,14 +34,15 @@ export async function runUnlockCommand(
       ""
     );
     cmd = commandString.split(" ");
+    room = await client.resolveRoom(cmd[1]);
     if (!cmd[1].indexOf("_discord_")) {
-      Object.entries(db.rooms).find(([key, value]) => {
+      Object.entries(db.rooms).find(async ([key, value]) => {
         if (value === cmd[1].substring(10, 28)) {
           cmd[1] = key;
+          room = await client.resolveRoom(cmd[1]);
         }
       });
     }
-    room = await client.resolveRoom("#" + cmd[1]);
   }
 
   let power_levels = await client
