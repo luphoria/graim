@@ -35,16 +35,17 @@ export async function runLockCommand(
       ""
     );
     cmd = commandString.split(" ");
-    room = await client.resolveRoom("#" + cmd[1]);
+    room = (await client.resolveRoom("#" + cmd[1])) || null;
+    console.log(cmd);
     if (!cmd[1].indexOf("_discord_")) {
       Object.entries(db.rooms).find(async ([key, value]) => {
-        if (value === cmd[1].substring(10, 28)) {
+        if (value === cmd[1].substring(9, 27)) {
           cmd[1] = key;
-          room = await client.resolveRoom(cmd[1]);
-        } 
+          room = (await client.resolveRoom(cmd[1])) || null;
+        }
       });
     }
-    console.log(room);
+    console.log(cmd);
   }
 
   channel = db.rooms[room] || null;
@@ -56,7 +57,7 @@ export async function runLockCommand(
       console.log(err);
       error = true;
     });
-  if(error) {
+  if (error) {
     return client.sendMessage(roomId, {
       body: "Something went wrong",
       msgtype: "m.notice",
