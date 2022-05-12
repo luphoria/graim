@@ -39,7 +39,7 @@ export async function runUnlockCommand(
         if (value === cmd[1].substring(10, 28)) {
           cmd[1] = key;
         } else {
-          return client.sendMessage(room, {
+          return client.sendMessage(roomId, {
             body: "Something went wrong",
             msgtype: "m.notice",
             format: "org.matrix.custom.html",
@@ -55,7 +55,7 @@ export async function runUnlockCommand(
     .getRoomStateEvent(room, "m.room.power_levels", "")
     .catch((err) => {
       console.log(err);
-      return client.sendMessage(room, {
+      return client.sendMessage(roomId, {
         body: "Something went wrong",
         msgtype: "m.notice",
         format: "org.matrix.custom.html",
