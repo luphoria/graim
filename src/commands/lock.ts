@@ -38,14 +38,9 @@ export async function runLockCommand(
     room = (await client.resolveRoom("#" + cmd[1])) || null;
     console.log(cmd);
     if (!cmd[1].indexOf("_discord_")) {
-      Object.entries(db.rooms).find(async ([key, value]) => {
-        if (value === cmd[1].substring(9, 27)) {
-          cmd[1] = key;
-          room = (await client.resolveRoom(cmd[1])) || null;
-        }
-      });
+      cmd[1] = Object.keys(db.rooms).find(key => db.rooms[key] === cmd[1].substring(28,46));
+      room = (await client.resolveRoom(cmd[1])) || null;
     }
-    console.log(cmd);
   }
 
   channel = db.rooms[room] || null;
