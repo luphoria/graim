@@ -39,14 +39,7 @@ export async function runLockCommand(
       Object.entries(db.rooms).find(([key, value]) => {
         if (value === cmd[1].substring(10, 28)) {
           cmd[1] = key;
-        } else {
-          return client.sendMessage(roomId, {
-            body: "Something went wrong",
-            msgtype: "m.notice",
-            format: "org.matrix.custom.html",
-            formatted_body: "Something went wrong",
-          });
-        }
+        } 
       });
     }
     room = await client.resolveRoom("#" + cmd[1]);
