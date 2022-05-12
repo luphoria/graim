@@ -45,17 +45,22 @@ export async function runUnlockCommand(
     }
   }
 
+  let error = false;
+
   let power_levels = await client
     .getRoomStateEvent(room, "m.room.power_levels", "")
     .catch((err) => {
       console.log(err);
-      return client.sendMessage(roomId, {
-        body: "Something went wrong",
-        msgtype: "m.notice",
-        format: "org.matrix.custom.html",
-        formatted_body: "Something went wrong",
-      });
+      error = true;
     });
+  if(error) {
+    return client.sendMessage(roomId, {
+      body: "Something went wrong",
+      msgtype: "m.notice",
+      format: "org.matrix.custom.html",
+      formatted_body: "Something went wrong",
+    });
+  }
   power_levels["events_default"] = 0; // default
   client
     .sendStateEvent(room, "m.room.power_levels", "", power_levels)
