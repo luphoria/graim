@@ -34,7 +34,7 @@ export async function runUnlockCommand(
       ""
     );
     cmd = commandString.split(" ");
-    room = "#" + await client.resolveRoom(cmd[1]);
+    room = await client.resolveRoom("#" + cmd[1]);
     if (!cmd[1].indexOf("_discord_")) {
       Object.entries(db.rooms).find(async ([key, value]) => {
         if (value === cmd[1].substring(10, 28)) {
