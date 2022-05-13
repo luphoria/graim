@@ -44,6 +44,8 @@ export async function runLockCommand(
   }
 
   channel = db.rooms[room] || null;
+  console.log(channel);
+  console.log(room);
   let error = false;
 
   let power_levels = await client
