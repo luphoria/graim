@@ -1,4 +1,4 @@
-import config from "config"
+import config from "./config"
 import { MatrixClient } from "matrix-bot-sdk";
 import { db } from "./lookupUser";
 
