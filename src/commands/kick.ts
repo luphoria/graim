@@ -53,21 +53,23 @@ export async function runKickCommand(
       let user_discord = await guild.members
         .fetch(user_discordId(user))
         .catch((err) => console.log(err)); // fetch discord user
-      if (user_discord.kickable) {
-        user_discord
-          .kick(event.sender + ": " + reason)
-          .catch((err) => console.log(err));
-        log(
-          {
-            info: "Kicked user (discord)",
-            user: user,
-            reason: htmlEscape(reason),
-            caller: event.sender,
-          },
-          true,
-          client
-        );
-      }
+        if(user_discord) {
+          if (user_discord.kickable) {
+            user_discord
+              .kick(event.sender + ": " + reason)
+              .catch((err) => console.log(err));
+            log(
+              {
+                info: "Kicked user (discord)",
+                user: user,
+                reason: htmlEscape(reason),
+                caller: event.sender,
+              },
+              true,
+              client
+            );
+          }
+        }
     }
     rooms.forEach((roomId) => {
       client.kickUser(
