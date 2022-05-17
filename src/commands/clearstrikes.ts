@@ -3,7 +3,7 @@ import { MatrixClient, MessageEvent, MessageEventContent } from "matrix-bot-sdk"
 import * as htmlEscape from "escape-html";
 import { lookup_user, db, saveDB } from "../lookupUser";
 const util = require("util");
-
+import { log } from "../log";
 export async function runClearStrikesCommand(
   roomId: string,
   event: MessageEvent<MessageEventContent>,
@@ -65,6 +65,14 @@ export async function runClearStrikesCommand(
 
   saveDB(db);
 
+  log(
+    {
+      info: "Cleared user strikes",
+      user: lookup.graim_name,
+      caller: event.sender,
+    },
+    false, client
+  );
   let strikes = db.users.filter((dbuser) => {
     return dbuser.name == lookup.graim_name;
   })[0].strikes;

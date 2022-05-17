@@ -6,6 +6,7 @@ import {
 } from "matrix-bot-sdk";
 import * as htmlEscape from "escape-html";
 import { lookup_user } from "../lookupUser";
+import { log } from "../log";
 export async function runUserinfoCommand(
   roomId: string,
   event: MessageEvent<MessageEventContent>,

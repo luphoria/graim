@@ -7,6 +7,7 @@ import {
 import * as htmlEscape from "escape-html";
 import { user_discordId, db, lookup_user, saveDB } from "../lookupUser";
 import { COMMAND_PREFIX } from "./handler";
+import { log } from "../log";
 export async function runAddUserCommand(
   roomId: string,
   event: MessageEvent<MessageEventContent>,
@@ -15,6 +16,7 @@ export async function runAddUserCommand(
   formatted_body: string
 ) {
   console.log(formatted_body);
+  log({ INFO: "User " + event.sender + " ran command adduser." }, true, client);
   try {
     if (!lookup_user(event.sender).moderator) {
       let power_levels = await client.getRoomStateEvent(
@@ -87,7 +89,7 @@ export async function runAddUserCommand(
 
     let user = {
       name: command[1],
-      matrix: command[2].replace("@",""), // don't store the `@` of Matrix users in the db
+      matrix: command[2].replace("@", ""), // don't store the `@` of Matrix users in the db
       discord: user_discordId(command[3]),
       strikes: [],
     };
@@ -105,6 +107,18 @@ export async function runAddUserCommand(
     db.users.push(user); // add user object to the existing db list
     if (moderator) db.mods[user.name] = "Moderator"; // add username to moderator list
     saveDB(db);
+
+    log(
+      {
+        info: "Added user",
+        user: user.name,
+        matrix: user.matrix,
+        discord: user.discord,
+        moderator: moderator ? "Yes" : "No",
+        caller: event.sender,
+      },
+      false, client
+    );
 
     return client.sendMessage(roomId, {
       body:

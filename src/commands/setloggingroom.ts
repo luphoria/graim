@@ -5,12 +5,10 @@ import {
     MessageEventContent,
   } from "matrix-bot-sdk";
   import { db, lookup_user, saveDB } from "../lookupUser";
-  import { COMMAND_PREFIX } from "./handler";
   import { log } from "../log";
-  export async function runBridgeCommand(
+  export async function runSetLoggingRoomCommand(
     roomId: string,
     event: MessageEvent<MessageEventContent>,
-    args: string[],
     client: MatrixClient,
     formatted_body: string
   ) {
@@ -24,41 +22,23 @@ import {
             formatted_body: "You aren't a moderator!",
           });
       }
-  
-      if (!args[1]) {
-        // they did not reply with at least the full number of required args
-        return client.sendMessage(roomId, {
-          body:
-            "Usage: " +
-            COMMAND_PREFIX +
-            "bridgeroom <channel id>",
-          msgtype: "m.notice",
-          format: "org.matrix.custom.html",
-          formatted_body:
-            "Usage: " +
-            COMMAND_PREFIX +
-            "bridgeroom &lt;channel id&gt;",
-        });
-      }
 
-
-      db.rooms[roomId] = args[1]; // sync channel and room
+      db.logto = roomId;
       saveDB(db);
       log(
         {
-          info: "Bridged room to channel",
+          info: "Set logging room",
           room: roomId,
-          channel: args[1],
           caller: event.sender,
         },
         false, client
       );
 
       return client.sendMessage(roomId, {
-        body: `Bridged ${roomId} to ${args[1]}`,
+        body: `Set logging channel to ${roomId}`,
         msgtype: "m.notice",
         format: "org.matrix.custom.html",
-        formatted_body: `Bridged ${roomId} to ${args[1]}`,
+        formatted_body: `Set logging channel to ${roomId}`,
       });
     } catch (err) {
       console.log(err);

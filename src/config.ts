@@ -2,6 +2,7 @@ import * as config from "config";
 
 interface IConfig {
   prefix: string;
+  verbose: boolean;
   homeserverUrl: string;
   appserviceHS: string;
   accessToken: string;

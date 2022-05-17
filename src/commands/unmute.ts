@@ -10,7 +10,7 @@ import * as htmlEscape from "escape-html";
 import { user_discordId, lookup_user } from "../lookupUser";
 import { guild, mute_role } from "./discord_handler";
 import { COMMAND_PREFIX, rooms } from "./handler";
-
+import { log } from "../log";
 export async function runUnmuteCommand(
   roomId: string,
   event: MessageEvent<MessageEventContent>,
@@ -73,6 +73,16 @@ export async function runUnmuteCommand(
 
     let mention = await MentionPill.forUser(user);
 
+    log(
+      {
+        info: "Unmuted user",
+        user: lookup.graim_name,
+        reason: htmlEscape(reason),
+        caller: event.sender,
+      },
+      false, client
+    );
+
     return client.sendMessage(roomId, {
       body: "Unmuted " + mention.text + " for reason " + reason + "!",
       msgtype: "m.notice",
@@ -104,6 +114,16 @@ export async function runUnmuteCommand(
     .fetch(lookup.user_discord)
     .catch((err) => console.log(err));
   user_discord.roles.remove(mute_role).catch((err) => console.log(err));
+
+  log(
+    {
+      info: "Unmuted user",
+      user: lookup.graim_name,
+      reason: htmlEscape(reason),
+      caller: event.sender,
+    },
+    false, client
+  );
 
   return client.sendMessage(roomId, {
     body: "Unmuted " + lookup.graim_name + " for reason " + reason + "!",

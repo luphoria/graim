@@ -9,7 +9,7 @@ import * as htmlEscape from "escape-html";
 import { user_discordId, lookup_user, db, saveDB } from "../lookupUser";
 import { guild } from "./discord_handler";
 import { rooms } from "./handler";
-
+import { log } from "../log";
 export async function runBanCommand(
   roomId: string,
   event: MessageEvent<MessageEventContent>,
@@ -58,10 +58,20 @@ export async function runBanCommand(
           .fetch(user_discordId(user))
           .catch((err) => console.error(err)); // get the discord user
         if (user_discord) {
-          if (user_discord.bannable)
+          if (user_discord.bannable) {
             user_discord
               .ban({ reason: event.sender + ": " + reason })
               .catch((err) => console.error(err));
+            log(
+              {
+                info: "Banned user (discord)",
+                user: user_discord,
+                reason: htmlEscape(reason),
+                caller: event.sender,
+              },
+              true, client
+            );
+          }
         }
       }
     }
@@ -70,6 +80,16 @@ export async function runBanCommand(
         user,
         roomId,
         event.sender + " told me to! :D => " + htmlEscape(reason)
+      );
+      log(
+        {
+          info: "Banned user (matrix)",
+          user: user,
+          roomId: roomId,
+          reason: htmlEscape(reason),
+          caller: event.sender,
+        },
+        true, client
       );
     });
 
@@ -93,16 +113,36 @@ export async function runBanCommand(
       roomId,
       event.sender + " told me to! :D => " + htmlEscape(reason)
     );
+    log(
+      {
+        info: "Banned user (matrix)",
+        user: user_matrix,
+        roomId: roomId,
+        reason: htmlEscape(reason),
+        caller: event.sender,
+      },
+      true, client
+    );
   });
 
   let user_discord = await guild.members
     .fetch(lookup.user_discord)
     .catch((err) => console.error(err)); // get the discord user
   if (user_discord) {
-    if (user_discord.bannable)
+    if (user_discord.bannable) {
       user_discord
         .ban({ reason: event.sender + ": " + reason })
         .catch((err) => console.error(err));
+      log(
+        {
+          info: "Banned user (discord)",
+          user: user_discord,
+          reason: htmlEscape(reason),
+          caller: event.sender,
+        },
+        true, client
+      );
+    }
   }
 
   db.users
@@ -120,6 +160,16 @@ export async function runBanCommand(
   let strikes = db.users.filter((dbuser) => {
     return dbuser.name == lookup.graim_name;
   })[0].strikes;
+
+  log(
+    {
+      info: "Banned user",
+      user: lookup.graim_name,
+      reason: htmlEscape(reason),
+      caller: event.sender,
+    },
+    false, client
+  );
 
   return client.sendMessage(roomId, {
     body:

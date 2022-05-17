@@ -5,6 +5,10 @@ prefix: ";"
 # is where clients would be connecting to in order to send messages.
 homeserverUrl: "https://matrix.org"
 
+# If you turn on the room logging, then this boolean determines 
+# whether graim will log the more verbose detailed information.
+verbose: false
+
 # The homeserver used for matrix-appservice-t2bot. Probably t2bot.io.
 appserviceHS: "t2bot.io"
 

@@ -7,6 +7,7 @@ import {
 import * as htmlEscape from "escape-html";
 import { db, lookup_user, saveDB } from "../lookupUser";
 import { COMMAND_PREFIX } from "./handler";
+import { log } from "../log";
 export async function runDeleteUserCommand(
   roomId: string,
   event: MessageEvent<MessageEventContent>,
@@ -54,6 +55,16 @@ export async function runDeleteUserCommand(
   );
   if (lookup.moderator) delete db.mods[lookup.graim_name];
   saveDB(db);
+
+  log(
+    {
+      info: "Deleted user",
+      user: lookup.graim_name,
+      moderator: lookup.moderator,
+      caller: event.sender,
+    },
+    false, client
+  );
 
   return client.sendMessage(roomId, {
     body: `Successfully removed ${lookup.graim_name} from the graim db!`,

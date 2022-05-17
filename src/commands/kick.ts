@@ -9,7 +9,7 @@ import * as htmlEscape from "escape-html";
 import { user_discordId, lookup_user, db, saveDB } from "../lookupUser";
 import { guild } from "./discord_handler";
 import { rooms } from "./handler";
-
+import { log } from "../log";
 export async function runKickCommand(
   roomId: string,
   event: MessageEvent<MessageEventContent>,
@@ -56,10 +56,20 @@ export async function runKickCommand(
         let user_discord = await guild.members
           .fetch(user_discordId(user))
           .catch((err) => console.log(err)); // fetch discord user
-        if (user_discord.kickable)
+        if (user_discord.kickable) {
           user_discord
             .kick(event.sender + ": " + reason)
             .catch((err) => console.log(err));
+          log(
+            {
+              info: "Kicked user (discord)",
+              user: user,
+              reason: htmlEscape(reason),
+              caller: event.sender,
+            },
+            true, client
+          );
+        }
       }
     }
     rooms.forEach((roomId) => {
@@ -67,6 +77,15 @@ export async function runKickCommand(
         user,
         roomId,
         event.sender + " told me to! :D => " + htmlEscape(reason)
+      );
+      log(
+        {
+          info: "Kicked user (matrix)",
+          user: user,
+          reason: htmlEscape(reason),
+          caller: event.sender,
+        },
+        true, client
       );
     });
 
@@ -91,16 +110,34 @@ export async function runKickCommand(
       roomId,
       event.sender + " told me to! :D => " + htmlEscape(reason)
     );
+    log(
+      {
+        info: "Kicked user (matrix)",
+        user: user_matrix,
+        reason: htmlEscape(reason),
+        caller: event.sender,
+      },
+      true, client
+    );
   });
 
   let user_discord = await guild.members
     .fetch(lookup.user_discord)
     .catch((err) => console.log(err)); // fetch discord user
-  if (user_discord.kickable)
+  if (user_discord.kickable) {
     user_discord
       .kick(event.sender + ": " + reason)
       .catch((err) => console.log(err));
-
+    log(
+      {
+        info: "Kicked user (discord)",
+        user: lookup.graim_name + " (" + lookup.user_discord + ")",
+        reason: htmlEscape(reason),
+        caller: event.sender,
+      },
+      true, client
+    );
+  }
   db.users
     .filter((dbuser) => {
       return dbuser.name == lookup.graim_name;
@@ -112,6 +149,16 @@ export async function runKickCommand(
     });
 
   saveDB(db);
+
+  log(
+    {
+      info: "Kicked user",
+      user: lookup.graim_name,
+      reason: htmlEscape(reason),
+      caller: event.sender,
+    },
+    false, client
+  );
 
   let strikes = db.users.filter((dbuser) => {
     return dbuser.name == lookup.graim_name;

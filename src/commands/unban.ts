@@ -10,7 +10,7 @@ import * as htmlEscape from "escape-html";
 import { lookup_user, user_discordId } from "../lookupUser";
 import { guild } from "./discord_handler";
 import { rooms } from "./handler";
-
+import { log } from "../log";
 export async function runUnbanCommand(
   roomId: string,
   event: MessageEvent<MessageEventContent>,
@@ -53,7 +53,9 @@ export async function runUnbanCommand(
     // not in graim's db
     if (user_discordId(user)) {
       // if user was bridged from Discord
-      guild.members.unban(user_discordId(user)).catch((err) => console.log(err));
+      guild.members
+        .unban(user_discordId(user))
+        .catch((err) => console.log(err));
     }
 
     rooms.forEach((roomId) => {
@@ -61,6 +63,16 @@ export async function runUnbanCommand(
     });
 
     let mention = await MentionPill.forUser(user); // MentionPill for aesthetics
+
+    log(
+      {
+        info: "Striked user",
+        user: user,
+        reason: htmlEscape(reason),
+        caller: event.sender,
+      },
+      false, client
+    );
 
     return client.sendMessage(roomId, {
       body: "Unbanned " + mention.text + " for reason '" + reason + "'!",
@@ -79,6 +91,16 @@ export async function runUnbanCommand(
     client.unbanUser(user_matrix, roomId);
   });
   guild.members.unban(user_discord).catch((err) => console.log(err));
+
+  log(
+    {
+      info: "Unbanned user",
+      user: lookup.graim_name,
+      reason: htmlEscape(reason),
+      caller: event.sender,
+    },
+    false, client
+  );
 
   return client.sendMessage(roomId, {
     body: "Unbanned " + graim_name + " for reason '" + reason + "'!",

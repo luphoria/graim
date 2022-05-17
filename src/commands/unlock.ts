@@ -6,7 +6,7 @@ import {
 } from "matrix-bot-sdk";
 import { lookup_user, db } from "../lookupUser";
 import { guild } from "./discord_handler";
-
+import { log } from "../log";
 export async function runUnlockCommand(
   roomId: string,
   event: MessageEvent<MessageEventContent>,
@@ -74,6 +74,16 @@ export async function runUnlockCommand(
       })
       .catch((err) => console.log(err));
   }
+
+  log(
+    {
+      info: "Unlocked room",
+      channel: channel || null,
+      room: room,
+      caller: event.sender,
+    },
+    false, client
+  );
 
   return client.sendMessage(room, {
     body: "Channel is unlocked. :)",

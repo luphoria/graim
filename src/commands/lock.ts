@@ -7,7 +7,7 @@ import {
 import { lookup_user, db } from "../lookupUser";
 import { guild } from "./discord_handler";
 import { COMMAND_PREFIX } from "./handler";
-
+import { log } from "../log";
 export async function runLockCommand(
   roomId: string,
   event: MessageEvent<MessageEventContent>,
@@ -38,7 +38,9 @@ export async function runLockCommand(
     room = (await client.resolveRoom("#" + cmd[1])) || null;
     console.log(cmd);
     if (!cmd[1].indexOf("_discord_")) {
-      cmd[1] = Object.keys(db.rooms).find(key => db.rooms[key] === cmd[1].substring(28,46));
+      cmd[1] = Object.keys(db.rooms).find(
+        (key) => db.rooms[key] === cmd[1].substring(28, 46)
+      );
       room = (await client.resolveRoom(cmd[1])) || null;
     }
   }
@@ -83,6 +85,16 @@ export async function runLockCommand(
       COMMAND_PREFIX +
       "bridgeroom.";
   }
+
+  log(
+    {
+      info: "Locked room",
+      channel: channel || null,
+      room: room,
+      caller: event.sender,
+    },
+    false, client
+  );
 
   return client.sendMessage(room, {
     body: "Channel is locked. :(" + warn,

@@ -1,5 +1,6 @@
 {  
     "rooms": {},
+    "logchannel": "",
     "mods": {
         "example": "Moderator"
     },

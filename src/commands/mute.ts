@@ -10,6 +10,7 @@ import * as htmlEscape from "escape-html";
 import { user_discordId, lookup_user, db, saveDB } from "../lookupUser";
 import { guild, mute_role } from "./discord_handler";
 import { COMMAND_PREFIX, rooms } from "./handler";
+import { log } from "../log";
 const ms = require("ms");
 
 export async function runMuteCommand(
@@ -61,11 +62,11 @@ export async function runMuteCommand(
   let msToUnmute;
 
   try {
-    msToUnmute = ms(command[2]) 
+    msToUnmute = ms(command[2]);
   } catch {
     msToUnmute = undefined;
   }
-  if(!msToUnmute) {
+  if (!msToUnmute) {
     msToUnmute = ms("1d");
     reason = command.slice(2).join(" ") || "No reason specified.";
   }
@@ -94,6 +95,17 @@ export async function runMuteCommand(
     }, msToUnmute);
 
     let mention = await MentionPill.forUser(user);
+
+    log(
+      {
+        info: "Muted user",
+        user: user,
+        reason: htmlEscape(reason),
+        length: msToUnmute + " ms",
+        caller: event.sender,
+      },
+      false, client
+    );
 
     return client.sendMessage(roomId, {
       body: "Muted " + mention.text + " for reason " + reason + "!",
@@ -148,6 +160,17 @@ export async function runMuteCommand(
   let strikes = db.users.filter((dbuser) => {
     return dbuser.name == lookup.graim_name;
   })[0].strikes;
+
+  log(
+    {
+      info: "Muted user",
+      user: lookup.graim_name,
+      reason: htmlEscape(reason),
+      length: msToUnmute + " ms",
+      caller: event.sender,
+    },
+    false, client
+  );
 
   return client.sendMessage(roomId, {
     body:
