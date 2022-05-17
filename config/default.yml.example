@@ -9,6 +9,11 @@ homeserverUrl: "https://matrix.org"
 # whether graim will log the more verbose detailed information.
 verbose: false
 
+# The amount of logging in the console output. You shouldn't
+# worry about this unless you want it to look pretty.
+# Possible values: "DEBUG", "ERROR", "INFO", "TRACE", "WARN"
+loglevel: "debug"
+
 # The homeserver used for matrix-appservice-t2bot. Probably t2bot.io.
 appserviceHS: "t2bot.io"
 

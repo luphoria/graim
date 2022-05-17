@@ -3,6 +3,7 @@ import * as config from "config";
 interface IConfig {
   prefix: string;
   verbose: boolean;
+  loglevel: string;
   homeserverUrl: string;
   appserviceHS: string;
   accessToken: string;

@@ -12,7 +12,7 @@ import CommandHandler from "./commands/handler";
 LogService.setLogger(new RichConsoleLogger());
 
 // For now let's also make sure to log everything (for debugging)
-LogService.setLevel(LogLevel.DEBUG);
+LogService.setLevel(LogLevel[config.loglevel] || "DEBUG");
 
 // Also let's mute Metrics, so we don't get *too* much noise
 LogService.muteModule("Metrics");
