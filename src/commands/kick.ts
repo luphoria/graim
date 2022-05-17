@@ -28,13 +28,11 @@ export async function runKickCommand(
     });
   }
 
-  let mentioned = false; // did the user provide a MentionPill or a plain-text@messa.ge?
   let user = args[1] || "";
   let reason = args.slice(2).join(" ") || "No reason specified";
   if (formatted_body) {
     // sanity check - MentionPill cannot exist without a formatted body
     if (formatted_body.includes('<a href="https://matrix.to/#/')) {
-      mentioned = true;
       user =
         formatted_body.substring(
           formatted_body.indexOf('<a href="https://matrix.to/#/') + 29, // 29 = char length of `<a href="https://matrix.to/#/`
@@ -50,26 +48,25 @@ export async function runKickCommand(
 
   if (!graim_name) {
     // there is no registered graim user
-    if (mentioned) {
-      if (user_discordId(user)) {
-        // if mention was a valid Discord user ID
-        let user_discord = await guild.members
-          .fetch(user_discordId(user))
-          .catch((err) => console.log(err)); // fetch discord user
-        if (user_discord.kickable) {
-          user_discord
-            .kick(event.sender + ": " + reason)
-            .catch((err) => console.log(err));
-          log(
-            {
-              info: "Kicked user (discord)",
-              user: user,
-              reason: htmlEscape(reason),
-              caller: event.sender,
-            },
-            true, client
-          );
-        }
+    if (user_discordId(user)) {
+      // if mention was a valid Discord user ID
+      let user_discord = await guild.members
+        .fetch(user_discordId(user))
+        .catch((err) => console.log(err)); // fetch discord user
+      if (user_discord.kickable) {
+        user_discord
+          .kick(event.sender + ": " + reason)
+          .catch((err) => console.log(err));
+        log(
+          {
+            info: "Kicked user (discord)",
+            user: user,
+            reason: htmlEscape(reason),
+            caller: event.sender,
+          },
+          true,
+          client
+        );
       }
     }
     rooms.forEach((roomId) => {
@@ -85,7 +82,8 @@ export async function runKickCommand(
           reason: htmlEscape(reason),
           caller: event.sender,
         },
-        true, client
+        true,
+        client
       );
     });
 
@@ -117,7 +115,8 @@ export async function runKickCommand(
         reason: htmlEscape(reason),
         caller: event.sender,
       },
-      true, client
+      true,
+      client
     );
   });
 
@@ -135,7 +134,8 @@ export async function runKickCommand(
         reason: htmlEscape(reason),
         caller: event.sender,
       },
-      true, client
+      true,
+      client
     );
   }
   db.users
@@ -157,7 +157,8 @@ export async function runKickCommand(
       reason: htmlEscape(reason),
       caller: event.sender,
     },
-    false, client
+    false,
+    client
   );
 
   let strikes = db.users.filter((dbuser) => {

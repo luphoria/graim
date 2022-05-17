@@ -28,13 +28,11 @@ export async function runBanCommand(
     });
   }
 
-  let mentioned = false; // did the user provide a MentionPill or a plain-text@messa.ge?
   let user = args[1] || "";
   let reason = args.slice(2).join(" ") || "No reason specified"; // everything after the username
   if (formatted_body) {
     if (formatted_body.includes('<a href="https://matrix.to/#/')) {
       // MentionPill was provided
-      mentioned = true;
       user =
         formatted_body.substring(
           formatted_body.indexOf('<a href="https://matrix.to/#/') + 29, // 29 = char length of `<a href="https://matrix.to/#/`
@@ -50,28 +48,27 @@ export async function runBanCommand(
 
   if (!graim_name) {
     // the lookup returned no results
-    if (mentioned) {
-      // sanity check before we try to lookup the Discord ID
-      if (user_discordId(user)) {
-        // if the user is a Discord-bridged one
-        let user_discord = await guild.members
-          .fetch(user_discordId(user))
-          .catch((err) => console.error(err)); // get the discord user
-        if (user_discord) {
-          if (user_discord.bannable) {
-            user_discord
-              .ban({ reason: event.sender + ": " + reason })
-              .catch((err) => console.error(err));
-            log(
-              {
-                info: "Banned user (discord)",
-                user: user_discord,
-                reason: htmlEscape(reason),
-                caller: event.sender,
-              },
-              true, client
-            );
-          }
+    // sanity check before we try to lookup the Discord ID
+    if (user_discordId(user)) {
+      // if the user is a Discord-bridged one
+      let user_discord = await guild.members
+        .fetch(user_discordId(user))
+        .catch((err) => console.error(err)); // get the discord user
+      if (user_discord) {
+        if (user_discord.bannable) {
+          user_discord
+            .ban({ reason: event.sender + ": " + reason })
+            .catch((err) => console.error(err));
+          log(
+            {
+              info: "Banned user (discord)",
+              user: user_discord,
+              reason: htmlEscape(reason),
+              caller: event.sender,
+            },
+            true,
+            client
+          );
         }
       }
     }
@@ -89,7 +86,8 @@ export async function runBanCommand(
           reason: htmlEscape(reason),
           caller: event.sender,
         },
-        true, client
+        true,
+        client
       );
     });
 
@@ -121,7 +119,8 @@ export async function runBanCommand(
         reason: htmlEscape(reason),
         caller: event.sender,
       },
-      true, client
+      true,
+      client
     );
   });
 
@@ -140,7 +139,8 @@ export async function runBanCommand(
           reason: htmlEscape(reason),
           caller: event.sender,
         },
-        true, client
+        true,
+        client
       );
     }
   }
@@ -168,7 +168,8 @@ export async function runBanCommand(
       reason: htmlEscape(reason),
       caller: event.sender,
     },
-    false, client
+    false,
+    client
   );
 
   return client.sendMessage(roomId, {
