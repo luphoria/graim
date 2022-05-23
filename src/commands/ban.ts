@@ -29,7 +29,7 @@ export async function runBanCommand(
   }
 
   let user = args[1] || "";
-  let reason = args.slice(2).join(" ") || "No reason specified"; // everything after the username
+  let reason = args.slice(2).join(" ") || "No reason specified."; // everything after the username
   if (formatted_body) {
     if (formatted_body.includes('<a href="https://matrix.to/#/')) {
       // MentionPill was provided

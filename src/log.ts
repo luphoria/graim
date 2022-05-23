@@ -21,7 +21,8 @@ export const log = (log: {}, verbose: boolean, client: MatrixClient) => {
         msgtype: "m.notice",
         format: "org.matrix.custom.html",
         formatted_body: toLog,
-      });    }
+      });
+    }
   } else {
     Object.keys(log).forEach((name) => {
       if (name == "info") {

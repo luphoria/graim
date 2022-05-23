@@ -30,7 +30,7 @@ export async function runUnbanCommand(
 
   let mentioned = false; // did the user provide a MentionPill or a plain-text@messa.ge?
   let user = args[1] || null;
-  let reason = args.slice(2).join(" ") || "No reason specified";
+  let reason = args.slice(2).join(" ") || "No reason specified.";
   if (formatted_body) {
     // sanity check
     if (formatted_body.includes('<a href="https://matrix.to/#/')) {

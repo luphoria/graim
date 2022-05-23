@@ -29,7 +29,7 @@ export async function runKickCommand(
   }
 
   let user = args[1] || "";
-  let reason = args.slice(2).join(" ") || "No reason specified";
+  let reason = args.slice(2).join(" ") || "No reason specified.";
   if (formatted_body) {
     // sanity check - MentionPill cannot exist without a formatted body
     if (formatted_body.includes('<a href="https://matrix.to/#/')) {
