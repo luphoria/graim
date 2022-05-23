@@ -65,16 +65,6 @@ export async function runAddUserCommand(
       });
     }
 
-    if (user_discordId(event.sender)) {
-      // this command is intentionally designed to only work with MentionPills, and discord users can't MentionPill a matrix user
-      return client.sendMessage(roomId, {
-        body: "Please run this command as a Matrix user!",
-        msgtype: "m.notice",
-        format: "org.matrix.custom.html",
-        formatted_body: "Please run this command as a Matrix user!",
-      });
-    }
-
     let command = event.content.body.split(" ");
 
     if (formatted_body) {
