@@ -45,8 +45,8 @@ export const lookup_user = (name: String) => {
       graim_name = _user.name;
     }
     if (
-      _user.discord == name.replace("@", "").substring(9, 27) &&
-      name.split(":")[1] == config.appserviceHS
+      (_user.discord == name.replace("@", "").substring(9, 27) &&
+      name.split(":")[1] == config.appserviceHS) || (_user.discord == name.replace("@", ""))
     ) {
       // the name must have been a Discord ID
       console.log("Discord user FOUND in db");
