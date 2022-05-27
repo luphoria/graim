@@ -7,7 +7,7 @@ import {
   MessageEventContent,
 } from "matrix-bot-sdk";
 import * as htmlEscape from "escape-html";
-import { lookup_user, user_discordId } from "../lookupUser";
+import { lookup_user, mentionPillFor, user_discordId } from "../lookupUser";
 import { guild } from "./discord_handler";
 import { rooms } from "./handler";
 import { log } from "../log";
@@ -62,8 +62,8 @@ export async function runUnbanCommand(
       client.unbanUser(user, roomId);
     });
 
-    let mention = await MentionPill.forUser(user); // MentionPill for aesthetics
-
+    let mention = await mentionPillFor(user);
+    
     log(
       {
         info: "Striked user",

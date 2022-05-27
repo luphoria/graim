@@ -6,7 +6,7 @@ import {
   MessageEventContent,
 } from "matrix-bot-sdk";
 import * as htmlEscape from "escape-html";
-import { user_discordId, lookup_user, db, saveDB } from "../lookupUser";
+import { user_discordId, lookup_user, db, saveDB, mentionPillFor } from "../lookupUser";
 import { guild } from "./discord_handler";
 import { rooms } from "./handler";
 import { log } from "../log";
@@ -91,8 +91,8 @@ export async function runBanCommand(
       );
     });
 
-    let mention = await MentionPill.forUser(user); // creates a MentionPill for aesthetics
-
+    let mention = await mentionPillFor(user);
+    
     return client.sendMessage(roomId, {
       body: "Banned " + mention.text + " for reason '" + reason + "'!",
       msgtype: "m.notice",

@@ -1,5 +1,6 @@
 // TODO - make up your damn mind! do you want the @ or not? (i don't)
 
+import { MentionPill } from "matrix-bot-sdk";
 import config from "./config";
 const file = require("fs");
 export let db = JSON.parse(file.readFileSync("./graimdb.json"));
@@ -29,6 +30,19 @@ export const user_discordId = (user: string) => {
   }
   return null;
 };
+
+export const mentionPillFor = async (user: string) => {
+  console.log(user); // "@luphoria:matrix.org"
+
+  if (!isNaN(+user) && user.length == 18) { // user is a Discord ID
+    user = "_discord_" + user + ":" + config.appserviceHS; // recreate Discord MentionPill
+  }
+
+  user = "@" + user.replace("@",""); // ensures that there is ONE @ at the beginning
+
+  let mention = await MentionPill.forUser(user);
+  return mention;
+}
 
 export const lookup_user = (name: String) => {
   // Reverses a user from graim's db based on any format data given from the user

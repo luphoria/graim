@@ -7,7 +7,7 @@ import {
   MessageEventContent,
 } from "matrix-bot-sdk";
 import * as htmlEscape from "escape-html";
-import { user_discordId, lookup_user, db, saveDB } from "../lookupUser";
+import { user_discordId, lookup_user, db, saveDB, mentionPillFor } from "../lookupUser";
 import { guild, mute_role } from "./discord_handler";
 import { COMMAND_PREFIX, rooms } from "./handler";
 import { log } from "../log";
@@ -60,11 +60,14 @@ export async function runMuteCommand(
 
   let lookup;
   let msToUnmute;
+  let unmuteTimeProvided = false;
 
   try {
     msToUnmute = ms(command[2]);
+    unmuteTimeProvided = true;
   } catch {
     msToUnmute = undefined;
+    unmuteTimeProvided = false;
   }
   if (!msToUnmute) {
     msToUnmute = ms("1d");
@@ -94,14 +97,14 @@ export async function runMuteCommand(
       });
     }, msToUnmute);
 
-    let mention = await MentionPill.forUser(user);
+    let mention = await mentionPillFor(user);
 
     log(
       {
         info: "Muted user",
         user: user,
         reason: htmlEscape(reason),
-        length: msToUnmute + " ms",
+        length: (unmuteTimeProvided? command[2] : "1d") + " (" + msToUnmute + " ms)",
         caller: event.sender,
       },
       false, client

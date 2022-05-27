@@ -7,7 +7,7 @@ import {
   MessageEventContent,
 } from "matrix-bot-sdk";
 import * as htmlEscape from "escape-html";
-import { user_discordId, lookup_user } from "../lookupUser";
+import { user_discordId, lookup_user, mentionPillFor } from "../lookupUser";
 import { guild, mute_role } from "./discord_handler";
 import { COMMAND_PREFIX, rooms } from "./handler";
 import { log } from "../log";
@@ -71,7 +71,7 @@ export async function runUnmuteCommand(
       client.setUserPowerLevel(user, roomId, 0);
     });
 
-    let mention = await MentionPill.forUser(user);
+    let mention = await mentionPillFor(user);
 
     log(
       {
