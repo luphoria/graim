@@ -15,14 +15,15 @@ export const saveDB = (json) => {
 
 export const user_discordId = (user: string) => {
   // Returns a valid Discord ID if the Matrix ID was a bridged Discord user
+  user = user.replace("@","")
   if (
-    !isNaN(+user.substring(10, 28)) && // !isNaN(+"string") makes sure that the substring (10,28) (where the Discord ID would be) is a number (like a snowflake ID).
+    !isNaN(+user.substring(9, 27)) && // !isNaN(+"string") makes sure that the substring is a number (like a snowflake ID).
     user.split(":")[1] == config.appserviceHS // makes sure that the Matrix ID is based in the correct homeserver
   ) {
-    console.log(user.substring(10, 28));
-    return user.substring(10, 28);
+    console.log(user.substring(9, 27));
+    return user.substring(9, 27);
   }
-  console.log(user.substring(10, 28));
+  console.log(user.substring(9, 27));
   if (!isNaN(+user) && user.length == 18) {
     return user;
   }
