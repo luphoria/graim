@@ -1,21 +1,26 @@
 import config from "./config";
 import { MatrixClient } from "matrix-bot-sdk";
-import { db } from "./lookupUser";
+import { db, lookup_user } from "./lookupUser";
 
 export const log = (log: {}, verbose: boolean, client: MatrixClient) => {
   if (!db.logto) return false;
-  console.log("= = = = = = = = = = = = = = = =");
-  let toLog = "- - -\n\n";
+  let toLog = "'~' '~' '~'\n\n";
   if (verbose) {
     if (config.verbose) {
       Object.keys(log).forEach((name) => {
-        if (name == "info") {
-          toLog += "<b>" + log[name] + "</b>\n";
-        } else {
-          toLog += name + ": " + log[name] + "\n";
+        switch (name) {
+          case "info":
+            toLog += "<b>" + log[name] + "</b>\n";
+          case "caller":
+            toLog +=
+              "Sent by <b>" +
+              (lookup_user(log[name]) + " (" + log[name] + ")" || log[name]) +
+              "</b>\n";
+          default:
+            toLog += name + ": " + log[name] + "\n";
         }
       });
-      toLog += "\n- - -";
+      toLog += "\n'~' '~' '~'";
       return client.sendMessage(db.logto, {
         body: toLog.replace(/<b>|<\/b>/g, ""),
         msgtype: "m.notice",
@@ -25,13 +30,19 @@ export const log = (log: {}, verbose: boolean, client: MatrixClient) => {
     }
   } else {
     Object.keys(log).forEach((name) => {
-      if (name == "info") {
-        toLog += "<b>" + log[name] + "</b>\n";
-      } else {
-        toLog += name + ": " + log[name] + "\n";
+      switch (name) {
+        case "info":
+          toLog += "<b>" + log[name] + "</b>\n";
+        case "caller":
+          toLog +=
+            "Sent by <b>" +
+            (lookup_user(log[name]) + " (" + log[name] + ")" || log[name]) +
+            "</b>\n";
+        default:
+          toLog += name + ": " + log[name] + "\n";
       }
     });
-    toLog += "\n- - -";
+    toLog += "\n'~' '~' '~'";
     return client.sendMessage(db.logto, {
       body: toLog.replace(/<b>|<\/b>/g, ""),
       msgtype: "m.notice",
@@ -39,5 +50,4 @@ export const log = (log: {}, verbose: boolean, client: MatrixClient) => {
       formatted_body: toLog,
     });
   }
-  console.log("= = = = = = = = = = = = = = = =");
 };
