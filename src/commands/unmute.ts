@@ -76,7 +76,7 @@ export async function runUnmuteCommand(
     log(
       {
         info: "Unmuted user",
-        user: lookup.graim_name,
+        user: user,
         reason: htmlEscape(reason),
         caller: event.sender,
       },
