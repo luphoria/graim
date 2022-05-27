@@ -1,6 +1,6 @@
 {
   "name": "graim",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "author": "luphoria",
   "license": "Apache-2.0",
   "description": "matrix <=> discord moderation with the power of matrix-appservice-discord",
