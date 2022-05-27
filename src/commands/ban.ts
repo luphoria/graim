@@ -62,7 +62,7 @@ export async function runBanCommand(
           log(
             {
               info: "Banned user (discord)",
-              user: user_discord,
+              user: user + " (" + user_discordId(user) + ")",
               reason: htmlEscape(reason),
               caller: event.sender,
             },

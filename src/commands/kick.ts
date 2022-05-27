@@ -61,7 +61,7 @@ export async function runKickCommand(
             log(
               {
                 info: "Kicked user (discord)",
-                user: user,
+                user:  user + " (" + user_discordId(user) + ")",
                 reason: htmlEscape(reason),
                 caller: event.sender,
               },
