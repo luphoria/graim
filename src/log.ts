@@ -11,13 +11,16 @@ export const log = (log: {}, verbose: boolean, client: MatrixClient) => {
         switch (name) {
           case "info":
             toLog += "<b>" + log[name] + "</b>\n";
+            break;
           case "caller":
             toLog +=
               "Sent by <b>" +
-              (lookup_user(log[name]) + " (" + log[name] + ")" || log[name]) +
+              (lookup_user(log[name].graim_name) + " (" + log[name] + ")" || log[name]) +
               "</b>\n";
+              break;
           default:
             toLog += name + ": " + log[name] + "\n";
+            break;
         }
       });
       toLog += "\n'~' '~' '~'";
@@ -33,13 +36,16 @@ export const log = (log: {}, verbose: boolean, client: MatrixClient) => {
       switch (name) {
         case "info":
           toLog += "<b>" + log[name] + "</b>\n";
+          break;
         case "caller":
           toLog +=
             "Sent by <b>" +
-            (lookup_user(log[name]) + " (" + log[name] + ")" || log[name]) +
+            (lookup_user(log[name].graim_name) + " (" + log[name] + ")" || log[name]) +
             "</b>\n";
+            break;
         default:
           toLog += name + ": " + log[name] + "\n";
+          break;
       }
     });
     toLog += "\n'~' '~' '~'";
