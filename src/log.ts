@@ -15,7 +15,7 @@ export const log = (log: {}, verbose: boolean, client: MatrixClient) => {
           case "caller":
             toLog +=
               "Sent by <b>" +
-              (lookup_user(log[name].graim_name) + " (" + log[name] + ")" || log[name]) +
+              (lookup_user(log[name]).graim_name + " (" + log[name] + ")" || log[name]) +
               "</b>\n";
               break;
           default:
@@ -40,7 +40,7 @@ export const log = (log: {}, verbose: boolean, client: MatrixClient) => {
         case "caller":
           toLog +=
             "Sent by <b>" +
-            (lookup_user(log[name].graim_name) + " (" + log[name] + ")" || log[name]) +
+            (lookup_user(log[name]).graim_name + " (" + log[name] + ")" || log[name]) +
             "</b>\n";
             break;
         default:
