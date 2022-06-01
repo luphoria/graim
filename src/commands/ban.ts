@@ -92,7 +92,7 @@ export async function runBanCommand(
     });
 
     let mention = await mentionPillFor(user);
-    
+
     return client.sendMessage(roomId, {
       body: "Banned " + mention.text + " for reason '" + reason + "'!",
       msgtype: "m.notice",

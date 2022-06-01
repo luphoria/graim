@@ -112,17 +112,17 @@ export async function runAddUserCommand(
 
     return client.sendMessage(roomId, {
       body:
-        `User: ${user.name}\n` +
-        `   Matrix: @${user.matrix}\n` +
-        `   Discord: ${mentionPillFor(user.discord)} (${user.discord})\n` +
-        `Moderator? ${moderator ? "Yes" : "No"}`,
+      `User: ${user.name}
+  Matrix: ${user.matrix}
+  Discord: ${user.discord} (${user.discord})
+Moderator? ${moderator ? "Yes" : "No"}`,
       msgtype: "m.notice",
       format: "org.matrix.custom.html",
       formatted_body:
-        `User: ${htmlEscape(user.name)}<br/>` +
-        `   Matrix: @${htmlEscape(user.matrix)}<br/>` +
-        `   Discord: ${htmlEscape(mentionPillFor(user.discord))} (${htmlEscape(user.discord)})\n` +
-        `Moderator? ${moderator ? "Yes" : "No"}`,
+      `User: ${user.name}
+  Matrix: ${htmlEscape(user.matrix)}
+  Discord: ${(await mentionPillFor(user.discord)).html} (${htmlEscape(user.discord)})
+Moderator? ${moderator ? "Yes" : "No"}`,
     });
   } catch (err) {
     console.log(err);

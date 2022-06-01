@@ -65,15 +65,15 @@ export async function runUserinfoCommand(
   return client.sendMessage(roomId, {
     body:
     `User: ${lookup.graim_name}
-   Matrix: @${lookup.user_matrix}
-   Discord: ${(await mentionPillFor(lookup.user_discord)).html} (${lookup.user_discord})
+   Matrix: ${lookup.user_matrix}
+   Discord: ${lookup.user_discord} (${lookup.user_discord})
 Moderator? ${lookup.moderator ? "Yes" : "No"}`,
     msgtype: "m.notice",
     format: "org.matrix.custom.html",
     formatted_body:
     `User: ${lookup.graim_name}
-   Matrix: @${htmlEscape(lookup.user_matrix)}
-   Discord: ${htmlEscape((await mentionPillFor(lookup.user_discord)).html)} (${htmlEscape(lookup.user_discord)})
+   Matrix: ${htmlEscape(lookup.user_matrix)}
+   Discord: ${(await mentionPillFor(lookup.user_discord)).html} (${htmlEscape(lookup.user_discord)})
 Moderator? ${lookup.moderator ? "Yes" : "No"}`,
   });
 }
