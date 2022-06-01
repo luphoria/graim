@@ -5,7 +5,7 @@ import {
   MessageEventContent,
 } from "matrix-bot-sdk";
 import * as htmlEscape from "escape-html";
-import { user_discordId, db, lookup_user, saveDB } from "../lookupUser";
+import { user_discordId, db, lookup_user, saveDB, mentionPillFor } from "../lookupUser";
 import { COMMAND_PREFIX } from "./handler";
 import { log } from "../log";
 export async function runAddUserCommand(
@@ -114,14 +114,14 @@ export async function runAddUserCommand(
       body:
         `User: ${user.name}\n` +
         `   Matrix: @${user.matrix}\n` +
-        `   Discord: ${user.discord}\n` +
+        `   Discord: ${mentionPillFor(user.discord)} (${user.discord})\n` +
         `Moderator? ${moderator ? "Yes" : "No"}`,
       msgtype: "m.notice",
       format: "org.matrix.custom.html",
       formatted_body:
         `User: ${htmlEscape(user.name)}<br/>` +
         `   Matrix: @${htmlEscape(user.matrix)}<br/>` +
-        `   Discord: ${htmlEscape(user.discord)}<br/>` +
+        `   Discord: ${htmlEscape(mentionPillFor(user.discord))} (${htmlEscape(user.discord)})\n` +
         `Moderator? ${moderator ? "Yes" : "No"}`,
     });
   } catch (err) {

@@ -5,7 +5,7 @@ import {
   MessageEventContent,
 } from "matrix-bot-sdk";
 import * as htmlEscape from "escape-html";
-import { lookup_user } from "../lookupUser";
+import { lookup_user, mentionPillFor } from "../lookupUser";
 import { log } from "../log";
 export async function runUserinfoCommand(
   roomId: string,
@@ -64,18 +64,16 @@ export async function runUserinfoCommand(
 
   return client.sendMessage(roomId, {
     body:
-      `User: ${lookup.graim_name}\n` +
-      `   Matrix: ${lookup.user_matrix}\n` +
-      `   Discord: ${lookup.user_discord}\n` +
-      `Moderator? ${lookup.moderator ? "Yes" : "No"}` +
-      modOnlyLookup,
+    `User: ${lookup.graim_name}
+   Matrix: @${lookup.user_matrix}
+   Discord: ${(await mentionPillFor(lookup.user_discord)).html} (${lookup.user_discord})
+Moderator? ${lookup.moderator ? "Yes" : "No"}`,
     msgtype: "m.notice",
     format: "org.matrix.custom.html",
     formatted_body:
-      `User: ${htmlEscape(lookup.graim_name)}<br/>` +
-      `   Matrix: ${htmlEscape(lookup.user_matrix)}<br/>` +
-      `   Discord: ${htmlEscape(lookup.user_discord)}<br/>` +
-      `Moderator? ${lookup.moderator ? "Yes" : "No"}` +
-      modOnlyLookup.replace(/\\n/g,"<br/>"),
+    `User: ${lookup.graim_name}
+   Matrix: @${htmlEscape(lookup.user_matrix)}
+   Discord: ${htmlEscape((await mentionPillFor(lookup.user_discord)).html)} (${htmlEscape(lookup.user_discord)})
+Moderator? ${lookup.moderator ? "Yes" : "No"}`,
   });
 }
