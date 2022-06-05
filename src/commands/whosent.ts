@@ -3,6 +3,7 @@ import { MatrixClient } from "matrix-bot-sdk";
 import * as htmlEscape from "escape-html";
 import { guild } from "./discord_handler";
 import { COMMAND_PREFIX } from "./handler";
+import { user_discordId } from "../lookupUser"
 
 export async function runWhoSentCommand(
   roomId: string,
@@ -29,14 +30,6 @@ export async function runWhoSentCommand(
     let channel = guild.channels.cache.get(input.channel); // fetch the channel from ID
     let msg = await channel.messages.fetch(input.message); // fetch the message from the channel by ID
 
-    client.sendMessage(roomId, {
-      // give some reception while the user waits - search api takes time
-      body: `Searching . . .`,
-      msgtype: "m.notice",
-      format: "org.matrix.custom.html",
-      formatted_body: `Searching . . .`,
-    });
-
     let possibleMatches = [];
 
     const members = await client.getRoomMembers(roomId);
@@ -47,6 +40,14 @@ export async function runWhoSentCommand(
     }
 
     if (possibleMatches.length !== 1) {
+      client.sendMessage(roomId, {
+        // give some reception while the user waits - search api takes time
+        body: `Searching . . .`,
+        msgtype: "m.notice",
+        format: "org.matrix.custom.html",
+        formatted_body: `Searching . . .`,
+      });
+
       let search = await client.doRequest(
         // there is no search function in the Matrix bot SDK so we are directly fetching from API.
         "POST",
@@ -80,7 +81,9 @@ export async function runWhoSentCommand(
           ][sender_mxid]["displayname"];
 
         if (msg.author.username == display_name) {
-          possibleMatches = [sender_mxid];
+          if (user_discordId(sender_mxid) == null) {
+            possibleMatches = [sender_mxid].slice(1);
+          }
         }
       } catch {
         // Running through the trees in her dreams, she trips over jagged roots, becomes tangled in the overgrown brush. The birds in the sky warn her that her memories are dose behind. Twisted branches reach for her, the earth rises up to swallow her as pain echoes through the woods, lingering in the leaves.
