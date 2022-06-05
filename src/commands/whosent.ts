@@ -46,6 +46,47 @@ export async function runWhoSentCommand(
       }
     }
 
+    if (possibleMatches.length !== 1) {
+      let search = await client.doRequest(
+        // there is no search function in the Matrix bot SDK so we are directly fetching from API.
+        "POST",
+        "/_matrix/client/r0/search",
+        undefined,
+        {
+          search_categories: {
+            room_events: {
+              search_term: msg.content.replace(
+                /[`~!@#$%^&*()_|+\-=?;:'",<>\{\}\[\]\\\/]/g,
+                " "
+              ), // REGEX: search api doesn't really like special characters, so let's sanitize it for better results.
+              filter: { limit: 1 },
+              order_by: "recent",
+              event_context: {
+                before_limit: 0,
+                after_limit: 0,
+                include_profile: true,
+              },
+            },
+          },
+        }
+      );
+
+      try {
+        // get the sender of the first result of that search
+        let sender_mxid = search["search_categories"]["room_events"]["results"][0]["result"]["sender"];
+        let display_name = // get the display name of the sender of the first result of that search
+          search["search_categories"]["room_events"]["results"][0]["context"][
+            "profile_info"
+          ][sender_mxid]["displayname"];
+
+        if (msg.author.username == display_name) {
+          possibleMatches = [sender_mxid];
+        }
+      } catch {
+        // Running through the trees in her dreams, she trips over jagged roots, becomes tangled in the overgrown brush. The birds in the sky warn her that her memories are dose behind. Twisted branches reach for her, the earth rises up to swallow her as pain echoes through the woods, lingering in the leaves.
+      }
+    }
+
     let ret: string;
     if (possibleMatches.length > 0) {
       ret = "Matches: " + possibleMatches.join(", ");
