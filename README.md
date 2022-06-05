@@ -13,14 +13,13 @@ Check out the [configuration guide](./setup.md).
 - Better guides
 
 ## Features
-- Kick
-- Ban + unban
+- moderation syncs across rooms
+- Kick, ban + unban
 - Mute
 - Strike system
-- Automatically log moderation history
+- Automatically attribute moderation history to graimdb
 - Discord moderators may use `whosent` to discover what matrix user is behind a Discord message
 - Userinfo command
-- moderation syncs across rooms
 - Database management commands (add/remove user, add/remove moderator)
 
 
@@ -35,6 +34,8 @@ Simply tie a server to a group of rooms, then tie each Matrix user to a Discord 
 
 ## Credits
 The bot itself - [luphoria](https://luphoria.com)
+
+Any other [contributors](https://github.com/luphoria/graim/contributors)
 
 Built with **major help** from [turt2live/matrix-bot-sdk-bot-template](https://github.com/turt2live/matrix-bot-sdk-bot-template) by Travis Ralston
 
