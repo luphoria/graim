@@ -24,6 +24,7 @@ import { runUnlockCommand } from "./unlock";
 import { runBridgeCommand } from "./bridgeroom";
 import { runUnbridgeCommand } from "./unbridgeroom";
 import { runSetLoggingRoomCommand } from "./setloggingroom";
+import { runWhoIsCommand } from "./whois";
 
 // The prefix required to trigger the bot. The bot will also respond
 // to being pinged directly.
@@ -137,6 +138,9 @@ export default class CommandHandler {
         case "whosent":
           runWhoSentCommand(roomId, args, this.client);
           break;
+        case "whois":
+          runWhoIsCommand(roomId, args, this.client);
+          break;
         case "help":
           const help =
             `${COMMAND_PREFIX}lock [room] - Locks room/channel\n` +
@@ -155,6 +159,7 @@ export default class CommandHandler {
             `${COMMAND_PREFIX}unbridgeroom - Removes a room's bridge from the graim db\n` +
             `${COMMAND_PREFIX}setloggingroom - Sets the room to send logs to\n` +
             `${COMMAND_PREFIX}whosent <link to Discord message> - tells you what Matrix user sent a message\n` +
+            `${COMMAND_PREFIX}whois <Matrix display name (webhook name)> - tells you the MXID of a Matrix user by their display name\n` +
             `${COMMAND_PREFIX}userinfo [user] - Provides information about the user`;
 
           const text = `Help menu:\n${help}`;
