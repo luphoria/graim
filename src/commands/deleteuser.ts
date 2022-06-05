@@ -18,12 +18,12 @@ export async function runDeleteUserCommand(
   console.log(formatted_body);
 
   if (!lookup_user(event.sender).moderator) {
-      return client.sendMessage(roomId, {
-        body: "You aren't a moderator!",
-        msgtype: "m.notice",
-        format: "org.matrix.custom.html",
-        formatted_body: "You aren't a moderator!",
-      });
+    return client.sendMessage(roomId, {
+      body: "You aren't a moderator!",
+      msgtype: "m.notice",
+      format: "org.matrix.custom.html",
+      formatted_body: "You aren't a moderator!",
+    });
   }
 
   if (!args[1]) {
@@ -63,7 +63,8 @@ export async function runDeleteUserCommand(
       moderator: lookup.moderator,
       caller: event.sender,
     },
-    false, client
+    false,
+    client
   );
 
   return client.sendMessage(roomId, {

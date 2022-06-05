@@ -8,7 +8,7 @@ export const log = async (log: {}, verbose: boolean, client: MatrixClient) => {
     let toLog = "'~' '~' '~' '~' '~' '~' '~'\n\n";
     if (verbose) {
       if (config.verbose) {
-        for(let i = 0; i < Object.keys(log).length; i++) {
+        for (let i = 0; i < Object.keys(log).length; i++) {
           let act = Object.keys(log)[i];
           switch (act) {
             case "info":
@@ -51,7 +51,7 @@ export const log = async (log: {}, verbose: boolean, client: MatrixClient) => {
         });
       }
     } else {
-      for(let i = 0; i < Object.keys(log).length; i++) {
+      for (let i = 0; i < Object.keys(log).length; i++) {
         let act = Object.keys(log)[i];
         switch (act) {
           case "info":
@@ -76,22 +76,22 @@ export const log = async (log: {}, verbose: boolean, client: MatrixClient) => {
         }
       }
       toLog += "\n'~' '~' '~' '~' '~' '~' '~'";
-        console.log(toLog);
-        console.log(
-          toLog.replace(
-            /<b>|<\/b>|<a href="https:\/\/matrix\.to\/#\/@|">(.*?)<\/a>/g,
-            ""
-          )
-        );
-        return client.sendMessage(db.logto, {
-          body: toLog.replace(
-            /<b>|<\/b>|<a href="https:\/\/matrix\.to\/#\/@|">(.*?)<\/a>/g,
-            ""
-          ),
-          msgtype: "m.notice",
-          format: "org.matrix.custom.html",
-          formatted_body: toLog,
-        });
+      console.log(toLog);
+      console.log(
+        toLog.replace(
+          /<b>|<\/b>|<a href="https:\/\/matrix\.to\/#\/@|">(.*?)<\/a>/g,
+          ""
+        )
+      );
+      return client.sendMessage(db.logto, {
+        body: toLog.replace(
+          /<b>|<\/b>|<a href="https:\/\/matrix\.to\/#\/@|">(.*?)<\/a>/g,
+          ""
+        ),
+        msgtype: "m.notice",
+        format: "org.matrix.custom.html",
+        formatted_body: toLog,
+      });
     }
   } catch (err) {
     console.log(err);

@@ -7,7 +7,13 @@ import {
   MessageEventContent,
 } from "matrix-bot-sdk";
 import * as htmlEscape from "escape-html";
-import { user_discordId, lookup_user, db, saveDB, mentionPillFor } from "../lookupUser";
+import {
+  user_discordId,
+  lookup_user,
+  db,
+  saveDB,
+  mentionPillFor,
+} from "../lookupUser";
 import { guild, mute_role } from "./discord_handler";
 import { COMMAND_PREFIX, rooms } from "./handler";
 import { log } from "../log";
@@ -104,10 +110,12 @@ export async function runMuteCommand(
         info: "Muted user",
         user: user,
         reason: htmlEscape(reason),
-        length: (unmuteTimeProvided? command[2] : "1d") + " (" + msToUnmute + " ms)",
+        length:
+          (unmuteTimeProvided ? command[2] : "1d") + " (" + msToUnmute + " ms)",
         caller: event.sender,
       },
-      false, client
+      false,
+      client
     );
 
     return client.sendMessage(roomId, {
@@ -172,7 +180,8 @@ export async function runMuteCommand(
       length: msToUnmute + " ms",
       caller: event.sender,
     },
-    false, client
+    false,
+    client
   );
 
   return client.sendMessage(roomId, {

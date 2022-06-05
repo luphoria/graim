@@ -117,22 +117,40 @@ export default class CommandHandler {
           runAddUserCommand(roomId, event, args, this.client, formatted_body);
           break;
         case "deleteuser":
-          runDeleteUserCommand(roomId,event,args,this.client,formatted_body);
+          runDeleteUserCommand(
+            roomId,
+            event,
+            args,
+            this.client,
+            formatted_body
+          );
           break;
         case "bridgeroom":
-          runBridgeCommand(roomId,event,args,this.client,formatted_body);
+          runBridgeCommand(roomId, event, args, this.client, formatted_body);
           break;
         case "unbridgeroom":
-          runUnbridgeCommand(roomId,event,this.client,formatted_body);
+          runUnbridgeCommand(roomId, event, this.client, formatted_body);
           break;
         case "setloggingroom":
-          runSetLoggingRoomCommand(roomId,event,this.client,formatted_body);
+          runSetLoggingRoomCommand(roomId, event, this.client, formatted_body);
           break;
         case "strike":
-          runStrikeUserCommand(roomId, event, args, this.client, formatted_body);
+          runStrikeUserCommand(
+            roomId,
+            event,
+            args,
+            this.client,
+            formatted_body
+          );
           break;
         case "clearstrikes":
-          runClearStrikesCommand(roomId, event, args, this.client, formatted_body);
+          runClearStrikesCommand(
+            roomId,
+            event,
+            args,
+            this.client,
+            formatted_body
+          );
           break;
         case "whosent":
           runWhoSentCommand(roomId, args, this.client);
@@ -160,7 +178,7 @@ export default class CommandHandler {
           const text = `Help menu:\n${help}`;
           const html = `<b>Help menu:</b><br /><pre><code>${htmlEscape(
             help
-          )}</code></pre>`.replace(/\\n/g,"<br/>");
+          )}</code></pre>`.replace(/\\n/g, "<br/>");
           const reply = RichReply.createFor(roomId, ev, text, html); // Note that we're using the raw event, not the parsed one!
           reply["msgtype"] = "m.notice"; // Bots should always use notices
           return this.client.sendMessage(roomId, reply);

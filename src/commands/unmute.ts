@@ -80,7 +80,8 @@ export async function runUnmuteCommand(
         reason: htmlEscape(reason),
         caller: event.sender,
       },
-      false, client
+      false,
+      client
     );
 
     return client.sendMessage(roomId, {
@@ -122,7 +123,8 @@ export async function runUnmuteCommand(
       reason: htmlEscape(reason),
       caller: event.sender,
     },
-    false, client
+    false,
+    client
   );
 
   return client.sendMessage(roomId, {

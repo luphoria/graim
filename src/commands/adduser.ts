@@ -5,7 +5,13 @@ import {
   MessageEventContent,
 } from "matrix-bot-sdk";
 import * as htmlEscape from "escape-html";
-import { user_discordId, db, lookup_user, saveDB, mentionPillFor } from "../lookupUser";
+import {
+  user_discordId,
+  db,
+  lookup_user,
+  saveDB,
+  mentionPillFor,
+} from "../lookupUser";
 import { COMMAND_PREFIX } from "./handler";
 import { log } from "../log";
 export async function runAddUserCommand(
@@ -107,21 +113,22 @@ export async function runAddUserCommand(
         moderator: moderator ? "Yes" : "No",
         caller: event.sender,
       },
-      false, client
+      false,
+      client
     );
 
     return client.sendMessage(roomId, {
-      body:
-      `User: ${user.name}
+      body: `User: ${user.name}
   Matrix: ${user.matrix}
   Discord: ${user.discord} (${user.discord})
 Moderator? ${moderator ? "Yes" : "No"}`,
       msgtype: "m.notice",
       format: "org.matrix.custom.html",
-      formatted_body:
-      `User: ${user.name}
+      formatted_body: `User: ${user.name}
   Matrix: ${htmlEscape(user.matrix)}
-  Discord: ${(await mentionPillFor(user.discord)).html} (${htmlEscape(user.discord)})
+  Discord: ${(await mentionPillFor(user.discord)).html} (${htmlEscape(
+        user.discord
+      )})
 Moderator? ${moderator ? "Yes" : "No"}`,
     });
   } catch (err) {

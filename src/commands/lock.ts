@@ -93,7 +93,8 @@ export async function runLockCommand(
       room: room,
       caller: event.sender,
     },
-    false, client
+    false,
+    client
   );
 
   return client.sendMessage(room, {

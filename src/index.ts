@@ -24,12 +24,8 @@ export const startedWhen = Date.now();
 
 // This is the startup closure where we give ourselves an async context
 (async function () {
-
   // Now create the client
-  const client = new MatrixClient(
-    config.homeserverUrl,
-    config.accessToken,
-  );
+  const client = new MatrixClient(config.homeserverUrl, config.accessToken);
 
   // Setup the autojoin mixin (if enabled)
   if (config.autoJoin) {

@@ -6,7 +6,13 @@ import {
   MessageEventContent,
 } from "matrix-bot-sdk";
 import * as htmlEscape from "escape-html";
-import { user_discordId, lookup_user, db, saveDB, mentionPillFor } from "../lookupUser";
+import {
+  user_discordId,
+  lookup_user,
+  db,
+  saveDB,
+  mentionPillFor,
+} from "../lookupUser";
 import { guild } from "./discord_handler";
 import { rooms } from "./handler";
 import { log } from "../log";
@@ -53,23 +59,23 @@ export async function runKickCommand(
       let user_discord = await guild.members
         .fetch(user_discordId(user))
         .catch((err) => console.log(err)); // fetch discord user
-        if(user_discord) {
-          if (user_discord.kickable) {
-            user_discord
-              .kick(event.sender + ": " + reason)
-              .catch((err) => console.log(err));
-            log(
-              {
-                info: "Kicked user (discord)",
-                user:  user + " (" + user_discordId(user) + ")",
-                reason: htmlEscape(reason),
-                caller: event.sender,
-              },
-              true,
-              client
-            );
-          }
+      if (user_discord) {
+        if (user_discord.kickable) {
+          user_discord
+            .kick(event.sender + ": " + reason)
+            .catch((err) => console.log(err));
+          log(
+            {
+              info: "Kicked user (discord)",
+              user: user + " (" + user_discordId(user) + ")",
+              reason: htmlEscape(reason),
+              caller: event.sender,
+            },
+            true,
+            client
+          );
         }
+      }
     }
     rooms.forEach((roomId) => {
       client.kickUser(
@@ -90,7 +96,7 @@ export async function runKickCommand(
     });
 
     let mention = await mentionPillFor(user);
-    
+
     return client.sendMessage(roomId, {
       body: "Kicked " + mention.text + " for reason '" + reason + "'!",
       msgtype: "m.notice",

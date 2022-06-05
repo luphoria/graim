@@ -6,7 +6,13 @@ import {
   MessageEventContent,
 } from "matrix-bot-sdk";
 import * as htmlEscape from "escape-html";
-import { user_discordId, lookup_user, db, saveDB, mentionPillFor } from "../lookupUser";
+import {
+  user_discordId,
+  lookup_user,
+  db,
+  saveDB,
+  mentionPillFor,
+} from "../lookupUser";
 import { guild } from "./discord_handler";
 import { rooms } from "./handler";
 import { log } from "../log";
