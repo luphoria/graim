@@ -37,7 +37,9 @@ export async function runUnlockCommand(
     room = (await client.resolveRoom("#" + cmd[1])) || null;
     console.log(cmd);
     if (!cmd[1].indexOf("_discord_")) {
-      cmd[1] = Object.keys(db.rooms).find(key => db.rooms[key] === cmd[1].substring(28,46));
+      cmd[1] = Object.keys(db.rooms).find(
+        (key) => db.rooms[key] === cmd[1].substring(28, 46)
+      );
       room = (await client.resolveRoom(cmd[1])) || null;
     }
   }
@@ -82,7 +84,8 @@ export async function runUnlockCommand(
       room: room,
       caller: event.sender,
     },
-    false, client
+    false,
+    client
   );
 
   return client.sendMessage(room, {

@@ -16,7 +16,7 @@ export async function runUserinfoCommand(
 ) {
   let user = args[1];
 
-  if(!args[1]) {
+  if (!args[1]) {
     user = event.sender;
   }
 
@@ -32,7 +32,6 @@ export async function runUserinfoCommand(
   }
 
   let lookup = lookup_user(user);
-
 
   if (!lookup.graim_name) {
     // not in graim db
@@ -63,17 +62,17 @@ export async function runUserinfoCommand(
   }
 
   return client.sendMessage(roomId, {
-    body:
-    `User: ${lookup.graim_name}
+    body: `User: ${lookup.graim_name}
    Matrix: ${lookup.user_matrix}
    Discord: ${lookup.user_discord} (${lookup.user_discord})
 Moderator? ${lookup.moderator ? "Yes" : "No"}`,
     msgtype: "m.notice",
     format: "org.matrix.custom.html",
-    formatted_body:
-    `User: ${lookup.graim_name}
+    formatted_body: `User: ${lookup.graim_name}
    Matrix: ${htmlEscape(lookup.user_matrix)}
-   Discord: ${(await mentionPillFor(lookup.user_discord)).html} (${htmlEscape(lookup.user_discord)})
+   Discord: ${(await mentionPillFor(lookup.user_discord)).html} (${htmlEscape(
+      lookup.user_discord
+    )})
 Moderator? ${lookup.moderator ? "Yes" : "No"}`,
   });
 }

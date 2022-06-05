@@ -31,7 +31,8 @@ export async function runUnbridgeCommand(
         room: roomId,
         caller: event.sender,
       },
-      false, client
+      false,
+      client
     );
     return client.sendMessage(roomId, {
       body: `Removed bridge for ${roomId}`,

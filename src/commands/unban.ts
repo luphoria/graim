@@ -63,7 +63,7 @@ export async function runUnbanCommand(
     });
 
     let mention = await mentionPillFor(user);
-    
+
     log(
       {
         info: "Striked user",
@@ -71,7 +71,8 @@ export async function runUnbanCommand(
         reason: htmlEscape(reason),
         caller: event.sender,
       },
-      false, client
+      false,
+      client
     );
 
     return client.sendMessage(roomId, {
@@ -99,7 +100,8 @@ export async function runUnbanCommand(
       reason: htmlEscape(reason),
       caller: event.sender,
     },
-    false, client
+    false,
+    client
   );
 
   return client.sendMessage(roomId, {

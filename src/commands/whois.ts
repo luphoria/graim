@@ -25,22 +25,22 @@ export async function runWhoIsCommand(
 
     const members = await client.getRoomMembers(roomId);
     for (let member of members) {
-        if (member.content.displayname == aliasName) {
-            possibleMatches.push(member.sender.slice(1));
-        }
+      if (member.content.displayname == aliasName) {
+        possibleMatches.push(member.sender.slice(1));
+      }
     }
 
     let ret: string;
     if (possibleMatches.length > 0) {
-        ret = "Matches: " + possibleMatches.join(', ');
+      ret = "Matches: " + possibleMatches.join(", ");
     } else {
-        ret = "No member found with display name: '" + aliasName + "'";
+      ret = "No member found with display name: '" + aliasName + "'";
     }
     return client.sendMessage(roomId, {
-        body: ret,
-        msgtype: "m.notice",
-        format: "org.matrix.custom.html",
-        formatted_body: htmlEscape(ret),
+      body: ret,
+      msgtype: "m.notice",
+      format: "org.matrix.custom.html",
+      formatted_body: htmlEscape(ret),
     });
   } catch {
     return client.sendMessage(roomId, {

@@ -4,10 +4,10 @@ import { MentionPill } from "matrix-bot-sdk";
 import config from "./config";
 const file = require("fs");
 export let db = JSON.parse(file.readFileSync("./graimdb.json"));
-if(!db.rooms) db.rooms = {};
-if(!db.mods) db.mods = {};
-if(!db.users) db.users = [];
-if(!db.logto) db.logto = "";
+if (!db.rooms) db.rooms = {};
+if (!db.mods) db.mods = {};
+if (!db.users) db.users = [];
+if (!db.logto) db.logto = "";
 
 export const saveDB = (json) => {
   // Overwrite graimdb.json
@@ -16,7 +16,7 @@ export const saveDB = (json) => {
 
 export const user_discordId = (user: string) => {
   // Returns a valid Discord ID if the Matrix ID was a bridged Discord user
-  user = user.replace("@","")
+  user = user.replace("@", "");
   if (
     !isNaN(+user.substring(9, 27)) && // !isNaN(+"string") makes sure that the substring is a number (like a snowflake ID).
     user.split(":")[1] == config.appserviceHS // makes sure that the Matrix ID is based in the correct homeserver
@@ -34,15 +34,16 @@ export const user_discordId = (user: string) => {
 export const mentionPillFor = async (user: string) => {
   console.log(user); // "@luphoria:matrix.org"
 
-  if (!isNaN(+user) && user.length == 18) { // user is a Discord ID
+  if (!isNaN(+user) && user.length == 18) {
+    // user is a Discord ID
     user = "_discord_" + user + ":" + config.appserviceHS; // recreate Discord MentionPill
   }
 
-  user = "@" + user.replace("@",""); // ensures that there is ONE @ at the beginning
+  user = "@" + user.replace("@", ""); // ensures that there is ONE @ at the beginning
 
   let mention = await MentionPill.forUser(user);
   return mention;
-}
+};
 
 export const lookup_user = (name: String) => {
   // Reverses a user from graim's db based on any format data given from the user
@@ -61,7 +62,8 @@ export const lookup_user = (name: String) => {
       graim_name = _user.name;
     } else if (
       (_user.discord == name.replace("@", "").substring(9, 27) &&
-      name.split(":")[1] == config.appserviceHS) || (_user.discord == name.replace("@", ""))
+        name.split(":")[1] == config.appserviceHS) ||
+      _user.discord == name.replace("@", "")
     ) {
       // the name must have been a Discord ID
       console.log("Discord user FOUND in db");

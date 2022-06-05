@@ -85,7 +85,8 @@ export async function runStrikeUserCommand(
       reason: htmlEscape(reason),
       caller: event.sender,
     },
-    false, client
+    false,
+    client
   );
 
   return client.sendMessage(roomId, {
