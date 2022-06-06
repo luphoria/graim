@@ -77,25 +77,26 @@ export async function runBanCommand(
           );
         }
       }
+    } else {
+      rooms.forEach((roomId) => {
+        client.banUser(
+          user,
+          roomId,
+          event.sender + " told me to! :D => " + htmlEscape(reason)
+        ).catch((err) => console.error(err));
+        log(
+          {
+            info: "Banned user (matrix)",
+            user: user,
+            roomId: roomId,
+            reason: htmlEscape(reason),
+            caller: event.sender,
+          },
+          true,
+          client
+        );
+      });
     }
-    rooms.forEach((roomId) => {
-      client.banUser(
-        user,
-        roomId,
-        event.sender + " told me to! :D => " + htmlEscape(reason)
-      );
-      log(
-        {
-          info: "Banned user (matrix)",
-          user: user,
-          roomId: roomId,
-          reason: htmlEscape(reason),
-          caller: event.sender,
-        },
-        true,
-        client
-      );
-    });
 
     let mention = await mentionPillFor(user);
 
