@@ -1,5 +1,3 @@
-// TODO - make up your damn mind! do you want the @ or not? (i don't). You are schizo stop talking to yourself in comments
-
 import { MentionPill } from "matrix-bot-sdk";
 import config from "./config";
 const file = require("fs");
