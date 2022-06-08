@@ -77,7 +77,7 @@ export async function runMuteCommand(
   }
   if (!msToUnmute) {
     msToUnmute = ms("1d");
-    reason = command.slice(2).join(" ") || "No reason specified.";
+    reason = commandString.split(" ").slice(2).join(" ") || "No reason specified.";
   }
 
   lookup = lookup_user(user);
