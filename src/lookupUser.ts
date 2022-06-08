@@ -43,7 +43,7 @@ export const mentionPillFor = async (user: string) => {
   return mention;
 };
 
-export const lookup_user = (name: String) => {
+export const lookup_user = (name: string) => {
   // Reverses a user from graim's db based on any format data given from the user
   let graim_name: string;
   let user_matrix: string;
@@ -59,9 +59,7 @@ export const lookup_user = (name: String) => {
       console.log("Graim user FOUND in db");
       graim_name = _user.name;
     } else if (
-      (_user.discord == name.replace("@", "").substring(9, 27) &&
-        name.split(":")[1] == config.appserviceHS) ||
-      _user.discord == name.replace("@", "")
+      user_discordId(name) == _user.discord
     ) {
       // the name must have been a Discord ID
       console.log("Discord user FOUND in db");
