@@ -65,7 +65,7 @@ export async function runUserinfoCommand(
     body: `User: ${lookup.graim_name}
    Matrix: ${lookup.user_matrix}
    Discord: ${lookup.user_discord} (${lookup.user_discord})
-Moderator? ${lookup.moderator ? "Yes" : "No"}`,
+Moderator? ${lookup.moderator ? "Yes" : "No"}${modOnlyLookup}`,
     msgtype: "m.notice",
     format: "org.matrix.custom.html",
     formatted_body: `User: ${lookup.graim_name}
@@ -73,6 +73,6 @@ Moderator? ${lookup.moderator ? "Yes" : "No"}`,
    Discord: ${(await mentionPillFor(lookup.user_discord)).html} (${htmlEscape(
       lookup.user_discord
     )})
-Moderator? ${lookup.moderator ? "Yes" : "No"}`,
+Moderator? ${lookup.moderator ? "Yes" : "No"}${htmlEscape(modOnlyLookup)}`,
   });
 }
