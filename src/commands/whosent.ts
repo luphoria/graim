@@ -57,8 +57,8 @@ export async function runWhoSentCommand(
           search_categories: {
             room_events: {
               search_term: msg.content.replace(
-                /[`~!@#$%^&*()_|+\-=?;:'",<>\{\}\[\]\\\/]/g,
-                " "
+                /[^ ]*[^a-z^A-Z^0-9\^_ :.()#,"'?=[]].*/gmi,
+                ""
               ), // REGEX: search api doesn't really like special characters, so let's sanitize it for better results.
               filter: { limit: 1 },
               order_by: "recent",
