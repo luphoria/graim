@@ -24,6 +24,7 @@ import { runUnlockCommand } from "./unlock";
 import { runBridgeCommand } from "./bridgeroom";
 import { runUnbridgeCommand } from "./unbridgeroom";
 import { runSetLoggingRoomCommand } from "./setloggingroom";
+import { runLintCommand } from "./lint";
 
 // The prefix required to trigger the bot. The bot will also respond
 // to being pinged directly.
@@ -89,6 +90,9 @@ export default class CommandHandler {
     // Try and figure out what command the user ran
     try {
       switch (args[0]) {
+        case "lint":
+          runLintCommand(roomId, this.client);
+          break;
         case "lock":
           runLockCommand(roomId, event, args, this.client, formatted_body);
           break;
@@ -157,6 +161,8 @@ export default class CommandHandler {
           break;
         case "help":
           const help =
+            `${COMMAND_PREFIX}lint - Tells you any possible misconfigurations\n` +
+            `\n` +
             `${COMMAND_PREFIX}lock [room] - Locks room/channel\n` +
             `${COMMAND_PREFIX}unlock [room] - Unlocks room/channel\n` +
             `${COMMAND_PREFIX}kick <user> [reason] - Kicks a user\n` +
