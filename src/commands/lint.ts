@@ -65,7 +65,7 @@ import config from "../config";
       }
     }
     if(graimModeratorFound) res += " - Certain room(s) have graim's power level below 50 (Moderator). I sent a message in each offending room. You will need to set the bot as a moderator to use it!\n\n";
-    if(powerLevelMisconfigureFound) res += " - Certain room(s) are not properly configured for graim! The \"Change permissions\" setting (m.room.power_levels) must be set to \"Moderator\" (or power level 50 or below)!\n\n";
+    if(powerLevelMisconfigureFound) res += " - Certain room(s) are not properly configured for graim! The \"Change permissions\" setting (m.room.power_levels) must be set to \"Moderator\" (or power level 50 or below)! I sent a message in each offending room.\n\n";
 
     res += "Total errors: " + totalErrors + "\nTotal warnings: " + totalWarns;
 

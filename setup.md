@@ -72,4 +72,13 @@ In order to use any graim commands, you first need to be considered a moderator 
 
 NOTE: Any new moderators you add will also be able to run `adduser` - whether they have power level 100 or not.
 
+### graim-side room bridging
+In order for the `lock` command to function, you must run `bridgeroom <discord channel id>` in all rooms/channels.
+
+### Logging room
+You will probably want a logging room. This can be a public or private room, but either way it must be bridged to Discord. To set a room as the designated logging room, run the command `setloggingroom` to implement it.
+
+### Lint
+Lastly, just make sure you've set everything up right! Run the command `lint` in any channel, and it will tell you any misconfigurations.
+
 **Congratulations, you have set up graim!**
