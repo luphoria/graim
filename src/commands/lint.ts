@@ -64,11 +64,10 @@ export async function runLintCommand(roomId: string, client: MatrixClient) {
       powerLevelMisconfigureFound = true;
       totalErrors += 1;
       client.sendMessage(rooms[i], {
-        body: 'It seems this room is improperly configured! The permission "Change permissions" (m.room.power_levels) must be at Moderator (power level 50) or below so I can use it!',
+        body: "It seems this room is improperly configured! Edit the room permissions and alter \"Change Permissions\" (m.room.power_levels) to be \"Moderator\" (power level 50).",
         msgtype: "m.notice",
         format: "org.matrix.custom.html",
-        formatted_body:
-          'It seems this room is improperly configured! The permission "<b>Change permissions</b>" (<code>m.room.power_levels</code>) must be at Moderator (power level 50) or below so I can use it!',
+        formatted_body: "It seems this room is improperly configured! Edit the room permissions and alter \"Change Permissions\" (<code>m.room.power_levels</code>) to be \"Moderator\" (power level 50)."
       });
     }
   }
