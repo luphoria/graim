@@ -47,7 +47,6 @@ export const startedWhen = Date.now();
       });
     });
   }
-  client.getJoinedRoomMembers;
 
   // Prepare the command handler
   const commands = new CommandHandler(client);
