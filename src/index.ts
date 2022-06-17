@@ -20,6 +20,7 @@ LogService.muteModule("Metrics");
 // Print something so we know the bot is working
 LogService.info("index", "Bot starting...");
 
+// Prevent graim from responding to old messages w/sync
 export const startedWhen = Date.now();
 
 // This is the startup closure where we give ourselves an async context
@@ -27,10 +28,26 @@ export const startedWhen = Date.now();
   // Now create the client
   const client = new MatrixClient(config.homeserverUrl, config.accessToken);
 
-  // Setup the autojoin mixin (if enabled)
+  // Set up autojoin
   if (config.autoJoin) {
-    AutojoinRoomsMixin.setupOnClient(client);
+    // Not using the in-SDK solution, so that I can also join all rooms in a space.
+    client.on("room.invite", async (roomId) => {
+      // Join room
+      await client.joinRoom(roomId).then(async () => {
+        // Grab room state event and filter just the space children
+        (await client.getRoomState(roomId))
+          .filter((ev) => ev["type"] == "m.space.child")
+          .forEach((spaceChild) => {
+            // Join each child
+            return client.joinRoom(
+              spaceChild["state_key"],
+              spaceChild["content"]["via"]
+            );
+          });
+      });
+    });
   }
+  client.getJoinedRoomMembers;
 
   // Prepare the command handler
   const commands = new CommandHandler(client);
