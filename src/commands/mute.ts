@@ -76,7 +76,8 @@ export async function runMuteCommand(
   }
   if (!msToUnmute) {
     msToUnmute = ms("1d");
-    reason = commandString.split(" ").slice(2).join(" ") || "No reason specified.";
+    reason =
+      commandString.split(" ").slice(2).join(" ") || "No reason specified.";
   }
 
   lookup = lookup_user(user);
@@ -176,7 +177,8 @@ export async function runMuteCommand(
       info: "Muted user",
       user: lookup.graim_name,
       reason: htmlEscape(reason),
-      length: msToUnmute + " ms",
+      length:
+        (unmuteTimeProvided ? command[2] : "1d") + " (" + msToUnmute + " ms)",
       caller: event.sender,
     },
     false,
