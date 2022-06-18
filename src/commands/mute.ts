@@ -1,4 +1,3 @@
-// TODO: log [reason]
 // -=- SYNTAX : ;mute <user> [time (smhd)] [reason]
 import {
   MatrixClient,
