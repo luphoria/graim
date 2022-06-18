@@ -35,6 +35,8 @@ export const mentionPillFor = async (user: string) => {
   if (!isNaN(+user) && user.length == 18) {
     // user is a Discord ID
     user = "_discord_" + user + ":" + config.appserviceHS; // recreate Discord MentionPill
+  } else if (!user.includes(":")) {
+    user = lookup_user(user).user_matrix || user;
   }
 
   user = "@" + user.replace("@", ""); // ensures that there is ONE @ at the beginning
