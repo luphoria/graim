@@ -16,14 +16,14 @@ export const user_discordId = (user: string) => {
   // Returns a valid Discord ID if the Matrix ID was a bridged Discord user
   user = user.replace("@", "");
   if (
-    !isNaN(+user.substring(9, 27)) && // !isNaN(+"string") makes sure that the substring is a number (like a snowflake ID).
+    !isNaN(+user.split(":")[0].substring(9)) && // !isNaN(+"string") makes sure that the substring is a number (like a snowflake ID).
+    user.split(":")[0].substring(9).length >= 18 &&
     user.split(":")[1] == config.appserviceHS // makes sure that the Matrix ID is based in the correct homeserver
   ) {
-    console.log(user.substring(9, 27));
-    return user.substring(9, 27);
+    return user.split(":")[0].substring(9);
   }
-  console.log(user.substring(9, 27));
-  if (!isNaN(+user) && user.length == 18) {
+
+  if (!isNaN(+user) && user.length >= 18) {
     return user;
   }
   return null;
@@ -32,7 +32,7 @@ export const user_discordId = (user: string) => {
 export const mentionPillFor = async (user: string) => {
   console.log(user); // "@luphoria:matrix.org"
 
-  if (!isNaN(+user) && user.length == 18) {
+  if (!isNaN(+user) && user.length >= 18) {
     // user is a Discord ID
     user = "_discord_" + user + ":" + config.appserviceHS; // recreate Discord MentionPill
   } else if (!user.includes(":")) {
