@@ -1,0 +1,7 @@
+version: '3'
+services:
+  graimdocs:
+    image: motortruck1221/graimdocs:latest
+    ports:
+      - "80:80"
+    restart: unless-stopped

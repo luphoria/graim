@@ -1,0 +1,36 @@
+baseURL = 'https://proxdocs.motortruck1221.tech'
+languageCode = 'en-us'
+title = 'Graim Docs'
+theme = "hugo-geekdoc"
+
+pluralizeListTitles = false
+
+# Geekdoc required configuration
+pygmentsUseClasses = true
+pygmentsCodeFences = true
+disablePathToLower = true
+
+# Required if you want to render robots.txt template
+enableRobotsTXT = true
+
+# Needed for mermaid shortcodes
+[markup]
+  [markup.goldmark.renderer]
+    # Needed for mermaid shortcode
+    unsafe = true
+  [markup.tableOfContents]
+    startLevel = 1
+    endLevel = 9
+
+[taxonomies]
+   tag = "tags"
+[params]
+  geekdocToC = 3
+  geekdocLogo = "graim-shadow.png"
+  # Can be Enabled Per Page!
+  #geekdocCollapseAllSections = true
+  geekdocBreadcrumb = false
+  geekdocAnchor = true
+  geekdocImageLazyLoading = true
+  geekdocFileTreeSortBy = "title_reverse"
+  geekdocAnchorCopy = true

@@ -1,0 +1,88 @@
+{
+  "name": "geekdoc",
+  "version": "1.0.0",
+  "description": "Hugo theme made for documentation",
+  "main": "index.js",
+  "scripts": {
+    "build": "run-s prep:clean prep:make svg build:webpack",
+    "build:webpack": "webpack --mode=production",
+    "build:webpack-devel": "webpack --mode=development",
+    "pack": "tar -zcvf dist/hugo-geekdoc.tar.gz -X .tarignore .",
+    "start": "run-s prep:clean prep:make svg build:webpack-devel ; run-p start:webpack start:hugo",
+    "start:webpack": "webpack --mode=development --watch",
+    "start:build": "webpack --mode=development",
+    "start:hugo": "hugo server -D -F -s exampleSite/",
+    "svg": "run-s svg:*",
+    "svg:sprite": "svg-sprite -C svgsprite.config.json 'src/icons/*.svg'",
+    "svg:font": "svgtofont --sources build/icons/ --output build/fonts/",
+    "prep:clean": "shx rm -rf build/ static/",
+    "prep:clean-all": "shx rm -rf build/ dist/ static/ data/ assets/sprites/ exampleSite/data/sprites/",
+    "prep:make": "shx mkdir -p build/icons/ build/fonts/ dist/",
+    "svg-sprite-list": "run-s prep:make svg ; shx mkdir -p exampleSite/data/sprites/ ; shx cp build/fonts/GeekdocIcons.json exampleSite/data/sprites/geekdoc.json",
+    "lint": "eslint src/js/ --color"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thegeeklab/hugo-geekdoc"
+  },
+  "author": "Robert Kaussow",
+  "license": "MIT",
+  "engines": {
+    "node": ">=16.15 <=18"
+  },
+  "dependencies": {
+    "@cfworker/json-schema": "1.12.4",
+    "clipboard": "2.0.11",
+    "flexsearch": "0.7.21",
+    "katex": "0.16.2",
+    "mermaid": "9.1.5",
+    "store2": "2.14.2"
+  },
+  "devDependencies": {
+    "@babel/eslint-parser": "7.18.9",
+    "@eloquent/git-version-webpack-plugin": "^5.0.1",
+    "autoprefixer": "10.4.8",
+    "copy-webpack-plugin": "11.0.0",
+    "css-loader": "6.7.1",
+    "eslint": "8.23.0",
+    "eslint-config-prettier": "8.5.0",
+    "eslint-plugin-prettier": "4.2.1",
+    "favicons": "6.2.2",
+    "favicons-webpack-plugin": "5.0.2",
+    "npm-run-all": "4.1.5",
+    "postcss-loader": "7.0.1",
+    "prettier": "2.7.1",
+    "prettier-plugin-go-template": "0.0.13",
+    "sass": "1.54.5",
+    "sass-loader": "13.0.2",
+    "shx": "0.3.4",
+    "svg-sprite": "1.5.4",
+    "svgtofont": "3.17.8",
+    "webpack": "5.74.0",
+    "webpack-cli": "4.10.0",
+    "webpack-manifest-plugin": "5.0.0",
+    "webpack-remove-empty-scripts": "0.8.1"
+  },
+  "overrides": {
+    "colors": "1.4.0"
+  },
+  "browserslist": [
+    "last 2 version",
+    "> 5%",
+    "not dead",
+    "Firefox ESR"
+  ],
+  "svgtofont": {
+    "fontName": "GeekdocIcons",
+    "css": false,
+    "html": false,
+    "emptyDist": true,
+    "useNameAsUnicode": true,
+    "svgicons2svgfont": {
+      "fontHeight": 1001,
+      "normalize": true,
+      "centerHorizontally": true,
+      "centerVertically": true
+    }
+  }
+}

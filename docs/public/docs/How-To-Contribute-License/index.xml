@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Licensing, And How to Contribute on Proxdocs</title>
+    <link>https://proxdocs.motortruck1221.tech/docs/How-To-Contribute-License/</link>
+    <description>Recent content in Licensing, And How to Contribute on Proxdocs</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 31 Aug 2022 18:28:11 +0000</lastBuildDate><atom:link href="https://proxdocs.motortruck1221.tech/docs/How-To-Contribute-License/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Contributing to ProxDocs</title>
+      <link>https://proxdocs.motortruck1221.tech/docs/How-To-Contribute-License/CONTRIBUTING/</link>
+      <pubDate>Wed, 31 Aug 2022 18:28:11 +0000</pubDate>
+      
+      <guid>https://proxdocs.motortruck1221.tech/docs/How-To-Contribute-License/CONTRIBUTING/</guid>
+      <description>ProxDocs can&amp;rsquo;t write itself, thank you for wanting to contribute to ProxDocs!
+Issues There is no out of the ordinary guidelines for making an issue to ProxDocs. Just be sure to include a brief description of the issue you are having in your issue.
+Suggestions/Proposals To contribute a suggestion or proposal, please open an issue. The issue should include what you want changed and why you want it to be changed.</description>
+    </item>
+    
+    <item>
+      <title>License</title>
+      <link>https://proxdocs.motortruck1221.tech/docs/How-To-Contribute-License/LICENSE/</link>
+      <pubDate>Wed, 31 Aug 2022 18:28:11 +0000</pubDate>
+      
+      <guid>https://proxdocs.motortruck1221.tech/docs/How-To-Contribute-License/LICENSE/</guid>
+      <description>GNU Free Documentation License Version 1.3, 3 November 2008
+Copyright (C) 2000, 2001, 2002, 2007, 2008 Free Software Foundation, Inc. https://fsf.org/
+Everyone is permitted to copy and distribute verbatim copies of this license document, but changing it is not allowed.
+0. PREAMBLE The purpose of this License is to make a manual, textbook, or other functional and useful document &amp;ldquo;free&amp;rdquo; in the sense of freedom: to assure everyone the effective freedom to copy and redistribute it, with or without modifying it, either commercially or noncommercially.</description>
+    </item>
+    
+  </channel>
+</rss>

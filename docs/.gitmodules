@@ -1,0 +1,21 @@
+[submodule "themes/ananke"]
+	path = themes/ananke
+	url = https://github.com/theNewDynamic/gohugo-theme-ananke.git
+[submodule "themes/terminal"]
+	path = themes/terminal
+	url = https://github.com/panr/hugo-theme-terminal.git
+[submodule "themes/PaperMod"]
+	path = themes/PaperMod
+	url = https://github.com/adityatelange/hugo-PaperMod.git
+[submodule "proxdocs"]
+	path = proxdocs
+	url = https://github.com/motortruck1221/proxdocs
+[submodule "content/docs/proxdocs"]
+	path = content/docs/proxdocs
+	url = https://github.com/motortruck1221/proxdocs
+[submodule "content/proxdocs"]
+	path = content/proxdocs
+	url = https://github.com/motortruck1221/proxdocs
+[submodule "themes/hugo-geekdoc"]
+	path = themes/hugo-geekdoc
+	url = https://github.com/thegeeklab/hugo-geekdoc.git

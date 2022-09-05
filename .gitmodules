@@ -1,0 +1,15 @@
+[submodule "docs/themes/docsy"]
+	path = docs/themes/docsy
+	url = https://github.com/google/docsy.git
+[submodule "docs/doks"]
+	path = docs/doks
+	url = https://github.com/h-enk/doks-child-theme.git
+[submodule "docs/themes/doks"]
+	path = docs/themes/doks
+	url = https://github.com/h-enk/doks-child-theme.git
+[submodule "docs/--recursive"]
+	path = docs/--recursive
+	url = https://github.com/onweru/compose.git
+[submodule "docs/themes/whisper"]
+	path = docs/themes/whisper
+	url = https://github.com/jugglerx/hugo-whisper-theme.git
