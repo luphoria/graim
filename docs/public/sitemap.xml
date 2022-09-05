@@ -2,14 +2,14 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://proxdocs.motortruck1221.tech/docs/CONTRIBUTING/</loc>
+    <loc>/docs/CONTRIBUTING/</loc>
   </url><url>
-    <loc>https://proxdocs.motortruck1221.tech/docs/</loc>
+    <loc>/docs/</loc>
   </url><url>
-    <loc>https://proxdocs.motortruck1221.tech/</loc>
+    <loc>/</loc>
   </url><url>
-    <loc>https://proxdocs.motortruck1221.tech/docs/setup/</loc>
+    <loc>/docs/setup/</loc>
   </url><url>
-    <loc>https://proxdocs.motortruck1221.tech/tags/</loc>
+    <loc>/tags/</loc>
   </url>
 </urlset>

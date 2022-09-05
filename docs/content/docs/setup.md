@@ -19,7 +19,7 @@ Follow the tutorial [here](https://t2bot.io/discord/). You may also run your own
 
 ## Download graim
 Open your terminal or command prompt and type these commands:
-```
+```sh
 git clone https://github.com/luphoria/graim
 cd graim
 npm install

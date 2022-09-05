@@ -1,4 +1,4 @@
-baseURL = 'https://proxdocs.motortruck1221.tech'
+baseURL = '/'
 languageCode = 'en-us'
 title = 'Graim Docs'
 theme = "hugo-geekdoc"
