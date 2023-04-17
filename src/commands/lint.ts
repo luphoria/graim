@@ -49,26 +49,32 @@ export async function runLintCommand(roomId: string, client: MatrixClient) {
       "m.room.power_levels",
       ""
     );
-    if (power_levels["users"][await client.getUserId()] < 50) {
-      graimModeratorFound = true;
-      totalErrors += 1;
-      client.sendMessage(rooms[i], {
-        body: "It seems I'm not properly configured in this room! I need to be a Moderator (power level 50) in all rooms to work!",
-        msgtype: "m.notice",
-        format: "org.matrix.custom.html",
-        formatted_body:
-          "It seems I'm not properly configured in this room! I need to be a Moderator (power level 50) in all rooms to work!",
-      });
+    let uidPower = power_levels["users"][await client.getUserId()];
+    if (uidPower < 50) {
+      if (power_levels["events_default"] <= uidPower) {
+        graimModeratorFound = true;
+        totalErrors += 1;
+        client.sendMessage(rooms[i], {
+          body: "It seems I'm not properly configured in this room! I need to be a Moderator (power level 50) in all rooms to work!",
+          msgtype: "m.notice",
+          format: "org.matrix.custom.html",
+          formatted_body:
+            "It seems I'm not properly configured in this room! I need to be a Moderator (power level 50) in all rooms to work!",
+        });
+      }
     }
     if (power_levels["events"]["m.room.power_levels"] > 50) {
-      powerLevelMisconfigureFound = true;
-      totalErrors += 1;
-      client.sendMessage(rooms[i], {
-        body: "It seems this room is improperly configured! Edit the room permissions and alter \"Change Permissions\" (m.room.power_levels) to be \"Moderator\" (power level 50).",
-        msgtype: "m.notice",
-        format: "org.matrix.custom.html",
-        formatted_body: "It seems this room is improperly configured! Edit the room permissions and alter \"Change Permissions\" (<code>m.room.power_levels</code>) to be \"Moderator\" (power level 50)."
-      });
+      if (power_levels["events_default"] <= uidPower) {
+        powerLevelMisconfigureFound = true;
+        totalErrors += 1;
+        client.sendMessage(rooms[i], {
+          body: 'It seems this room is improperly configured! Edit the room permissions and alter "Change Permissions" (m.room.power_levels) to be "Moderator" (power level 50).',
+          msgtype: "m.notice",
+          format: "org.matrix.custom.html",
+          formatted_body:
+            'It seems this room is improperly configured! Edit the room permissions and alter "Change Permissions" (<code>m.room.power_levels</code>) to be "Moderator" (power level 50).',
+        });
+      }
     }
   }
   if (graimModeratorFound)
@@ -76,7 +82,7 @@ export async function runLintCommand(roomId: string, client: MatrixClient) {
       " - Certain room(s) have graim's power level below 50 (Moderator). I sent a message in each offending room. You will need to set the bot as a moderator to use it!\n\n";
   if (powerLevelMisconfigureFound)
     res +=
-      ' - Certain room(s) are not properly configured for graim! The "Change permissions" setting (m.room.power_levels) must be set to "Moderator" (or power level 50 or below)! I sent a message in each offending room.\n\n';
+      ' - Certain room(s) are not properly configured for graim! The "Change permissions" setting (m.room.power_levels) must be set to "Moderator" (or power level 50 or below)! I tried to send a message in each offending room. If no messages showed up, make sure I can send messages everywhere in the first place!\n\n';
 
   res += "Total errors: " + totalErrors + "\nTotal warnings: " + totalWarns;
 
