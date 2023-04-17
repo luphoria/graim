@@ -85,8 +85,8 @@ export async function runAddUserCommand(
 
     let user = {
       name: command[1],
-      matrix: command[2].replace("@", ""), // don't store the `@` of Matrix users in the db
-      discord: user_discordId(command[3]),
+      matrix: decodeURIComponent(command[2]).replace("@", ""), // don't store the `@` of Matrix users in the db
+      discord: user_discordId(decodeURIComponent(command[3])),
       strikes: [],
     };
     let moderator = command[4] == "moderator" ? true : false; // TODO: make a real ranking for admins vs. moderators
@@ -119,13 +119,13 @@ export async function runAddUserCommand(
 
     return client.sendMessage(roomId, {
       body: `User: ${user.name}
-  Matrix: ${user.matrix}
+  Matrix: @${user.matrix}
   Discord: ${user.discord} (${user.discord})
 Moderator? ${moderator ? "Yes" : "No"}`,
       msgtype: "m.notice",
       format: "org.matrix.custom.html",
       formatted_body: `User: ${user.name}
-  Matrix: ${htmlEscape(user.matrix)}
+  Matrix: @${htmlEscape(user.matrix)}
   Discord: ${(await mentionPillFor(user.discord)).html} (${htmlEscape(
         user.discord
       )})
