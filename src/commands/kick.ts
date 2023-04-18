@@ -82,7 +82,7 @@ export async function runKickCommand(
         user,
         roomId,
         event.sender + " told me to! :D => " + htmlEscape(reason)
-      );
+      ).catch((err) => console.error(err));;
       log(
         {
           info: "Kicked user (matrix)",
