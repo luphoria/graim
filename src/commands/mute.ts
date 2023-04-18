@@ -93,7 +93,9 @@ export async function runMuteCommand(
     }
 
     rooms.forEach((roomId) => {
-      client.setUserPowerLevel(user, roomId, -1);
+      try { // wrap in try-catch in case of misconfiguration
+        client.setUserPowerLevel(user, roomId, -1);
+      } catch {};
     });
 
     setTimeout(() => {
