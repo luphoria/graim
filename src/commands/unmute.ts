@@ -2,7 +2,6 @@
 // -=- SYNTAX : ;unmute <user>
 import {
   MatrixClient,
-  MentionPill,
   MessageEvent,
   MessageEventContent,
 } from "matrix-bot-sdk";
@@ -66,10 +65,16 @@ export async function runUnmuteCommand(
       if (user_discord)
         user_discord.roles.remove(mute_role).catch((err) => console.log(err));
     }
-
-    rooms.forEach((roomId) => {
-      client.setUserPowerLevel(user, roomId, 0);
-    });
+    else {
+      rooms.forEach((roomId) => {
+        try {
+          if (user.includes("@") && user.includes(":")) { // TODO TODO TODO use real mxid validator
+            client.setUserPowerLevel(user, roomId, 0);
+          }
+        }
+        catch (err) {console.info(err)}
+      });
+    }
 
     let mention = await mentionPillFor(user);
 

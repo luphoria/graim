@@ -84,30 +84,31 @@ export async function runMuteCommand(
 
   if (!lookup.graim_name) {
     if (user_discordId(user)) {
-      let user_discord = await guild.members.fetch(user_discordId("@" + user)); // fetch the discord user
+      let user_discord = await guild.members.fetch(user_discordId(user)); // fetch the discord user
       if (user_discord)
         user_discord.roles.add(mute_role).catch((err) => console.error(err));
       setTimeout(() => {
         user_discord.roles.remove(mute_role).catch((err) => console.error(err));
       }, msToUnmute);
     }
-
-    rooms.forEach((roomId) => {
-      try {
-        // wrap in try-catch in case of misconfiguration
-        client.setUserPowerLevel(user, roomId, -1);
-      } catch {}
-    });
-
-    setTimeout(() => {
-      // once this time has passed, undo the mute!
+    else {
       rooms.forEach((roomId) => {
         try {
           // wrap in try-catch in case of misconfiguration
-          client.setUserPowerLevel(user, roomId, 0);
-        } catch {}
+          client.setUserPowerLevel(user, roomId, -1);
+        } catch (err) {console.info(err)}
       });
-    }, msToUnmute);
+  
+      setTimeout(() => {
+        // once this time has passed, undo the mute!
+        rooms.forEach((roomId) => {
+          try {
+            // wrap in try-catch in case of misconfiguration
+            client.setUserPowerLevel(user, roomId, 0);
+          } catch (err) {console.info(err)}
+        });
+      }, msToUnmute);
+    }
 
     let mention = await mentionPillFor(user);
 
@@ -152,7 +153,7 @@ export async function runMuteCommand(
     try {
       // wrap in try-catch in case of misconfiguration
       client.setUserPowerLevel(lookup.user_matrix, roomId, -1);
-    } catch {}
+    } catch (err) {console.info(err)}
   });
   let user_discord = await guild.members.fetch(lookup.user_discord);
   user_discord.roles.add(mute_role).catch((err) => console.error(err));
@@ -162,7 +163,7 @@ export async function runMuteCommand(
     rooms.forEach((roomId) => {
       try {
         client.setUserPowerLevel(lookup.user_matrix, roomId, 0);
-      } catch {}
+      } catch (err) {console.info(err)}
     });
     user_discord.roles.remove(mute_role).catch((err) => console.error(err));
   }, msToUnmute);
