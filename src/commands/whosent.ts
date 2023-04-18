@@ -92,7 +92,7 @@ export async function runWhoSentCommand(
 
     let ret: string;
     if (possibleMatches.length > 0) {
-      ret = "Matches: " + possibleMatches.join(", ");
+      ret = "Matches: @" + possibleMatches.join(", @");
     } else {
       ret = "Sorry, but the query returned no results :(\nYou'll probably have to log on Matrix for this one.";
     }
