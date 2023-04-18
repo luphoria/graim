@@ -23,6 +23,10 @@ LogService.info("index", "Bot starting...");
 // Prevent graim from responding to old messages w/sync
 export const startedWhen = Date.now();
 
+process.on('unhandledRejection', (err) => {
+  console.error(err);
+});
+
 // This is the startup closure where we give ourselves an async context
 (async function () {
   // Now create the client
