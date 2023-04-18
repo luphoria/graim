@@ -93,15 +93,19 @@ export async function runMuteCommand(
     }
 
     rooms.forEach((roomId) => {
-      try { // wrap in try-catch in case of misconfiguration
+      try {
+        // wrap in try-catch in case of misconfiguration
         client.setUserPowerLevel(user, roomId, -1);
-      } catch {};
+      } catch {}
     });
 
     setTimeout(() => {
       // once this time has passed, undo the mute!
       rooms.forEach((roomId) => {
-        client.setUserPowerLevel(user, roomId, 0);
+        try {
+          // wrap in try-catch in case of misconfiguration
+          client.setUserPowerLevel(user, roomId, 0);
+        } catch {}
       });
     }, msToUnmute);
 
@@ -145,7 +149,10 @@ export async function runMuteCommand(
   }
 
   rooms.forEach((roomId) => {
-    client.setUserPowerLevel(lookup.user_matrix, roomId, -1);
+    try {
+      // wrap in try-catch in case of misconfiguration
+      client.setUserPowerLevel(lookup.user_matrix, roomId, -1);
+    } catch {}
   });
   let user_discord = await guild.members.fetch(lookup.user_discord);
   user_discord.roles.add(mute_role).catch((err) => console.error(err));
@@ -153,7 +160,9 @@ export async function runMuteCommand(
   setTimeout(() => {
     // once this time has passed, undo the mute!
     rooms.forEach((roomId) => {
-      client.setUserPowerLevel(lookup.user_matrix, roomId, 0);
+      try {
+        client.setUserPowerLevel(lookup.user_matrix, roomId, 0);
+      } catch {}
     });
     user_discord.roles.remove(mute_role).catch((err) => console.error(err));
   }, msToUnmute);
